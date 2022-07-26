@@ -1,0 +1,53 @@
+{
+	"name": "tickit-devices",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": "..",
+		"args": {
+			"VARIANT": "3.9-bullseye",
+		}
+	},
+	"remoteEnv": {
+		"DISPLAY": "${localEnv:DISPLAY}",
+	},
+	"settings": {
+		"python.defaultInterpreterPath": "/usr/local/bin/python",
+		"python.languageServer": "Default",
+		"python.linting.enabled": true,
+		"python.formatting.provider": "black",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		},
+		"python.sortImports.args": [
+			"--profile",
+			"black"
+		],
+		"python.linting.pylintEnabled": false,
+		"python.linting.flake8Enabled": true,
+		"python.linting.flake8Args": [
+			"--max-line-length=88",
+		],
+		"python.linting.mypyEnabled": true,
+		"python.linting.pydocstyleEnabled": true,
+		"python.testing.pytestArgs": [],
+		"python.testing.unittestEnabled": false,
+		"python.testing.nosetestsEnabled": false,
+		"python.testing.pytestEnabled": true,
+	},
+	"extensions": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ryanluker.vscode-coverage-gutters",
+		"tamasfe.even-better-toml",
+	],
+	"features": {
+		"git": "os-provided"
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace/tickit-devices,type=bind,Z",
+	"workspaceFolder": "/workspace/tickit-devices",
+	"containerEnv": {
+		"PIPENV_VENV_IN_PROJECT": "1"
+	},
+	"postCreateCommand": "pipenv install"
+}
