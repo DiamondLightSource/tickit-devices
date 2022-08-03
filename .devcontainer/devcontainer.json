@@ -34,6 +34,7 @@
 		"python.testing.unittestEnabled": false,
 		"python.testing.nosetestsEnabled": false,
 		"python.testing.pytestEnabled": true,
+		"python.terminal.activateEnvironment": false
 	},
 	"extensions": [
 		"ms-python.python",
