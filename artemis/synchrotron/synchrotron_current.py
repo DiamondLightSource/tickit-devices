@@ -1,4 +1,3 @@
-import logging
 from dataclasses import dataclass
 from typing import Optional
 
@@ -14,8 +13,6 @@ from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
-
-LOGGER = logging.getLogger(__name__)
 
 
 class SynchrotronCurrentDevice(Device):
@@ -37,17 +34,14 @@ class SynchrotronCurrentDevice(Device):
 
         Args:
             initial_current (Optional[float]): The inital beam current. Defaults to
-                456.789
+                300mA
         """
-        self.beam_current = (
-            initial_current if initial_current is not None else (456.789)
-        )
+        self.beam_current = initial_current if initial_current is not None else 300
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method that just outputs beam current.
 
-        The device is only altered by adapters so take no inputs and is independent of
-        time.
+        The device is only altered by adapters so take no inputs.
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
