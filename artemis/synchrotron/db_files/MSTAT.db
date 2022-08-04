@@ -15,6 +15,11 @@ record (mbbi, "$(device):MODE")
     field (PINI, "YES")
 }
 
+# Due to limitations in pythonIOC, these records can not be read in
+# via the epics adapter. Stand in aIn records have been made instead
+# to just hold the float values as currently the internal logic is
+# not needed or can be implemented in the tickit device.
+
 # This record will count down to zero at the end of the
 # current calendar period if the current period is a type
 # of user beam time. Otherwise it will have the value -1.
