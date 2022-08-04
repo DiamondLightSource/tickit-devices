@@ -1,0 +1,26 @@
+- artemis.synchrotron.synchrotron_current.SynchrotronCurrent:
+    name: sync_current
+    inputs: {}
+    initial_current: 300
+- tickit.devices.sink.Sink:
+    name: current_sink
+    inputs:
+      input: sync_current:current
+
+- artemis.synchrotron.synchrotron_machine.SynchrotronMachineStatus:
+    name: sync_machine
+    inputs: {}
+    port: 25564
+- tickit.devices.sink.Sink:
+    name: machine_sink
+    inputs:
+      input: sync_machine:mode
+
+- artemis.synchrotron.synchrotron_topup.SynchrotronTopUp:
+    name: sync_topup
+    inputs: {}
+    port: 25563
+- tickit.devices.sink.Sink:
+    name: topup_sink
+    inputs:
+      input: sync_topup:countdown
