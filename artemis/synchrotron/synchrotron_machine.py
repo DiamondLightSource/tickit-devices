@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from softioc import builder
 from tickit.adapters.composed import ComposedAdapter
@@ -18,7 +17,7 @@ from tickit.utils.compat.typing_compat import TypedDict
 class SynchrotronMachineStatusDevice(Device):
     """Device to simulate the machine status records from the synchrotron.
 
-    The signal is read via and epics adapter, and set using a tcp adapter.
+    The signal is read via an epics adapter, and set using a tcp adapter.
     """
 
     #: An empty typed mapping of device inputs
@@ -42,9 +41,10 @@ class SynchrotronMachineStatusDevice(Device):
         """Initialise the SynchrotonMachineStatus device.
 
         Args:
-            synchrotron_mode (str): The synchrotron operation status
-            user_countdown (float): Time countdown to the beam dump
-            beam_energy (float): Current value of ring energy
+            initial_mode (int): The inital synchrotron operation status, defaults at 0,
+                or "Shutdown".
+            initial_countdown (float): Initial Time countdown to the beam dump
+            initial_energy (float): Inital current value of ring energy
         """
         self.synchrotron_mode = initial_mode
         self.user_countdown = initial_countdown
@@ -75,12 +75,15 @@ class SynchrotronMachineStatusDevice(Device):
         )
 
     def get_mode(self) -> int:
+        """Return value of synchrotron mode, required for epics adapter."""
         return self.synchrotron_mode
 
     def get_user_countdown(self) -> float:
+        """Return value of user countdown, required for epics adapter."""
         return self.user_countdown
 
     def get_beam_energy(self) -> float:
+        """Return value of beam energy, required for epics adapter."""
         return self.beam_energy
 
 
@@ -106,32 +109,58 @@ class SynchrotronMachineStatusTCPAdapter(ComposedAdapter):
 
     @RegexCommand(r"mode=([0-7])", interrupt=True, format="utf-8")
     async def set_synchrotron_mode(self, value: int) -> None:
-        """Regex string command to set the value of synchrotron_mode."""
+        """Regex string command to set the value of synchrotron_mode.
+
+        Args:
+            value (int): The new value of synchrotron mode in digits 0-7.
+                These numbers are used by the mbbi record, which returns
+                the corresponding status word on a caget.
+        """
         self.device.synchrotron_mode = value
 
-    @RegexCommand(r"BDC=(\d+\.?\d*)", interrupt=True, format="utf-8")
+    @RegexCommand(r"UCD=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_user_countdown(self, value: float) -> None:
-        """Regex string command to set the value of user_countdown."""
+        """Regex string command to set the value of user_countdown.
+
+        Args:
+            value (int): The new value of user_countdown.
+        """
         self.device.user_countdown = value
 
-    @RegexCommand(r"RE=(\d+\.?\d*)", interrupt=True, format="utf-8")
+    @RegexCommand(r"BE=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_beam_energy(self, value: float) -> None:
-        """Regex string command to set the value of beam_energy."""
+        """Regex string command to set the value of beam_energy.
+
+        Args:
+            value (int): The new value of beam_energy.
+        """
         self.device.beam_energy = value
 
     @RegexCommand(r"mode\?", format="utf-8")
     async def get_synchrotron_mode(self) -> bytes:
-        """Regex string command that returns synchrotron_mode."""
+        """Regex string command that returns synchrotron_mode.
+
+        Returns:
+            bytes: The utf-8 encoded value of synchrotron_mode.
+        """
         return str(self.device.synchrotron_mode).encode("utf-8")
 
-    @RegexCommand(r"BDC\?", format="utf-8")
+    @RegexCommand(r"UCD\?", format="utf-8")
     async def get_user_countdown(self) -> bytes:
-        """Regex string command that returns user_countdown."""
+        """Regex string command that returns user_countdown.
+
+        Returns:
+            bytes: The utf-8 encoded value of user_countdown.
+        """
         return str(self.device.user_countdown).encode("utf-8")
 
-    @RegexCommand(r"RE\?", format="utf-8")
+    @RegexCommand(r"BE\?", format="utf-8")
     async def get_beam_energy(self) -> bytes:
-        """Regex string command that returns beam_energy."""
+        """Regex string command that returns beam_energy.
+
+        Returns:
+            bytes: The utf-8 encoded value of beam_energy.
+        """
         return str(self.device.beam_energy).encode("utf-8")
 
 
@@ -141,7 +170,10 @@ class SynchrotronMachineStatusEpicsAdapter(EpicsAdapter):
     device: SynchrotronMachineStatusDevice
 
     def on_db_load(self) -> None:
-        """Link loaded in record with getter for device."""
+        """Link epics records with getters for device.
+
+        The MODE record is loaded via db, the other two are created here.
+        """
         self.link_input_on_interrupt(builder.mbbIn("MODE"), self.device.get_mode)
         self.link_input_on_interrupt(
             builder.aIn("USERCOUNTDOWN"), self.device.get_user_countdown
@@ -149,12 +181,6 @@ class SynchrotronMachineStatusEpicsAdapter(EpicsAdapter):
         self.link_input_on_interrupt(
             builder.aIn("BEAMENERGY"), self.device.get_beam_energy
         )
-        # self.link_input_on_interrupt(
-        #     builder.calcout("USERCOUNTDOWN"), self.device.get_user_countdown
-        # )
-        # self.link_input_on_interrupt(
-        #     builder.calc("BEAMENERGY"), self.device.get_beam_energy
-        # )
 
 
 @dataclass
