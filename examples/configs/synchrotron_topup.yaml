@@ -1,0 +1,8 @@
+- artemis.synchrotron.synchrotron_topup.SynchrotronTopUp:
+    name: sync_topup
+    inputs: {}
+    port: 25563
+- tickit.devices.sink.Sink:
+    name: topup_sink
+    inputs:
+      input: sync_topup:countdown
