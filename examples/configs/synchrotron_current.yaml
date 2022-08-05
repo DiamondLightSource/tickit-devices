@@ -1,4 +1,4 @@
-- artemis.synchrotron.synchrotron_current.SynchrotronCurrent:
+- synchrotron.synchrotron_current.SynchrotronCurrent:
     name: sync_current
     inputs: {}
     initial_current: 300

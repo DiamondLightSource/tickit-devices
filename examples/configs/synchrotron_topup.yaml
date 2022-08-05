@@ -1,4 +1,4 @@
-- artemis.synchrotron.synchrotron_topup.SynchrotronTopUp:
+- synchrotron.synchrotron_topup.SynchrotronTopUp:
     name: sync_topup
     inputs: {}
     port: 25563
