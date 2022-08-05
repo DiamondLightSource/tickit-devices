@@ -157,7 +157,7 @@ class SynchrotronTopUp(ComponentConfig):
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "artemis/synchrotron/db_files/FILL.db"
+    db_file: str = "synchrotron/db_files/FILL.db"
     ioc_name: str = "SYNCHROTRON-TOPUP"
 
     def __call__(self) -> Component:  # noqa: D102
