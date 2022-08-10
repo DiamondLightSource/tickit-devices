@@ -118,7 +118,7 @@ class SynchrotronCurrent(ComponentConfig):
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = "synchrotron/db_files/DCCT.db"
-    ioc_name: str = "SYNCHROTRON-CURRENT"
+    ioc_name: str = "BL03S-SR-DI-DCCT-01"
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(

@@ -176,7 +176,8 @@ class SynchrotronMachineStatusEpicsAdapter(EpicsAdapter):
         """
         self.link_input_on_interrupt(builder.mbbIn("MODE"), self.device.get_mode)
         self.link_input_on_interrupt(
-            builder.aIn("USERCOUNTDOWN"), self.device.get_user_countdown
+            builder.aIn("USERCOUNTDN"),
+            self.device.get_user_countdown,
         )
         self.link_input_on_interrupt(
             builder.aIn("BEAMENERGY"), self.device.get_beam_energy
@@ -188,13 +189,13 @@ class SynchrotronMachineStatus(ComponentConfig):
     """Synchrotron Machine status component."""
 
     initial_mode: int = 0
-    initial_countdown: float = 1.0
-    initial_energy: float = 2.0
+    initial_countdown: float = 100000
+    initial_energy: float = 3.0
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = "synchrotron/db_files/MSTAT.db"
-    ioc_name: str = "SYNCHROTRON-MACHINE"
+    ioc_name: str = "BL03S-CS-CS-MSTAT-01"
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
