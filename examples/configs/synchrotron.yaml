@@ -2,6 +2,7 @@
     name: sync_current
     inputs: {}
     initial_current: 300
+    port: 25565
 - tickit.devices.sink.Sink:
     name: current_sink
     inputs:
