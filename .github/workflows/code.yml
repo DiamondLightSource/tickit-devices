@@ -12,35 +12,35 @@ on:
 
 jobs:
   test:
-  strategy:
-    fail-fast: false
-    matrix:
-      os: ["ubuntu-latest"] # can add windows-latest, macos-latest
-      python: ["3.7", "3.8", "3.9"]
-      pipenv: ["skip-lock"]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"] # can add windows-latest, macos-latest
+        python: ["3.7", "3.8", "3.9"]
+        pipenv: ["skip-lock"]
 
-      include:
-        # Add an extra Python3.7 runner to use the lockfile
-        - os: "ubuntu-latest"
-          python: "3.9"
-          pipenv: "deploy"
+        include:
+          # Add an extra Python3.7 runner to use the lockfile
+          - os: "ubuntu-latest"
+            python: "3.9"
+            pipenv: "deploy"
 
-  runs-on: ${{ matrix.os }}
-  env:
-    # https://github.com/pytest-dev/pytest/issues/2042
-    PY_IGNORE_IMPORTMISMATCH: "1"
+    runs-on: ${{ matrix.os }}
+    env:
+      # https://github.com/pytest-dev/pytest/issues/2042
+      PY_IGNORE_IMPORTMISMATCH: "1"
 
-  steps:
-    - name: Setup repo and test
-      uses: dls-controls/pipenv-run-action@v1
-      with:
-        python-version: ${{ matrix.python }}
-        pipenv-install: --dev --${{ matrix.pipenv }}
-        allow-editable-installs: ${{ matrix.pipenv == 'deploy' }}
-        pipenv-run: tests
+    steps:
+      - name: Setup repo and test
+        uses: dls-controls/pipenv-run-action@v1
+        with:
+          python-version: ${{ matrix.python }}
+          pipenv-install: --dev --${{ matrix.pipenv }}
+          allow-editable-installs: ${{ matrix.pipenv == 'deploy' }}
+          pipenv-run: tests
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        name: ${{ matrix.python }}/${{ matrix.os }}/${{ matrix.pipenv }}
-        files: cov.xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          name: ${{ matrix.python }}/${{ matrix.os }}/${{ matrix.pipenv }}
+          files: cov.xml
