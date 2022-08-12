@@ -1,7 +1,7 @@
 tickit-devices
 ===============
 
-|coverage| |license|
+|code_ci| |coverage| |license|
 
 A collection of devices simulated using the `tickit <https://github.com/dls-controls/tickit>`_ framework.
 
@@ -18,9 +18,12 @@ To do:
 - Add record logic to the devices so they are interconnected
 
 
+.. |code_ci| image:: https://github.com/dls-controls/tickit-devices/workflows/Code%20CI/badge.svg?branch=main
+    :target: https://github.com/dls-controls/tickit-devices/actions?query=workflow%3A%22Code+CI%22
+    :alt: Code CI
 
-.. |coverage| image:: https://codecov.io/gh/dls-controls/tickit/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/dls-controls/tickit
+.. |coverage| image:: https://codecov.io/gh/dls-controls/tickit-devices/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/dls-controls/tickit-devices
     :alt: Test Coverage
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
