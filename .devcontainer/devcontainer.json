@@ -49,5 +49,5 @@
 	"containerEnv": {
 		"PIPENV_VENV_IN_PROJECT": "1"
 	},
-	"postCreateCommand": "pipenv install"
+	"postCreateCommand": "pipenv install --dev"
 }
