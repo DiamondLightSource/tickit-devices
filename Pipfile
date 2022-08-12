@@ -4,7 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-tickit = {git = "https://github.com/dls-controls/tickit.git", ref = "master", editable = true, extras = ["dev"]}
+tickit-devices = {editable = true, path = "."}
+
+[dev-packages]
+tickit-devices = {editable = true, extras = ["dev"], path = "."}
+
+[scripts]
+tests = "python -m pytest"
+build = "python setup.py sdist bdist_wheel"
+# Delete any files that git ignore hides from us
+gitclean = "git clean -fdX"
 
 [pipenv]
 allow_prereleases = true
