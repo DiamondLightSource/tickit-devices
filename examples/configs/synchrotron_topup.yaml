@@ -1,4 +1,4 @@
-- synchrotron.synchrotron_topup.SynchrotronTopUp:
+- tickit_devices.synchrotron.synchrotron_topup.SynchrotronTopUp:
     name: sync_topup
     inputs: {}
     port: 25563

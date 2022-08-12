@@ -1,4 +1,4 @@
-- synchrotron.synchrotron_current.SynchrotronCurrent:
+- tickit_devices.synchrotron.synchrotron_current.SynchrotronCurrent:
     name: sync_current
     inputs: {}
     initial_current: 300
