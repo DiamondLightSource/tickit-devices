@@ -7,6 +7,9 @@
 			"VARIANT": "3.9-bullseye",
 		}
 	},
+	"runArgs": [
+		"--net=host"
+	],
 	"remoteEnv": {
 		"DISPLAY": "${localEnv:DISPLAY}",
 	},
