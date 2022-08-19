@@ -5,13 +5,13 @@ on:
     branches:
       - master
       - main
+  pull_request:
   release:
     types: [published]
 
 jobs:
-  build-image:
+  build-and-push-image:
     timeout-minutes: 60
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
