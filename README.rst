@@ -6,8 +6,20 @@ tickit-devices
 A collection of devices simulated using the `tickit <https://github.com/dls-controls/tickit>`_ framework.
 
 
+Adding devices to the S03 simulation
+------------------------------------
+To add a device to s03, the config file required to run the tickit simulation should be present in `s03_configs`.
+Only changes pushed to main will be built into the `tickit-devices` image that s03 pulls from. Once the 
+image has been built with the new device and config, follow the instructions `here <https://gitlab.diamond.ac.uk/controls/python3/s03_utils>`_
+to include it in S03.
+
+
+Devices
+-------
+Information about the current devices and their stage of developement.
+
 Synchrotron
-------------
+~~~~~~~~~~~
 A device created for the `Artemis <https://github.com/DiamondLightSource/python-artemis>`_ project. This device currently just acts to provide
 PV values and an IOC which Ophyd can connect with to run system tests.
 
