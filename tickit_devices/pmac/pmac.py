@@ -15,6 +15,11 @@ from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
+M_TRAJ_VERSION = 4049
+M_TRAJ_BUFSIZE = 4037
+M_TRAJ_A_ADR = 4041
+M_TRAJ_B_ADR = 4042
+
 
 class PMACDevice(Device):
 
@@ -22,7 +27,16 @@ class PMACDevice(Device):
     Outputs: TypedDict = TypedDict("Outputs", {"flux": float})
 
     def __init__(self) -> None:
-        pass
+        self.mvars = [0.0] * 16000
+        self.mvars[M_TRAJ_VERSION] = 3.0
+        self.mvars[M_TRAJ_BUFSIZE] = 1000
+        self.mvars[M_TRAJ_A_ADR] = 0x40000
+        self.mvars[M_TRAJ_B_ADR] = 0x30000
+        self.mvars[70] = 11990
+        self.mvars[71] = 554
+        self.mvars[72] = 2621
+        self.mvars[73] = 76
+        self.pvars = [0.0] * 16000
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         print("Updating\n")
@@ -81,9 +95,23 @@ class PMACAdapter(ComposedAdapter):
     async def get_axis_status(self):
         return b"880000018401\r"
 
-    @RegexCommand(rb"[mM]([0-9]{1,4})\r?\n?")
-    async def m_var(self):
-        return b"1\r"
+    @RegexCommand(rb"[mM]([0-9]{1,5})\r?\n?")  # 1-4 or 1-5?
+    async def get_m_var(self, mvar: int):
+        return f"{self.device.mvars[mvar]}\r".encode()
+
+    @RegexCommand(rb"[mM]([0-9]{1,5})=([0-9]*.?[0-9]*)\r?\n?")
+    async def set_m_var(self, mvar: int, value: float):
+        self.device.mvars[mvar] = value
+        return b"\r"
+
+    @RegexCommand(rb"[pP]([0-9]{1,5})\r?\n?")  # 1-4 or 1-5?
+    async def get_p_var(self, pvar: int):
+        return f"{self.device.pvars[pvar]}\r".encode()
+
+    @RegexCommand(rb"[pP]([0-9]{1,5})=([0-9]*.?[0-9]*)\r?\n?")
+    async def set_p_var(self, pvar: int, value: float):
+        self.device.pvars[pvar] = value
+        return b"\r"
 
     @RegexCommand(rb"[iI][0-9]{1,4}\r?\n?")
     async def i_var(self):
