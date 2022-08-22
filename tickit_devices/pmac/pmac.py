@@ -97,19 +97,41 @@ class PMACAdapter(ComposedAdapter):
 
     @RegexCommand(rb"[mM]([0-9]{1,5})\r?\n?")  # 1-4 or 1-5?
     async def get_m_var(self, mvar: int):
+        """Regex bytestring command that returns the value of a specific mvar.
+
+        Args:
+            mvar (int): the mvar to be returned.
+        """
         return f"{self.device.mvars[mvar]}\r".encode()
 
     @RegexCommand(rb"[mM]([0-9]{1,5})=([0-9]*.?[0-9]*)\r?\n?")
     async def set_m_var(self, mvar: int, value: float):
+        """Regex bytestring command that sets the value of a specific mvar.
+
+        Args:
+            mvar (int): the mvar to be set.
+            value (float): the value for the mvar to be set to.
+        """
         self.device.mvars[mvar] = value
         return b"\r"
 
     @RegexCommand(rb"[pP]([0-9]{1,5})\r?\n?")  # 1-4 or 1-5?
     async def get_p_var(self, pvar: int):
+        """Regex bytestring command that returns the value of a specific pvar.
+
+        Args:
+            pvar (int): the p var to be returned.
+        """
         return f"{self.device.pvars[pvar]}\r".encode()
 
     @RegexCommand(rb"[pP]([0-9]{1,5})=([0-9]*.?[0-9]*)\r?\n?")
     async def set_p_var(self, pvar: int, value: float):
+        """Regex bytestring command that sets the value of a specific pvar.
+
+        Args:
+            pvar (int): the pvar to be set.
+            value (float): the value for the pvar to be set to.
+        """
         self.device.pvars[pvar] = value
         return b"\r"
 
