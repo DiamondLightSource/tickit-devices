@@ -5,6 +5,7 @@ from tickit.adapters.interpreters.command import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
 from tickit.adapters.interpreters.wrappers import (
     BeheadingInterpreter,
+    JoiningInterpreter,
     SplittingInterpreter,
 )
 from tickit.adapters.servers.tcp import TcpServer
@@ -51,7 +52,9 @@ class PMACAdapter(ComposedAdapter):
         super().__init__(
             TcpServer(host, port, ByteFormat(b"%b\n")),
             BeheadingInterpreter(
-                SplittingInterpreter(CommandInterpreter(), b" ", b""),
+                JoiningInterpreter(
+                    SplittingInterpreter(CommandInterpreter(), b" "), b""
+                ),
                 header_size=8,
             ),
         )
