@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Dict
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter
@@ -28,7 +29,7 @@ class PMACDevice(Device):
     Outputs: TypedDict = TypedDict("Outputs", {"flux": float})
 
     def __init__(self) -> None:
-        self.mvars = [0.0] * 16000
+        self.mvars = dict()
         self.mvars[M_TRAJ_VERSION] = 3.0
         self.mvars[M_TRAJ_BUFSIZE] = 1000
         self.mvars[M_TRAJ_A_ADR] = 0x40000
@@ -37,7 +38,7 @@ class PMACDevice(Device):
         self.mvars[71] = 554
         self.mvars[72] = 2621
         self.mvars[73] = 76
-        self.pvars = [0.0] * 16000
+        self.pvars: Dict = dict()
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         print("Updating\n")
@@ -105,6 +106,9 @@ class PMACAdapter(ComposedAdapter):
         Args:
             mvar (int): the mvar to be returned.
         """
+        value = self.device.mvars.get(mvar, None)
+        if value is None:
+            self.device.mvars[mvar] = 0
         return f"{self.device.mvars[mvar]}\r".encode()
 
     @RegexCommand(rb"[mM]([0-9]{1,5})=([0-9]*.?[0-9]*)\r?\n?")
@@ -125,6 +129,9 @@ class PMACAdapter(ComposedAdapter):
         Args:
             pvar (int): the p var to be returned.
         """
+        value = self.device.pvars.get(pvar, None)
+        if value is None:
+            self.device.pvars[pvar] = 0
         return f"{self.device.pvars[pvar]}\r".encode()
 
     @RegexCommand(rb"[pP]([0-9]{1,5})=([0-9]*.?[0-9]*)\r?\n?")
