@@ -116,6 +116,11 @@ class PMACAdapter(ComposedAdapter):
 
     @RegexCommand(rb"[iI]([0-9]{1,2})\r?\n?")
     async def read_system_ivar(self, ivar: int):
+        """Regex bytestring command that returns the value of a specific system ivar.
+
+        Args:
+            ivar (int): the ivar to read.
+        """
         value = self.device.system_ivars.get(ivar, None)
         if value is None:
             self.device.system_ivars[ivar] = 0
@@ -123,11 +128,23 @@ class PMACAdapter(ComposedAdapter):
 
     @RegexCommand(rb"[iI]([0-9]{1,2})=\$?(\d+(?:.\d+)?)\r?\n?")
     async def write_system_ivar(self, ivar: int, value: float):
+        """Regex bytestring command that sets the value of a specific system ivar.
+
+        Args:
+            ivar (int): the ivar to set.
+            value (float): the value to set the ivar to.
+        """
         self.device.system_ivars[ivar] = value
         return b"\r"
 
     @RegexCommand(rb"[iI]([0-9])([0-9]{2})\r?\n?")
     async def read_axis_var(self, axis: int, ivar: int):
+        """Regex bytestring command that returns the value of a specific axis ivar.
+
+        Args:
+            axis (int): the axis to read ivars from.
+            ivar (int): the ivar to read.
+        """
         value = self.device.axes[axis].ivars.get(ivar, None)
         if value is None:
             self.device.axes[axis].ivars[ivar] = 0
@@ -135,11 +152,23 @@ class PMACAdapter(ComposedAdapter):
 
     @RegexCommand(rb"[iI]([0-9])([0-9]{2})=-?(\d+(?:.\d+)?)\r?\n?")
     async def write_axis_ivar(self, axis: int, ivar: int, value: float):
+        """Regex bytestring command that sets the value of a specific axis ivar.
+
+        Args:
+            axis (int): the axis to set ivars on.
+            ivar (int): the ivar to set.
+            value (float): the value to set the ivar to.
+        """
         self.device.axes[axis].ivars[ivar] = value
         return b"\r"
 
     @RegexCommand(rb"[iI]([0-9]{4})\r?\n?")
     async def read_other_ivar(self, ivar: int):
+        """Regex bytestring command that returns the value of a specific ivar.
+
+        Args:
+            ivar (int): the ivar to read.
+        """
         value = self.device.other_ivars.get(ivar, None)
         if value is None:
             self.device.other_ivars[ivar] = 0
@@ -147,6 +176,12 @@ class PMACAdapter(ComposedAdapter):
 
     @RegexCommand(rb"[iI]([0-9]{4})=-?(\d+(?:\.\d+)?)\r?\n?")
     async def write_other_var(self, ivar: int, value: float):
+        """Regex bytestring command that sets the value of a specific ivar.
+
+        Args:
+            ivar (int): the ivar to set.
+            value (float): the value to set the ivar to.
+        """
         self.device.other_ivars[ivar] = value
         return b"\r"
 
