@@ -23,6 +23,16 @@ M_TRAJ_A_ADR = 4041
 M_TRAJ_B_ADR = 4042
 
 
+class PMACAxis:
+    def __init__(self):
+        self.ivars = dict()
+        self.ivars[13] = 10000
+        self.ivars[14] = -10000
+        self.ivars[31] = 50
+        self.ivars[32] = 50
+        self.ivars[33] = 50
+
+
 class PMACDevice(Device):
 
     Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
@@ -39,6 +49,22 @@ class PMACDevice(Device):
         self.mvars[72] = 2621
         self.mvars[73] = 76
         self.pvars: Dict = dict()
+        self.axes = {
+            1: PMACAxis(),
+            2: PMACAxis(),
+            3: PMACAxis(),
+            4: PMACAxis(),
+            5: PMACAxis(),
+            6: PMACAxis(),
+            7: PMACAxis(),
+            8: PMACAxis(),
+        }
+        self.system_ivars: Dict = dict()
+        self.system_ivars[20] = "$78400"
+        self.system_ivars[21] = "$0"
+        self.system_ivars[22] = "$0"
+        self.system_ivars[23] = "$0"
+        self.other_ivars: Dict = dict()
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         print("Updating\n")
@@ -145,9 +171,76 @@ class PMACAdapter(ComposedAdapter):
         self.device.pvars[pvar] = value
         return b"\r"
 
-    @RegexCommand(rb"[iI][0-9]{1,4}\r?\n?")
-    async def i_var(self):
-        return b"2\r"
+    @RegexCommand(rb"[iI]([0-9]{1,2})\r?\n?")
+    async def read_system_ivar(self, ivar: int):
+        """Regex bytestring command that returns the value of a specific system ivar.
+
+        Args:
+            ivar (int): the ivar to read.
+        """
+        value = self.device.system_ivars.get(ivar, None)
+        if value is None:
+            self.device.system_ivars[ivar] = 0
+        return f"{self.device.system_ivars[ivar]}\r".encode()
+
+    @RegexCommand(rb"[iI]([0-9]{1,2})=\$?(\d+(?:.\d+)?)\r?\n?")
+    async def write_system_ivar(self, ivar: int, value: float):
+        """Regex bytestring command that sets the value of a specific system ivar.
+
+        Args:
+            ivar (int): the ivar to set.
+            value (float): the value to set the ivar to.
+        """
+        self.device.system_ivars[ivar] = value
+        return b"\r"
+
+    @RegexCommand(rb"[iI]([0-9])([0-9]{2})\r?\n?")
+    async def read_axis_var(self, axis: int, ivar: int):
+        """Regex bytestring command that returns the value of a specific axis ivar.
+
+        Args:
+            axis (int): the axis to read ivars from.
+            ivar (int): the ivar to read.
+        """
+        value = self.device.axes[axis].ivars.get(ivar, None)
+        if value is None:
+            self.device.axes[axis].ivars[ivar] = 0
+        return f"{self.device.axes[axis].ivars[ivar]}\r".encode()
+
+    @RegexCommand(rb"[iI]([0-9])([0-9]{2})=-?(\d+(?:.\d+)?)\r?\n?")
+    async def write_axis_ivar(self, axis: int, ivar: int, value: float):
+        """Regex bytestring command that sets the value of a specific axis ivar.
+
+        Args:
+            axis (int): the axis to set ivars on.
+            ivar (int): the ivar to set.
+            value (float): the value to set the ivar to.
+        """
+        self.device.axes[axis].ivars[ivar] = value
+        return b"\r"
+
+    @RegexCommand(rb"[iI]([0-9]{4})\r?\n?")
+    async def read_other_ivar(self, ivar: int):
+        """Regex bytestring command that returns the value of a specific ivar.
+
+        Args:
+            ivar (int): the ivar to read.
+        """
+        value = self.device.other_ivars.get(ivar, None)
+        if value is None:
+            self.device.other_ivars[ivar] = 0
+        return f"{self.device.other_ivars[ivar]}\r".encode()
+
+    @RegexCommand(rb"[iI]([0-9]{4})=-?(\d+(?:\.\d+)?)\r?\n?")
+    async def write_other_var(self, ivar: int, value: float):
+        """Regex bytestring command that sets the value of a specific ivar.
+
+        Args:
+            ivar (int): the ivar to set.
+            value (float): the value to set the ivar to.
+        """
+        self.device.other_ivars[ivar] = value
+        return b"\r"
 
     @RegexCommand(rb"\?\?\?\r?\n?")
     async def get_status(self):
