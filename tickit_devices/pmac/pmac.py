@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Optional
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import MultiCommandInterpreter
@@ -28,9 +28,47 @@ class PMACAxis:
         self.ivars = dict()
         self.ivars[13] = 10000
         self.ivars[14] = -10000
+        self.ivars[22] = 32.0  # velocity in counts per millisecond
         self.ivars[31] = 50
         self.ivars[32] = 50
         self.ivars[33] = 50
+        self.target_position = 0
+        self.current_position = 0
+
+    @property
+    def velocity(self):
+        return self.ivars[22]
+
+    @property
+    def in_position(self):
+        return self.target_position == self.current_position
+
+    @property
+    def status(self):
+        status_digit = "1" if self.in_position else "0"
+        return "88000001840" + status_digit
+
+    def move(self, period_ms: float):
+        """A helper method used to compute the new position of the axis motor.
+
+        A helper method used to compute the new position of the axis motor given a
+        period over which the change occurs. Movement is performed at the rate defined
+        by ivar22 and comes to a "hard" stop when the desired position is reached.
+
+        Args:
+            period_ms (float): The period over which the change occurs in milliseconds.
+        """
+        if self.in_position:
+            return
+        current_pos = self.current_position
+        target_pos = self.target_position
+        print(current_pos, target_pos)
+        velocity = self.velocity
+        if current_pos < target_pos:
+            new_position = min(current_pos + velocity * period_ms, target_pos)
+        elif current_pos > target_pos:
+            new_position = max(current_pos - velocity * period_ms, target_pos)
+        self.current_position = new_position
 
 
 class PMACDevice(Device):
@@ -56,12 +94,24 @@ class PMACDevice(Device):
         self.system_ivars[22] = "$0"
         self.system_ivars[23] = "$0"
         self.other_ivars: Dict = dict()
-        self.current_axis = 1
+        self.current_axis_index = 1
         self.current_cs = 1
+        self.last_update_time: Optional[SimTime] = None
+
+    @property
+    def current_axis(self):
+        return self.axes[self.current_axis_index]
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        print("Updating\n")
-        return DeviceUpdate(self.Outputs(flux=2.0), None)
+        if self.last_update_time is not None:
+            # Calculate time interval in milliseconds
+            time_interval = SimTime(time - self.last_update_time) / 1e6
+            for axis in self.axes.values():
+                axis.move(time_interval)
+        in_position = all(axis.in_position for axis in self.axes.values())
+        self.last_update_time = None if in_position else time
+        call_at = None if in_position else SimTime(time + int(1e8))
+        return DeviceUpdate(self.Outputs(flux=2.0), call_at)
 
 
 class PMACAdapter(ComposedAdapter):
@@ -236,7 +286,7 @@ class PMACAdapter(ComposedAdapter):
     @RegexCommand(rb"#")
     async def get_current_axis(self):
         """Command reporting the currently addressed axis."""
-        return f"{self.device.current_axis}\r".encode()
+        return f"{self.device.current_axis_index}\r".encode()
 
     @RegexCommand(rb"#(1*[0-9])")
     async def set_current_axis(self, axis: int):
@@ -245,7 +295,7 @@ class PMACAdapter(ComposedAdapter):
         Args:
             axis (int): the new current axis.
         """
-        self.device.current_axis = axis
+        self.device.current_axis_index = axis
         return b""
 
     @RegexCommand(rb"\?")
@@ -254,7 +304,8 @@ class PMACAdapter(ComposedAdapter):
 
         Currently returns a dummy value of the right format.
         """
-        return b"000000000000\r"
+        status = self.device.current_axis.status
+        return f"{status}\r".encode()
 
     @RegexCommand(rb"&")
     async def get_current_cs(self):
@@ -266,7 +317,7 @@ class PMACAdapter(ComposedAdapter):
         """Command setting the currently addressed coordinate system.
 
         Args:
-            axis (int): the new active coordinate system.
+            cs (int): the new active coordinate system.
         """
         self.device.current_cs = cs
         return b""
@@ -301,7 +352,8 @@ class PMACAdapter(ComposedAdapter):
 
         Currently returns a dummy value of the right format.
         """
-        return b"1.0\r"
+        position = self.device.current_axis.current_position
+        return f"{position}\r".encode()
 
     @RegexCommand(rb"V")
     async def get_axis_velocity(self):
@@ -309,7 +361,8 @@ class PMACAdapter(ComposedAdapter):
 
         Currently returns a dummy value of the right format.
         """
-        return b"0.0\r"
+        velocity = self.device.current_axis.velocity
+        return f"{velocity}\r".encode()
 
     @RegexCommand(rb"F")
     async def get_axis_follow_error(self):
@@ -317,7 +370,59 @@ class PMACAdapter(ComposedAdapter):
 
         Currently returns a dummy value of the right format.
         """
-        return b"0.0\r"
+        follow_error = (
+            self.device.current_axis.target_position
+            - self.device.current_axis.current_position
+        )
+        return f"{follow_error}\r".encode()
+
+    @RegexCommand(rb"HM", interrupt=True)
+    async def home(self):
+        """Command causing the addressed motor to perform a homing search routine."""
+        self.device.current_axis.target_position = 0
+        return b""
+
+    @RegexCommand(rb"J\^(-?\d+(?:\.\d+)?)", interrupt=True)
+    async def jog_relative(self, move: float):
+        """Command causing the current motor to jog relative to its actual position.
+
+        Args:
+            move (float): The distance to move relative to the current position.
+        """
+        current_pos = self.device.current_axis.target_position
+        target_pos = current_pos + move
+        self.device.current_axis.target_position = target_pos
+        return b""
+
+    @RegexCommand(rb"J=(-?\d+(?:\.\d+)?)", interrupt=True)
+    async def jog_specific(self, target: float):
+        """Command causing the current motor to jog to a specific position.
+
+        Args:
+            target (float): The distance to move relative to the current position.
+        """
+        self.device.current_axis.target_position = target
+        return b""
+
+    @RegexCommand(rb"J/", interrupt=True)
+    async def jog_stop(self):
+        """Command causing the current motor to stop jogging."""
+        self.device.current_axis.target_position = (
+            self.device.current_axis.current_position
+        )
+        return b""
+
+    @RegexCommand(rb"J\+", interrupt=True)
+    async def jog_pos(self):
+        """Command to jog indefinitely in the positive direction."""
+        self.device.current_axis.target_position = 1e9
+        return b""
+
+    @RegexCommand(rb"J-", interrupt=True)
+    async def jog_neg(self):
+        """Command to jog indefinitely in the negative direction."""
+        self.device.current_axis.target_position = -1e9
+        return b""
 
 
 @dataclass
