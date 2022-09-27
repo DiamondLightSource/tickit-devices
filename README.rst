@@ -5,6 +5,10 @@ tickit-devices
 
 A collection of devices simulated using the `tickit <https://github.com/dls-controls/tickit>`_ framework.
 
+Installation
+------------
+Developed for use with python 3.9. For a quick install run ``dls_dev_env.sh``.
+
 
 Adding devices to the S03 simulation
 ------------------------------------
