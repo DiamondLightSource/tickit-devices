@@ -21,7 +21,7 @@ class SynchrotronTopUpDevice(Device):
     """
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {"current": float})
     #: A typed mapping containing the current output value
     Outputs: TypedDict = TypedDict(
         "Outputs",
@@ -33,17 +33,33 @@ class SynchrotronTopUpDevice(Device):
 
     def __init__(
         self,
-        initial_countdown: float,
-        initial_end_countdown: float,
+        initial_countdown: float = 600,
+        initial_end_countdown: float = 620,
+        callback_period: int = int(1e9),
+        last_current: float = 300.0,
     ) -> None:
         """Initialise the SynchrotonTopUp device.
 
         Args:
             initial_countdown (float): Initial countdown value
             initial_end_countdown (float): Initial end countdown value
+            callback_period: (int) number of nanoseconds to wait before calling again
+            last_current: (float): Can be set in case the user doesn't want to assume
+                the simulation starts at a current of 3000mA
         """
-        self.countdown = initial_countdown
-        self.end_countdown = initial_end_countdown
+        # Countdown is typically 10 minutes
+        self.countdown = self.initial_countdown = initial_countdown
+
+        # End countdown is typically 10 minutes of countdown, then 10 seconds of fill
+        self.end_countdown = self.initial_end_countdown = initial_end_countdown
+        self.fill_time = initial_end_countdown - initial_countdown
+
+        self.callback_period = callback_period
+        self.period = callback_period / 1e9
+
+        self.last_current = last_current
+        self.last_time = 0
+        self.topup_fill = False
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method that outputs top up record values.
@@ -59,12 +75,35 @@ class SynchrotronTopUpDevice(Device):
                 The produced update event which contains the value of the machine
                 top up records.
         """
+        new_current = inputs["current"]
+
+        current_difference = new_current - self.last_current
+
+        topup_fill = current_difference > 0
+
+        # calculate the number of updates to go until topup stage begins or
+        # ends: based upon the change of the current.
+        updates_to_go = abs(
+            topup_fill * (300 - new_current) / current_difference
+            + (not topup_fill) * (new_current - 270) / current_difference
+        )
+
+        self.countdown = (not topup_fill) * (updates_to_go * self.period)
+
+        # assume topup fill will take 15 seconds, and calculate it directly during
+        self.fill_time = (
+            topup_fill * (updates_to_go * self.period) + (not topup_fill) * 15
+        )
+        self.end_countdown = self.countdown + self.fill_time
+
+        self.last_current = new_current
+        call_at = SimTime(time + self.callback_period)
         return DeviceUpdate(
             SynchrotronTopUpDevice.Outputs(
                 countdown=self.countdown,
                 end_countdown=self.end_countdown,
             ),
-            None,
+            call_at,
         )
 
     def get_countdown(self) -> float:
@@ -154,7 +193,9 @@ class SynchrotronTopUp(ComponentConfig):
     """Synchrotron top up status component."""
 
     initial_countdown: float = 600
-    initial_end_countdown: float = 610
+    initial_end_countdown: float = 620
+    callback_period: int = int(1e9)
+    current_callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -167,6 +208,7 @@ class SynchrotronTopUp(ComponentConfig):
             device=SynchrotronTopUpDevice(
                 self.initial_countdown,
                 self.initial_end_countdown,
+                callback_period=self.current_callback_period,
             ),
             adapters=[
                 SynchrotronTopUpTCPAdapter(

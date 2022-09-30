@@ -29,19 +29,45 @@ class SynchrotronCurrentDevice(Device):
     #: A typed mapping containing the current output value
     Outputs: TypedDict = TypedDict("Outputs", {"current": float})
 
-    def __init__(self, initial_current: Optional[float]) -> None:
+    def __init__(
+        self,
+        initial_current: Optional[float],
+        callback_period: int = int(1e9),
+    ) -> None:
         """Initialise the SynchrotonCurrent device.
 
         Args:
             initial_current (Optional[float]): The inital beam current. Defaults to
-                300mA
+                300mA.
+            callback_period: (int): The number of nanoseconds it will wait
+                between calls
         """
-        self.beam_current = initial_current if initial_current is not None else 300
+        self.beam_current = self.initial_current = (
+            initial_current if initial_current is not None else 300
+        )
+
+        # if the initial current is less than 270 we will begin topping up
+        # to the default of 300, we set the beam current above so that it will
+        # start at initial_value less than 270 and top up to self.initial_value 300
+        if self.initial_current <= 270:
+            self.initial_current = 300
+
+        self.topup_fill = False
+        self.callback_period = callback_period
+
+        period = callback_period / 1e9
+
+        # it should take 600 seconds to lose  current to 270, 15 seconds to fill
+        self.loss_increment = (270 - self.initial_current) * period / 600
+
+        self.fill_increment = (self.initial_current - 270) * period / 15
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method that just outputs beam current.
 
         The device is only altered by adapters so take no inputs.
+        The current is lost at a rate of ~0.02mA per second, during the topup
+        phase it gains ~2mA per second
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
@@ -51,8 +77,20 @@ class SynchrotronCurrentDevice(Device):
             DeviceUpdate[Outputs]:
                 The produced update event which contains the value of the beam current.
         """
+        # check to see if topup fill should be activated/deactivated
+        if self.topup_fill:
+            self.topup_fill = self.beam_current < self.initial_current
+        else:
+            self.topup_fill = self.beam_current <= 270
+
+        self.beam_current += (
+            self.topup_fill * self.fill_increment  # if we're refilling
+            + (not self.topup_fill) * self.loss_increment  # if we're not refilling
+        )
+
+        call_at = SimTime(time + self.callback_period)
         return DeviceUpdate(
-            SynchrotronCurrentDevice.Outputs(current=self.beam_current), None
+            SynchrotronCurrentDevice.Outputs(current=self.beam_current), call_at
         )
 
     def get_current(self) -> float:
@@ -113,7 +151,10 @@ class SynchrotronCurrentEpicsAdapter(EpicsAdapter):
 class SynchrotronCurrent(ComponentConfig):
     """Synchrotron current component."""
 
-    initial_current: Optional[float] = None
+    initial_current: Optional[float]
+    charge_loss_dist = {"mu": -2.0, "sigma": 1, "scale": 0.0333}
+    charge_gain_dist = {"mu": 5.0, "sigma": 1.15, "scale": 0.1}
+    callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -123,7 +164,10 @@ class SynchrotronCurrent(ComponentConfig):
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            device=SynchrotronCurrentDevice(self.initial_current),
+            device=SynchrotronCurrentDevice(
+                self.initial_current,
+                callback_period=self.callback_period,
+            ),
             adapters=[
                 SynchrotronCurrentTCPAdapter(
                     TcpServer(self.host, self.port, self.format)
