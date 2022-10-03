@@ -33,6 +33,10 @@ class SynchrotronCurrentDevice(Device):
         self,
         initial_current: Optional[float],
         callback_period: int = int(1e9),
+        countdown: float = 600.0,
+        fill_time: float = 15.0,
+        target_current: float = 300.0,
+        minimum_current: float = 270.0,
     ) -> None:
         """Initialise the SynchrotonCurrent device.
 
@@ -41,19 +45,25 @@ class SynchrotronCurrentDevice(Device):
                 300mA.
             callback_period: (int): The number of nanoseconds it will wait
                 between calls
+            countdown (float): Length of time in seconds to deplete
+                charge from target_current to minimum_current.
+            fill_time (float): Length of time in seconds to increase charge
+                charge from target_current to minimum_current.
+            target_current (float): The current the synchrotron should be topped up to.
+            minimum_current (float): The current the synchrotron can fall to before
+                being topped up.
+
         """
-        self.target_current = 300
+        self.target_current = target_current
+        self.minimum_current = minimum_current
         self.beam_current = initial_current if initial_current else self.target_current
         self.callback_period = callback_period
-
-        # the callback_period in seconds
-        self.period = callback_period * 1e-9
 
         self.topup_fill = False
 
         # it should take 600 seconds to go from target_current 270, 15 seconds to fill
-        self.loss_increment = (270 - self.target_current) / 600
-        self.fill_increment = (self.target_current - 270) / 15
+        self.loss_increment = (self.minimum_current - self.target_current) / countdown
+        self.fill_increment = (self.target_current - self.minimum_current) / fill_time
 
         self.last_update_time = None
 
@@ -76,15 +86,16 @@ class SynchrotronCurrentDevice(Device):
         if self.topup_fill:
             self.topup_fill = self.beam_current < self.target_current
         else:
-            self.topup_fill = self.beam_current <= 270
+            self.topup_fill = self.beam_current <= self.minimum_current
 
+        period = self.callback_period * 1e-9
         if self.last_update_time:
-            self.period = time - self.last_update_time
+            period = time - self.last_update_time
 
         self.beam_current += (
             self.topup_fill * self.fill_increment  # if we're refilling
             + (not self.topup_fill) * self.loss_increment  # if we're not refilling
-        ) * float(self.period)
+        ) * float(period)
 
         self.last_time = time
         call_at = SimTime(time + self.callback_period)
@@ -151,8 +162,6 @@ class SynchrotronCurrent(ComponentConfig):
     """Synchrotron current component."""
 
     initial_current: Optional[float]
-    charge_loss_dist = {"mu": -2.0, "sigma": 1, "scale": 0.0333}
-    charge_gain_dist = {"mu": 5.0, "sigma": 1.15, "scale": 0.1}
     callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565

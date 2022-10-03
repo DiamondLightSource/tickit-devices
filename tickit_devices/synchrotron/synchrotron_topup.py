@@ -33,29 +33,39 @@ class SynchrotronTopUpDevice(Device):
 
     def __init__(
         self,
-        initial_countdown: float = 600,
-        initial_end_countdown: float = 620,
+        initial_countdown: float = 600.0,
+        initial_end_countdown: float = 620.0,
         callback_period: int = int(1e9),
         last_current: float = 300.0,
+        target_current: float = 300.0,
+        minimum_current: float = 270.0,
     ) -> None:
         """Initialise the SynchrotonTopUp device.
 
         Args:
-            initial_countdown (float): Initial countdown value
-            initial_end_countdown (float): Initial end countdown value
-            callback_period: (int) number of nanoseconds to wait before calling again
-            last_current: (float): Can be set in case the user doesn't want to assume
-                the simulation starts at a current of 3000mA
+            initial_countdown (float): Length of time in seconds to deplete
+                charge from target_current to minimum_current.
+            initial_end_countdown (float): Length of time in seconds to topup the charge
+                from minimum_current to target_current.
+            callback_period (int): number of nanoseconds to wait before calling again
+            last_current (float): Can be set in case the user doesn't want to assume
+                the simulation starts at a current of 300mA.
+            target_current: The current the device will be topped up to.
+            minimum_current (float): The current the synchrotron can fall
+                to before topup.
         """
         # Countdown is typically 10 minutes
         self.countdown = self.initial_countdown = initial_countdown
+
+        self.default_fill_time = initial_end_countdown - initial_countdown
+        self.target_current = target_current
+        self.minimum_current = minimum_current
 
         # End countdown is typically 10 minutes of countdown, then 10 seconds of fill
         self.end_countdown = self.initial_end_countdown = initial_end_countdown
         self.fill_time = initial_end_countdown - initial_countdown
 
         self.callback_period = callback_period
-        self.period = callback_period * 1e-9
 
         self.last_current = last_current
         self.last_time = None
@@ -84,18 +94,21 @@ class SynchrotronTopUpDevice(Device):
         # calculate the number of updates to go until topup stage begins or
         # ends: based upon the change of the current.
         updates_to_go = abs(
-            topup_fill * (300 - new_current) / current_difference
-            + (not topup_fill) * (new_current - 270) / current_difference
+            topup_fill * (self.target_current - new_current) / current_difference
+            + (not topup_fill)
+            * (new_current - self.minimum_current)
+            / current_difference
         )
 
+        period = self.callback_period * 1e-9
         if self.last_time:
-            self.period = (time - self.last_time) * 1e-9
+            period = (time - self.last_time) * 1e-9
 
-        self.countdown = (not topup_fill) * (updates_to_go * self.period)
+        self.countdown = (not topup_fill) * (updates_to_go * period)
 
         # assume topup fill will take 15 seconds, and calculate it directly during
-        self.fill_time = topup_fill * (updates_to_go * self.period) + (
-            not topup_fill * 15
+        self.fill_time = topup_fill * (updates_to_go * period) + (
+            not topup_fill * self.default_fill_time
         )
         self.end_countdown = self.countdown + self.fill_time
 

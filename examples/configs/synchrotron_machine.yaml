@@ -1,5 +1,5 @@
 # This is the individual part of the synchrotron - useful for tests but not much else
-#For running the full synchrotron use examples/configs/synchrotron.yaml
+# For running the full synchrotron use examples/configs/synchrotron.yaml
 
 - tickit_devices.synchrotron.synchrotron_machine.SynchrotronMachineStatus:
     name: sync_machine
