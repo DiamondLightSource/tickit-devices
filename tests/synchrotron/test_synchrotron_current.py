@@ -4,7 +4,7 @@ from tickit.core.typedefs import SimTime
 
 from tickit_devices.synchrotron.synchrotron_current import SynchrotronCurrentDevice
 
-INITIAL_CURRENT = 400
+INITIAL_CURRENT = 300
 
 
 @pytest.fixture

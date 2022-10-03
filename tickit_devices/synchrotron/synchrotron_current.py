@@ -42,25 +42,20 @@ class SynchrotronCurrentDevice(Device):
             callback_period: (int): The number of nanoseconds it will wait
                 between calls
         """
-        self.beam_current = self.initial_current = (
-            initial_current if initial_current is not None else 300
-        )
-
-        # if the initial current is less than 270 we will begin topping up
-        # to the default of 300, we set the beam current above so that it will
-        # start at initial_value less than 270 and top up to self.initial_value 300
-        if self.initial_current <= 270:
-            self.initial_current = 300
-
-        self.topup_fill = False
+        self.target_current = 300
+        self.beam_current = initial_current if initial_current else self.target_current
         self.callback_period = callback_period
 
-        period = callback_period / 1e9
+        # the callback_period in seconds
+        self.period = callback_period * 1e-9
 
-        # it should take 600 seconds to lose  current to 270, 15 seconds to fill
-        self.loss_increment = (270 - self.initial_current) * period / 600
+        self.topup_fill = False
 
-        self.fill_increment = (self.initial_current - 270) * period / 15
+        # it should take 600 seconds to go from target_current 270, 15 seconds to fill
+        self.loss_increment = (270 - self.target_current) / 600
+        self.fill_increment = (self.target_current - 270) / 15
+
+        self.last_update_time = None
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method that just outputs beam current.
@@ -79,15 +74,19 @@ class SynchrotronCurrentDevice(Device):
         """
         # check to see if topup fill should be activated/deactivated
         if self.topup_fill:
-            self.topup_fill = self.beam_current < self.initial_current
+            self.topup_fill = self.beam_current < self.target_current
         else:
             self.topup_fill = self.beam_current <= 270
+
+        if self.last_update_time:
+            self.period = time - self.last_update_time
 
         self.beam_current += (
             self.topup_fill * self.fill_increment  # if we're refilling
             + (not self.topup_fill) * self.loss_increment  # if we're not refilling
-        )
+        ) * float(self.period)
 
+        self.last_time = time
         call_at = SimTime(time + self.callback_period)
         return DeviceUpdate(
             SynchrotronCurrentDevice.Outputs(current=self.beam_current), call_at

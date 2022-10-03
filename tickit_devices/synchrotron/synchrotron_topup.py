@@ -55,10 +55,10 @@ class SynchrotronTopUpDevice(Device):
         self.fill_time = initial_end_countdown - initial_countdown
 
         self.callback_period = callback_period
-        self.period = callback_period / 1e9
+        self.period = callback_period * 1e-9
 
         self.last_current = last_current
-        self.last_time = 0
+        self.last_time = None
         self.topup_fill = False
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
@@ -88,15 +88,19 @@ class SynchrotronTopUpDevice(Device):
             + (not topup_fill) * (new_current - 270) / current_difference
         )
 
+        if self.last_time:
+            self.period = (time - self.last_time) * 1e-9
+
         self.countdown = (not topup_fill) * (updates_to_go * self.period)
 
         # assume topup fill will take 15 seconds, and calculate it directly during
-        self.fill_time = (
-            topup_fill * (updates_to_go * self.period) + (not topup_fill) * 15
+        self.fill_time = topup_fill * (updates_to_go * self.period) + (
+            not topup_fill * 15
         )
         self.end_countdown = self.countdown + self.fill_time
 
         self.last_current = new_current
+        self.last_time = time
         call_at = SimTime(time + self.callback_period)
         return DeviceUpdate(
             SynchrotronTopUpDevice.Outputs(
@@ -195,7 +199,6 @@ class SynchrotronTopUp(ComponentConfig):
     initial_countdown: float = 600
     initial_end_countdown: float = 620
     callback_period: int = int(1e9)
-    current_callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -208,7 +211,7 @@ class SynchrotronTopUp(ComponentConfig):
             device=SynchrotronTopUpDevice(
                 self.initial_countdown,
                 self.initial_end_countdown,
-                callback_period=self.current_callback_period,
+                callback_period=self.callback_period,
             ),
             adapters=[
                 SynchrotronTopUpTCPAdapter(

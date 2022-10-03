@@ -1,7 +1,7 @@
 - tickit_devices.synchrotron.synchrotron_current.SynchrotronCurrent:
     name: sync_current
     inputs: {}
-    callback_period: 10000000
+    callback_period: 100000000
     initial_current: 300
     port: 25565
 - tickit.devices.sink.Sink:
@@ -24,7 +24,6 @@
      current: sync_current:current
     port: 25563
     callback_period: 1000000000
-    current_callback_period: 10000000
 - tickit.devices.sink.Sink:
     name: topup_sink
     inputs:
