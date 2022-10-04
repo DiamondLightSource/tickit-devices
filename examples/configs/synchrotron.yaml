@@ -23,7 +23,7 @@
     inputs:
      current: sync_current:current
     port: 25563
-    callback_period: 1000000000
+    callback_period: 100000000
 - tickit.devices.sink.Sink:
     name: topup_sink
     inputs:

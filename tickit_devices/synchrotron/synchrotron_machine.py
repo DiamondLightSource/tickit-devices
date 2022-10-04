@@ -188,7 +188,7 @@ class SynchrotronMachineStatusEpicsAdapter(EpicsAdapter):
 class SynchrotronMachineStatus(ComponentConfig):
     """Synchrotron Machine status component."""
 
-    initial_mode: int = 0
+    initial_mode: int = 4
     initial_countdown: float = 100000
     initial_energy: float = 3.0
     host: str = "localhost"
