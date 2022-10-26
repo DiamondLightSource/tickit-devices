@@ -1,10 +1,10 @@
 - tickit_devices.oav.oav_edge_detection.OAVEdgeDetection:
-    name: sync_oav
+    name: oav_edge_detection
     inputs: {}
     initial_exposurePV: 1.09
     initial_acqPeriodPV: 0.1
     initial_gainPV: 1.
-    initial_oavColourMode: 2.
+    initial_oavColourMode: 2.55555
     initial_xSizePV: 1024.
     initial_ySizePV: 1024.
     initial_inputRBPV: 1.
@@ -30,4 +30,29 @@
 - tickit.devices.sink.Sink:
     name: oav_sink
     inputs:
-      input: sync_oav:current
+      input: oav_edge_detection:exposurePV
+      input: oav_edge_detection:acqPeriodPV
+      input: oav_edge_detection:gainPV
+      input: oav_edge_detection:oavColourMode
+      input: oav_edge_detection:xSizePV
+      input: oav_edge_detection:ySizePV
+      input: oav_edge_detection:inputRBPV
+      input: oav_edge_detection:exposureRBPV
+      input: oav_edge_detection:acqPeriodRBPV
+      input: oav_edge_detection:gainRBPV
+      input: oav_edge_detection:inputPV
+      input: oav_edge_detection:enableOverlayPV
+      input: oav_edge_detection:overlayPortPV
+      input: oav_edge_detection:useOverlay1PV
+      input: oav_edge_detection:useOverlay2PV
+      input: oav_edge_detection:overlay2ShapePV
+      input: oav_edge_detection:overlay2RedPV
+      input: oav_edge_detection:overlay2GreenPV
+      input: oav_edge_detection:overlay2BluePV
+      input: oav_edge_detection:overlay2XPosition
+      input: oav_edge_detection:overlay2YPosition
+      input: oav_edge_detection:overlay2XSize
+      input: oav_edge_detection:overlay2YSize
+      input: oav_edge_detection:edgeTop
+      input: oav_edge_detection:edgeBottom
+  
