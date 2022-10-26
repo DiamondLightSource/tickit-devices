@@ -1,0 +1,51 @@
+#Real world PV= CS-CS-MSTAT-01:MODE
+record (mbbi, "BL03S-CS-CS-MSTAT-01:MODE")
+{
+    field (SCAN, "Passive")
+    field (DESC, "Mode")
+    field (ZRST, "Shutdown")
+    field (ONST, "Injection")
+    field (TWST, "No Beam")
+    field (THST, "Mach. Dev.")
+    field (FRST, "User")
+    field (FVST, "Special")
+    field (SXST, "BL Startup")
+    field (SVST, "Unknown")
+    field (VAL, "0")
+    field (PINI, "YES")
+}
+
+# Due to limitations in pythonIOC, these records can not be read in
+# via the epics adapter. Stand in aIn records have been made instead
+# to just hold the float values as currently the internal logic is
+# not needed or can be implemented in the tickit device.
+
+# This record will count down to zero at the end of the
+# current calendar period if the current period is a type
+# of user beam time. Otherwise it will have the value -1.
+# The value is set from the python process CS-CS-MSTAT-03.
+
+#Real world PV= CS-CS-MSTAT-01:USERCOUNTDN
+#record (calcout, "$(device):USERCOUNTDN")
+#{
+#    field (DESC, "Countdown to end of user time")
+#    field (SCAN, "1 second")
+#    field (VAL,  "0")
+#    field (A,    "0")
+#    field (OOPT, "On Change")
+#    field (DOPT, "Use OCAL")
+#    field (CALC, "A > 0 ? A - 1 : A")
+#    field (OCAL, "A > 1 ? 1 : 0")
+#    field (INPA, "CS-CS-MSTAT-01:USERCOUNTDN")
+#}
+
+# Calculate beam energy from SR Dipole current
+#Real world PV= CS-CS-MSTAT-01:BEAMENERGY
+#record (calc, "$(device):BEAMENERGY")
+#{
+#    field (SCAN, "10 second")
+#    field (INPA, "SR-PC-DIPOL-01:I")
+#    field (CALC, "A * 0.0022153")
+#    field (EGU, "GeV")
+#    field (PINI, "YES")
+#}

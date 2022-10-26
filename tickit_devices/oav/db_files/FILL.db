@@ -1,0 +1,18 @@
+#Real world PV= SR-CS-FILL-01:COUNTDOWN
+record (ai, "BL03S-SR-CS-FILL-01:COUNTDOWN")
+{
+    field (DESC, "seconds until next fill")
+    field (VAL,  "-1.0")
+    field (EGU,  "s")
+    field (PREC, "4")
+    field (PINI, "1")
+}
+#Real world PV= SR-CS-FILL-01:ENDCOUNTDN
+record (ai, "BL03S-SR-CS-FILL-01:ENDCOUNTDN")
+{
+    field (DESC, "secs until end of next fill")
+    field (VAL,  "-1")
+    field (EGU,  "s")
+    field (PREC, "4")
+    field (PINI, "1")
+}

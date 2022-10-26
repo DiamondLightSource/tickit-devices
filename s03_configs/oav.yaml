@@ -1,0 +1,33 @@
+- tickit_devices.oav.oav_edge_detection.OAVEdgeDetection:
+    name: sync_oav
+    inputs: {}
+    initial_exposurePV: 1.09
+    initial_acqPeriodPV: 0.1
+    initial_gainPV: 1.
+    initial_oavColourMode: 2.
+    initial_xSizePV: 1024.
+    initial_ySizePV: 1024.
+    initial_inputRBPV: 1.
+    initial_exposureRBPV: 1.
+    initial_acqPeriodRBPV: 1.
+    initial_gainRBPV: 1.
+    initial_inputPV: 1.
+    initial_enableOverlayPV: 1.
+    initial_overlayPortPV: 1.
+    initial_useOverlay1PV: 1.
+    initial_useOverlay2PV: 1.
+    initial_overlay2ShapePV: 1.
+    initial_overlay2RedPV: 1.
+    initial_overlay2GreenPV: 1.
+    initial_overlay2BluePV: 1.
+    initial_overlay2XPosition: 1.
+    initial_overlay2YPosition: 1.
+    initial_overlay2XSize: 1.
+    initial_overlay2YSize: 1.
+    initial_edgeTop: 1.
+    initial_edgeBottom: 1.
+    port: 25565
+- tickit.devices.sink.Sink:
+    name: oav_sink
+    inputs:
+      input: sync_oav:current
