@@ -55,186 +55,134 @@ class OAVEdgeDetectionDevice(Device):
     ) -> None:
         """Initialise the OAVEdgeDetectionDevice device."""
         # Edge detection PVs
-        self.exposurePV = {
-            "pv_name": "CAM:AcquireTime",
-            "getter": self.get_exposurePV_value,
-            "value": initial_exposurePV,
-            "is_writable": False,
+        self.EDGE_DETECTION_PVS: dict = {
+            "exposurePV": {
+                "pv_name": "CAM:AcquireTime",
+                "getter": self.get_exposurePV_value,
+                "value": initial_exposurePV,
+            },
+            "acqPeriodPV": {
+                "pv_name": "CAM:AcquirePeriod",
+                "getter": self.get_acqPeriodPV_value,
+                "value": initial_acqPeriodPV,
+            },
+            "gainPV": {
+                "pv_name": "CAM:Gain",
+                "getter": self.get_gainPV_value,
+                "value": initial_gainPV,
+            },
+            "oavColourMode": {
+                "pv_name": "CAM:ColorMode",
+                "getter": self.get_oavColourMode_value,
+                "value": initial_oavColourMode,
+                "is_writable": True,
+            },
+            "xSizePV": {
+                "pv_name": "MJPG:ArraySize1_RBV",
+                "getter": self.get_xSizePV_value,
+                "value": initial_xSizePV,
+            },
+            "ySizePV": {
+                "pv_name": "MJPG:ArraySize2_RBV",
+                "getter": self.get_ySizePV_value,
+                "value": initial_ySizePV,
+            },
+            "inputRBPV": {
+                "pv_name": "MJPG:NDArrayPort_RBV",
+                "getter": self.get_inputRBPV_value,
+                "value": initial_inputRBPV,
+            },
+            "exposureRBPV": {
+                "pv_name": "CAM:AcquireTime_RBV",
+                "getter": self.get_exposureRBPV_value,
+                "value": initial_exposureRBPV,
+            },
+            "acqPeriodRBPV": {
+                "pv_name": "CAM:AcquirePeriod_RBV",
+                "getter": self.get_acqPeriodRBPV_value,
+                "value": initial_acqPeriodRBPV,
+            },
+            "gainRBPV": {
+                "pv_name": "CAM:Gain_RBV",
+                "getter": self.get_gainRBPV_value,
+                "value": initial_gainRBPV,
+            },
+            "inputPV": {
+                "pv_name": "MJPG:NDArrayPort",
+                "getter": self.get_inputPV_value,
+                "value": initial_inputPV,
+            },
+            "enableOverlayPV": {
+                "pv_name": "OVER:EnableCallbacks",
+                "getter": self.get_enableOverlayPV_value,
+                "value": initial_enableOverlayPV,
+            },
+            "overlayPortPV": {
+                "pv_name": "OVER:NDArrayPort",
+                "getter": self.get_overlayPortPV_value,
+                "value": initial_overlayPortPV,
+            },
+            "useOverlay1PV": {
+                "pv_name": "OVER:1:Use",
+                "getter": self.get_useOverlay1PV_value,
+                "value": initial_useOverlay1PV,
+            },
+            "useOverlay2PV": {
+                "pv_name": "OVER:2:Use",
+                "getter": self.get_useOverlay2PV_value,
+                "value": initial_useOverlay2PV,
+            },
+            "overlay2ShapePV": {
+                "pv_name": "OVER:2:Shape",
+                "getter": self.get_overlay2ShapePV_value,
+                "value": initial_overlay2ShapePV,
+            },
+            "overlay2RedPV": {
+                "pv_name": "OVER:2:Red",
+                "getter": self.get_overlay2RedPV_value,
+                "value": initial_overlay2RedPV,
+            },
+            "overlay2GreenPV": {
+                "pv_name": "OVER:2:Green",
+                "getter": self.get_overlay2GreenPV_value,
+                "value": initial_overlay2GreenPV,
+            },
+            "overlay2BluePV": {
+                "pv_name": "OVER:2:Blue",
+                "getter": self.get_overlay2BluePV_value,
+                "value": initial_overlay2BluePV,
+            },
+            "overlay2XPosition": {
+                "pv_name": "OVER:2:PositionX",
+                "getter": self.get_overlay2XPosition_value,
+                "value": initial_overlay2XPosition,
+            },
+            "overlay2YPosition": {
+                "pv_name": "OVER:2:PositionY",
+                "getter": self.get_overlay2YPosition_value,
+                "value": initial_overlay2YPosition,
+            },
+            "overlay2XSize": {
+                "pv_name": "OVER:2:SizeX",
+                "getter": self.get_overlay2XSize_value,
+                "value": initial_overlay2XSize,
+            },
+            "overlay2YSize": {
+                "pv_name": "OVER:2:SizeY",
+                "getter": self.get_overlay2YSize_value,
+                "value": initial_overlay2YSize,
+            },
+            "edgeTop": {
+                "pv_name": "MXSC:Top",
+                "getter": self.get_edgeTop_value,
+                "value": initial_edgeTop,
+            },
+            "edgeBottom": {
+                "pv_name": "MXSC:Bottom",
+                "getter": self.get_edgeBottom_value,
+                "value": initial_edgeBottom,
+            },
         }
-        self.acqPeriodPV = {
-            "pv_name": "CAM:AcquirePeriod",
-            "getter": self.get_acqPeriodPV_value,
-            "value": initial_acqPeriodPV,
-            "is_writable": False,
-        }
-        self.gainPV = {
-            "pv_name": "CAM:Gain",
-            "getter": self.get_gainPV_value,
-            "value": initial_gainPV,
-            "is_writable": False,
-        }
-        self.oavColourMode = {
-            "pv_name": "CAM:ColorMode",
-            "getter": self.get_oavColourMode_value,
-            "value": initial_oavColourMode,
-            "setter": self.set_oavColorMode_value,
-            "is_writable": True,
-        }
-        self.xSizePV = {
-            "pv_name": "MJPG:ArraySize1_RBV",
-            "getter": self.get_xSizePV_value,
-            "value": initial_xSizePV,
-            "is_writable": False,
-        }
-        self.ySizePV = {
-            "pv_name": "MJPG:ArraySize2_RBV",
-            "getter": self.get_ySizePV_value,
-            "value": initial_ySizePV,
-            "is_writable": False,
-        }
-        self.inputRBPV = {
-            "pv_name": "MJPG:NDArrayPort_RBV",
-            "getter": self.get_inputRBPV_value,
-            "value": initial_inputRBPV,
-            "is_writable": False,
-        }
-        self.exposureRBPV = {
-            "pv_name": "CAM:AcquireTime_RBV",
-            "getter": self.get_exposureRBPV_value,
-            "value": initial_exposureRBPV,
-            "is_writable": False,
-        }
-        self.acqPeriodRBPV = {
-            "pv_name": "CAM:AcquirePeriod_RBV",
-            "getter": self.get_acqPeriodRBPV_value,
-            "value": initial_acqPeriodRBPV,
-            "is_writable": False,
-        }
-        self.gainRBPV = {
-            "pv_name": "CAM:Gain_RBV",
-            "getter": self.get_gainRBPV_value,
-            "value": initial_gainRBPV,
-            "is_writable": False,
-        }
-        self.inputPV = {
-            "pv_name": "MJPG:NDArrayPort",
-            "getter": self.get_inputPV_value,
-            "value": initial_inputPV,
-            "is_writable": False,
-        }
-        self.enableOverlayPV = {
-            "pv_name": "OVER:EnableCallbacks",
-            "getter": self.get_enableOverlayPV_value,
-            "value": initial_enableOverlayPV,
-            "is_writable": False,
-        }
-        self.overlayPortPV = {
-            "pv_name": "OVER:NDArrayPort",
-            "getter": self.get_overlayPortPV_value,
-            "value": initial_overlayPortPV,
-            "is_writable": False,
-        }
-        self.useOverlay1PV = {
-            "pv_name": "OVER:1:Use",
-            "getter": self.get_useOverlay1PV_value,
-            "value": initial_useOverlay1PV,
-            "is_writable": False,
-        }
-        self.useOverlay2PV = {
-            "pv_name": "OVER:2:Use",
-            "getter": self.get_useOverlay2PV_value,
-            "value": initial_useOverlay2PV,
-            "is_writable": False,
-        }
-        self.overlay2ShapePV = {
-            "pv_name": "OVER:2:Shape",
-            "getter": self.get_overlay2ShapePV_value,
-            "value": initial_overlay2ShapePV,
-            "is_writable": False,
-        }
-        self.overlay2RedPV = {
-            "pv_name": "OVER:2:Red",
-            "getter": self.get_overlay2RedPV_value,
-            "value": initial_overlay2RedPV,
-            "is_writable": False,
-        }
-        self.overlay2GreenPV = {
-            "pv_name": "OVER:2:Green",
-            "getter": self.get_overlay2GreenPV_value,
-            "value": initial_overlay2GreenPV,
-            "is_writable": False,
-        }
-        self.overlay2BluePV = {
-            "pv_name": "OVER:2:Blue",
-            "getter": self.get_overlay2BluePV_value,
-            "value": initial_overlay2BluePV,
-            "is_writable": False,
-        }
-        self.overlay2XPosition = {
-            "pv_name": "OVER:2:PositionX",
-            "getter": self.get_overlay2XPosition_value,
-            "value": initial_overlay2XPosition,
-            "is_writable": False,
-        }
-        self.overlay2YPosition = {
-            "pv_name": "OVER:2:PositionY",
-            "getter": self.get_overlay2YPosition_value,
-            "value": initial_overlay2YPosition,
-            "is_writable": False,
-        }
-        self.overlay2XSize = {
-            "pv_name": "OVER:2:SizeX",
-            "getter": self.get_overlay2XSize_value,
-            "value": initial_overlay2XSize,
-            "is_writable": False,
-        }
-        self.overlay2YSize = {
-            "pv_name": "OVER:2:SizeY",
-            "getter": self.get_overlay2YSize_value,
-            "value": initial_overlay2YSize,
-            "is_writable": False,
-        }
-        self.edgeTop = {
-            "pv_name": "MXSC:Top",
-            "getter": self.get_edgeTop_value,
-            "value": initial_edgeTop,
-            "is_writable": False,
-        }
-        self.edgeBottom = {
-            "pv_name": "MXSC:Bottom",
-            "getter": self.get_edgeBottom_value,
-            "value": initial_edgeBottom,
-            "is_writable": False,
-        }
-
-        # put them in a list so we can iterate through and provide the getters for EPICS
-        self.EDGE_DETECTION_PVS: list[dict] = [
-            self.exposurePV,
-            self.acqPeriodPV,
-            self.gainPV,
-            self.oavColourMode,
-            self.xSizePV,
-            self.ySizePV,
-            self.inputRBPV,
-            self.exposureRBPV,
-            self.acqPeriodRBPV,
-            self.gainRBPV,
-            self.inputPV,
-            self.enableOverlayPV,
-            self.overlayPortPV,
-            self.useOverlay1PV,
-            self.useOverlay2PV,
-            self.overlay2ShapePV,
-            self.overlay2RedPV,
-            self.overlay2GreenPV,
-            self.overlay2BluePV,
-            self.overlay2XPosition,
-            self.overlay2YPosition,
-            self.overlay2XSize,
-            self.overlay2YSize,
-            self.edgeTop,
-            self.edgeBottom,
-        ]
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method, will be unused since camera PVs won't change value without \
@@ -253,6 +201,7 @@ class OAVEdgeDetectionDevice(Device):
         return DeviceUpdate(OAVEdgeDetectionDevice.Outputs(), None)
 
     def set_oavColorMode_value(self, value):
+        """For use by EPICs adapter."""
         self.oavColourMode["value"] = value
 
     def get_exposurePV_value(self):
@@ -404,18 +353,25 @@ class OAVEdgeDetectionEpicsAdapter(EpicsAdapter):
 
     device: OAVEdgeDetectionDevice
 
+    # Put all the PVs on EPICS
     def on_db_load(self) -> None:
         """Link loaded in record with getter for device."""
         for pv in self.device.EDGE_DETECTION_PVS:
-            if pv["is_writable"]:
-                builder.aOut(
-                    pv["pv_name"], initial_value=pv["value"], on_update=pv["setter"]
-                )
-            else:
-                self.link_input_on_interrupt(
-                    builder.aIn(pv["pv_name"]),
-                    pv["getter"],
-                )
+            pv_dict = self.device.EDGE_DETECTION_PVS[pv]
+            if "is_writable" in pv_dict:
+                if pv_dict["is_writable"]:
+                    builder.aOut(
+                        pv_dict["pv_name"],
+                        initial_value=pv_dict["value"],
+                        on_update=pv_dict["value"].__setattr__,
+                    )
+                    continue
+
+            # if the PV is missing the is_writable, or if not is_writable
+            self.link_input_on_interrupt(
+                builder.aIn(pv_dict["pv_name"]),
+                pv_dict["getter"],
+            )
 
 
 @dataclass
