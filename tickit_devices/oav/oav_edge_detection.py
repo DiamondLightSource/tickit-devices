@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
+import numpy as np
 from softioc import builder
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.epicsadapter import EpicsAdapter
-from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
+from tickit.adapters.interpreters.command import CommandInterpreter
 from tickit.adapters.servers.tcp import TcpServer
 from tickit.core.adapter import Server
 from tickit.core.components.component import Component, ComponentConfig
@@ -31,6 +32,8 @@ class OAVEdgeDetectionDevice(Device):
         initial_acqPeriodPV,
         initial_gainPV,
         initial_oavColourMode,
+        initial_cannyEdgeUpperThreshholdPV,
+        initial_cannyEdgeLowerThreshholdPV,
         initial_xSizePV,
         initial_ySizePV,
         initial_inputRBPV,
@@ -75,6 +78,18 @@ class OAVEdgeDetectionDevice(Device):
                 "pv_name": "CAM:ColorMode",
                 "getter": self.get_oavColourMode_value,
                 "value": initial_oavColourMode,
+                "is_writable": True,
+            },
+            "cannyEdgeUpperThreshholdPV": {
+                "pv_name": "MXSC:CannyUpper",
+                "getter": self.get_cannyEdgeUpperThreshholdPV_value,
+                "value": initial_cannyEdgeUpperThreshholdPV,
+                "is_writable": True,
+            },
+            "cannyEdgeLowerThreshholdPV": {
+                "pv_name": "MXSC:CannyLower",
+                "getter": self.get_cannyEdgeLowerThreshholdPV_value,
+                "value": initial_cannyEdgeLowerThreshholdPV,
                 "is_writable": True,
             },
             "xSizePV": {
@@ -200,109 +215,113 @@ class OAVEdgeDetectionDevice(Device):
         """
         return DeviceUpdate(OAVEdgeDetectionDevice.Outputs(), None)
 
-    def set_oavColorMode_value(self, value):
+    def get_cannyEdgeLowerThreshholdPV_value(self):
         """For use by EPICs adapter."""
-        self.oavColourMode["value"] = value
+        return self.EDGE_DETECTION_PVS["cannyEdgeLowerThresholdPV"]["value"]
+
+    def get_cannyEdgeUpperThreshholdPV_value(self):
+        """For use by EPICs adapter."""
+        return self.EDGE_DETECTION_PVS["cannyEdgeUpperThresholdPV"]["value"]
 
     def get_exposurePV_value(self):
         """For use by EPICs adapter."""
-        return self.exposurePV["value"]
+        return self.EDGE_DETECTION_PVS["exposurePV"]["value"]
 
     def get_acqPeriodPV_value(self):
         """For use by EPICs adapter."""
-        return self.acqPeriodPV["value"]
+        return self.EDGE_DETECTION_PVS["acqPeriodPV"]["value"]
 
     def get_gainPV_value(self):
         """For use by EPICs adapter."""
-        return self.gainPV["value"]
+        return self.EDGE_DETECTION_PVS["gainPV"]["value"]
 
     def get_oavColourMode_value(self):
         """For use by EPICs adapter."""
-        return self.oavColourMode["value"]
+        return self.EDGE_DETECTION_PVS["oavColourMode"]["value"]
 
     def get_xSizePV_value(self):
         """For use by EPICs adapter."""
-        return self.xSizePV["value"]
+        return self.EDGE_DETECTION_PVS["xSizePV"]["value"]
 
     def get_ySizePV_value(self):
         """For use by EPICs adapter."""
-        return self.ySizePV["value"]
+        return self.EDGE_DETECTION_PVS["ySizePV"]["value"]
 
     def get_inputRBPV_value(self):
         """For use by EPICs adapter."""
-        return self.inputRBPV["value"]
+        return self.EDGE_DETECTION_PVS["inputRBPV"]["value"]
 
     def get_exposureRBPV_value(self):
         """For use by EPICs adapter."""
-        return self.exposureRBPV["value"]
+        return self.EDGE_DETECTION_PVS["exposureRBPV"]["value"]
 
     def get_acqPeriodRBPV_value(self):
         """For use by EPICs adapter."""
-        return self.acqPeriodRBPV["value"]
+        return self.EDGE_DETECTION_PVS["acqPeriodRBPV"]["value"]
 
     def get_gainRBPV_value(self):
         """For use by EPICs adapter."""
-        return self.gainRBPV["value"]
+        return self.EDGE_DETECTION_PVS["gainRBPV"]["value"]
 
     def get_inputPV_value(self):
         """For use by EPICs adapter."""
-        return self.inputPV["value"]
+        return self.EDGE_DETECTION_PVS["inputPV"]["value"]
 
     def get_enableOverlayPV_value(self):
         """For use by EPICs adapter."""
-        return self.enableOverlayPV["value"]
+        return self.EDGE_DETECTION_PVS["enableOverlayPV"]["value"]
 
     def get_overlayPortPV_value(self):
         """For use by EPICs adapter."""
-        return self.overlayPortPV["value"]
+        return self.EDGE_DETECTION_PVS["overlayPortPV"]["value"]
 
     def get_useOverlay1PV_value(self):
         """For use by EPICs adapter."""
-        return self.useOverlay1PV["value"]
+        return self.EDGE_DETECTION_PVS["useOverlay1PV"]["value"]
 
     def get_useOverlay2PV_value(self):
         """For use by EPICs adapter."""
-        return self.useOverlay2PV["value"]
+        return self.EDGE_DETECTION_PVS["useOverlay2PV"]["value"]
 
     def get_overlay2ShapePV_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2ShapePV["value"]
+        return self.EDGE_DETECTION_PVS["overlay2ShapePV"]["value"]
 
     def get_overlay2RedPV_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2RedPV["value"]
+        return self.EDGE_DETECTION_PVS["overlay2RedPV"]["value"]
 
     def get_overlay2GreenPV_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2GreenPV["value"]
+        return self.EDGE_DETECTION_PVS["overlay2GreenPV"]["value"]
 
     def get_overlay2BluePV_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2BluePV["value"]
+        return self.EDGE_DETECTION_PVS["overlay2BluePV"]["value"]
 
     def get_overlay2XPosition_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2XPosition["value"]
+        return self.EDGE_DETECTION_PVS["overlay2XPosition"]["value"]
 
     def get_overlay2YPosition_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2YPosition["value"]
+        return self.EDGE_DETECTION_PVS["overlay2YPosition"]["value"]
 
     def get_overlay2XSize_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2XSize["value"]
+        return self.EDGE_DETECTION_PVS["overlay2XSize"]["value"]
 
     def get_overlay2YSize_value(self):
         """For use by EPICs adapter."""
-        return self.overlay2YSize["value"]
+        return self.EDGE_DETECTION_PVS["overlay2YSize"]["value"]
 
     def get_edgeTop_value(self):
         """For use by EPICs adapter."""
-        return self.edgeTop["value"]
+        return self.EDGE_DETECTION_PVS["edgeTop"]["value"]
 
     def get_edgeBottom_value(self):
         """For use by EPICs adapter."""
-        return self.edgeBottom["value"]
+        return self.EDGE_DETECTION_PVS["edgeBottom"]["value"]
 
 
 class OAVEdgeDetectionTCPAdapter(ComposedAdapter):
@@ -325,24 +344,6 @@ class OAVEdgeDetectionTCPAdapter(ComposedAdapter):
             CommandInterpreter(),
         )
 
-    @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_beam_current(self, value: float) -> None:
-        """Regex string command that sets the value of beam_current.
-
-        Args:
-            value (int): The new value of beam_current.
-        """
-        self.device.beam_current = value
-
-    @RegexCommand(r"C\?", format="utf-8")
-    async def get_beam_current(self) -> bytes:
-        """Regex string command that returns the utf-8 encoded value of beam_current.
-
-        Returns:
-            bytes: The utf-8 encoded value of beam_current.
-        """
-        return str(self.device.beam_current).encode("utf-8")
-
 
 class OAVEdgeDetectionEpicsAdapter(EpicsAdapter):
     """Epics Adapter.
@@ -355,9 +356,10 @@ class OAVEdgeDetectionEpicsAdapter(EpicsAdapter):
 
     # Put all the PVs on EPICS
     def on_db_load(self) -> None:
-        """Link loaded in record with getter for device."""
+        """Epics adapter for reading device values as a PV through channel access."""
         for pv in self.device.EDGE_DETECTION_PVS:
             pv_dict = self.device.EDGE_DETECTION_PVS[pv]
+
             if "is_writable" in pv_dict:
                 if pv_dict["is_writable"]:
                     builder.aOut(
@@ -369,8 +371,7 @@ class OAVEdgeDetectionEpicsAdapter(EpicsAdapter):
 
             # if the PV is missing the is_writable, or if not is_writable
             self.link_input_on_interrupt(
-                builder.aIn(pv_dict["pv_name"]),
-                pv_dict["getter"],
+                builder.aIn(pv_dict["pv_name"]), pv_dict["getter"]
             )
 
 
@@ -381,7 +382,9 @@ class OAVEdgeDetection(ComponentConfig):
     initial_exposurePV: float
     initial_acqPeriodPV: float
     initial_gainPV: float
-    initial_oavColourMode: float
+    initial_oavColourMode: int
+    initial_cannyEdgeUpperThreshholdPV: int
+    initial_cannyEdgeLowerThreshholdPV: int
     initial_xSizePV: float
     initial_ySizePV: float
     initial_inputRBPV: float
@@ -401,8 +404,7 @@ class OAVEdgeDetection(ComponentConfig):
     initial_overlay2YPosition: float
     initial_overlay2XSize: float
     initial_overlay2YSize: float
-    initial_edgeTop: float
-    initial_edgeBottom: float
+    waveforms_file: str = "tickit_devices/oav/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -410,6 +412,9 @@ class OAVEdgeDetection(ComponentConfig):
     ioc_name: str = "S03-SIM-DI-OAV-01"
 
     def __call__(self) -> Component:  # noqa: D102
+        with open(self.waveforms_file, "rb") as f:
+            self.initial_edgeTop = np.load(f)
+            self.initial_edgeBottom = np.load(f)
         return DeviceSimulation(
             name=self.name,
             device=OAVEdgeDetectionDevice(
@@ -417,6 +422,8 @@ class OAVEdgeDetection(ComponentConfig):
                 self.initial_acqPeriodPV,
                 self.initial_gainPV,
                 self.initial_oavColourMode,
+                self.initial_cannyEdgeUpperThreshholdPV,
+                self.initial_cannyEdgeLowerThreshholdPV,
                 self.initial_xSizePV,
                 self.initial_ySizePV,
                 self.initial_inputRBPV,

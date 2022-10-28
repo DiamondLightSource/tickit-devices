@@ -4,7 +4,9 @@
     initial_exposurePV: 1.09
     initial_acqPeriodPV: 0.1
     initial_gainPV: 1.
-    initial_oavColourMode: 2.55555
+    initial_oavColourMode: 2
+    initial_cannyEdgeUpperThreshholdPV: 30
+    initial_cannyEdgeLowerThreshholdPV: 5
     initial_xSizePV: 1024.
     initial_ySizePV: 1024.
     initial_inputRBPV: 1.
@@ -24,8 +26,6 @@
     initial_overlay2YPosition: 1.
     initial_overlay2XSize: 1.
     initial_overlay2YSize: 1.
-    initial_edgeTop: 1.
-    initial_edgeBottom: 1.
     port: 25565
 - tickit.devices.sink.Sink:
     name: oav_sink
@@ -34,6 +34,8 @@
       input: oav_edge_detection:acqPeriodPV
       input: oav_edge_detection:gainPV
       input: oav_edge_detection:oavColourMode
+      input: oav_edge_detection:cannyEdgeUpperThreshholdPV
+      input: oav_edge_detection:cannyEdgeLowerThreshholdPV
       input: oav_edge_detection:xSizePV
       input: oav_edge_detection:ySizePV
       input: oav_edge_detection:inputRBPV
@@ -53,6 +55,4 @@
       input: oav_edge_detection:overlay2YPosition
       input: oav_edge_detection:overlay2XSize
       input: oav_edge_detection:overlay2YSize
-      input: oav_edge_detection:edgeTop
-      input: oav_edge_detection:edgeBottom
   
