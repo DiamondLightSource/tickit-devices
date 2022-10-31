@@ -1,4 +1,12 @@
-- tickit_devices.oav.oav_edge_detection.OAVEdgeDetection:
-    name: oav_edge_detection
+- tickit_devices.oav.oav_edge_detection.OAV_DI_OAV:
+    name: oav_di_oav
     inputs: {}
     port: 25565
+- tickit_devices.oav.oav_edge_detection.OAV_DI_IOC:
+    name: oav_di_ioc
+    inputs: {}
+    port: 25564
+- tickit_devices.oav.oav_edge_detection.OAV_EA_FSCN:
+    name: oav_ea_fscn
+    inputs: {}
+    port: 25563

@@ -14,7 +14,7 @@ from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
 
-class OAVEdgeDetectionDevice(Device):
+class OAVDevice(Device):
     """Class for simulating the PVs in OAV relevant to edge detection.
 
     We won't try and implement any fancy logic (yet). Just get the PVs hosted.
@@ -39,13 +39,13 @@ class OAVEdgeDetectionDevice(Device):
             DeviceUpdate[Outputs]:
                 The produced update event.
         """
-        return DeviceUpdate(OAVEdgeDetectionDevice.Outputs(), None)
+        return DeviceUpdate(OAVDevice.Outputs(), None)
 
 
-class OAVEdgeDetectionTCPAdapter(ComposedAdapter):
-    """A TCP adapter to set a OAVEdgeDetectionDevice PV values."""
+class OAVTCPAdapter(ComposedAdapter):
+    """A TCP adapter to set a OAVDevice_DIOAV PV values."""
 
-    device: OAVEdgeDetectionDevice
+    device: OAVDevice
 
     def __init__(
         self,
@@ -63,14 +63,14 @@ class OAVEdgeDetectionTCPAdapter(ComposedAdapter):
         )
 
 
-class OAVEdgeDetectionEpicsAdapter(EpicsAdapter):
+class OAVEpicsAdapter(EpicsAdapter):
     """Epics Adapter.
 
-    Epics adapter for reading all EdgeDetectionAttributes as a PV
+    Epics adapter for reading all Attributes as a PV
     through channel access.
     """
 
-    device: OAVEdgeDetectionDevice
+    device: OAVDevice
 
     # Put all the PVs on EPICS
     def on_db_load(self) -> None:
@@ -79,8 +79,8 @@ class OAVEdgeDetectionEpicsAdapter(EpicsAdapter):
 
 
 @dataclass
-class OAVEdgeDetection(ComponentConfig):
-    """Synchrotron current component."""
+class OAV_DI_OAV(ComponentConfig):
+    """To hold DI-OAV PVs."""
 
     waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
@@ -95,11 +95,59 @@ class OAVEdgeDetection(ComponentConfig):
             self.initial_edgeBottom = np.load(f)
         return DeviceSimulation(
             name=self.name,
-            device=OAVEdgeDetectionDevice(),
+            device=OAVDevice(),
             adapters=[
-                OAVEdgeDetectionTCPAdapter(
-                    TcpServer(self.host, self.port, self.format)
-                ),
-                OAVEdgeDetectionEpicsAdapter(self.db_file, self.ioc_name),
+                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
+                OAVEpicsAdapter(self.db_file, self.ioc_name),
+            ],
+        )
+
+
+@dataclass
+class OAV_DI_IOC(ComponentConfig):
+    """To hold DI-IOC PVs."""
+
+    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
+    host: str = "localhost"
+    port: int = 25565
+    format: ByteFormat = ByteFormat(b"%b\r\n")
+    db_file: str = "tickit_devices/oav/db_files/DI-IOC.db"
+    ioc_name: str = "S03SIM-DI-IOC-01"
+
+    def __call__(self) -> Component:  # noqa: D102
+        with open(self.waveforms_file, "rb") as f:
+            self.initial_edgeTop = np.load(f)
+            self.initial_edgeBottom = np.load(f)
+        return DeviceSimulation(
+            name=self.name,
+            device=OAVDevice(),
+            adapters=[
+                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
+                OAVEpicsAdapter(self.db_file, self.ioc_name),
+            ],
+        )
+
+
+@dataclass
+class OAV_EA_FSCN(ComponentConfig):
+    """To hold EA-FSCN PVs."""
+
+    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
+    host: str = "localhost"
+    port: int = 25565
+    format: ByteFormat = ByteFormat(b"%b\r\n")
+    db_file: str = "tickit_devices/oav/db_files/EA-FSCN.db"
+    ioc_name: str = "S03SIM-EA-FSCN-01"
+
+    def __call__(self) -> Component:  # noqa: D102
+        with open(self.waveforms_file, "rb") as f:
+            self.initial_edgeTop = np.load(f)
+            self.initial_edgeBottom = np.load(f)
+        return DeviceSimulation(
+            name=self.name,
+            device=OAVDevice(),
+            adapters=[
+                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
+                OAVEpicsAdapter(self.db_file, self.ioc_name),
             ],
         )
