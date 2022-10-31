@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 import numpy as np
-from softioc import builder
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.epicsadapter import EpicsAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter
