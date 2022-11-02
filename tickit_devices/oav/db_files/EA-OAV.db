@@ -1,0 +1,8 @@
+record(stringout, "S03SIM-EA-OAV-01:FZOOM:ZOOMPOSCMD")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn(OAV.MXSC,0,1)NDARRAY_PORT")
+    field(VAL,  "1.0x")
+    info(autosaveFields, "VAL")
+}

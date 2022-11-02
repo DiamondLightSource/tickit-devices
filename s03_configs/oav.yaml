@@ -10,3 +10,13 @@
     name: oav_ea_fscn
     inputs: {}
     port: 25563
+- tickit_devices.oav.oav_edge_detection.OAV_EA_OAV:
+    name: oav_ea_oav
+    inputs: {}
+    port: 25562
+
+
+- tickit_devices.oav.oav_edge_detection.OAV_MO_MD2:
+    name: oav_mo_md2
+    inputs: {}
+    port: 25561
