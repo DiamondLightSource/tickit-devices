@@ -1,5 +1,5 @@
 
-record(stringout, "S03SIM-MO-MD2-01:CTRL")
+record(stringout, "S03SIM-EA-BL-01:CTRL")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")

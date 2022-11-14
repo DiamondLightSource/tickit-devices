@@ -5653,6 +5653,11 @@ record(longin, "S03SIM-DI-OAV-01:MJPG:ArraySize1_RBV")
     field(INP,  "S03SIM-DI-OAV-01:MJPG:Dim1SA_RBV")
     field(FLNK, "S03SIM-DI-OAV-01:MJPG:Dim2SA_RBV")
 }
+record(longin, "S03SIM-DI-OAV-01:MJPG:JPG_URL_RBV")
+{
+    field(INP,  "S03SIM-DI-OAV-01:MJPG:Dim1SA_RBV")
+    field(FLNK, "S03SIM-DI-OAV-01:MJPG:Dim2SA_RBV")
+}
 
 record(longin, "S03SIM-DI-OAV-01:MJPG:ArraySize2_RBV")
 {

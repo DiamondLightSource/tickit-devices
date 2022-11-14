@@ -179,15 +179,15 @@ class OAV_EA_OAV(ComponentConfig):
 
 
 @dataclass
-class OAV_MO_MD2(ComponentConfig):
+class OAV_EA_BL(ComponentConfig):
     """To hold EA-OAV PVs."""
 
     waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/MO-MD2.db"
-    ioc_name: str = "S03SIM-MO-MD2-01"
+    db_file: str = "tickit_devices/oav/db_files/EA-BL.db"
+    ioc_name: str = "S03SIM-EA-BL-01"
 
     def __call__(self) -> Component:  # noqa: D102
         with open(self.waveforms_file, "rb") as f:

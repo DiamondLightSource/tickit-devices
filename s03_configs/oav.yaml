@@ -16,7 +16,7 @@
     port: 25562
 
 
-- tickit_devices.oav.oav_edge_detection.OAV_MO_MD2:
-    name: oav_mo_md2
+- tickit_devices.oav.oav_edge_detection.OAV_EA_BL:
+    name: oav_ea_bl
     inputs: {}
     port: 25561
