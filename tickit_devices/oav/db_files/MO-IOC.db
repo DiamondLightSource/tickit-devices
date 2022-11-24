@@ -1,0 +1,16 @@
+record(waveform, "S03SIM-MO-SGON-01:X")
+{
+    field(DTYP, "asynOctetWrite")
+}
+record(waveform, "S03SIM-MO-SGON-01:X")
+{
+    field(DTYP, "asynOctetWrite")
+}
+record(waveform, "S03SIM-MO-SGON-01:X")
+{
+    field(DTYP, "asynOctetWrite")
+}
+record(waveform, "S03SIM-MO-SGON-01:OMEGA")
+{
+    field(DTYP, "asynOctetWrite")
+}

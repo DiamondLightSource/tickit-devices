@@ -1,3 +1,7 @@
+- tickit_devices.oav.oav_edge_detection.OAV_MO_IOC:
+    name: oav_mo_ioc
+    inputs: {}
+    port: 25566
 - tickit_devices.oav.oav_edge_detection.OAV_DI_OAV:
     name: oav_di_oav
     inputs: {}
@@ -14,8 +18,6 @@
     name: oav_ea_oav
     inputs: {}
     port: 25562
-
-
 - tickit_devices.oav.oav_edge_detection.OAV_EA_BL:
     name: oav_ea_bl
     inputs: {}

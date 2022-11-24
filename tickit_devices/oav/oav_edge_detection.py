@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-import numpy as np
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.epicsadapter import EpicsAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter
@@ -82,7 +81,6 @@ class OAVEpicsAdapter(EpicsAdapter):
 class OAV_DI_OAV(ComponentConfig):
     """To hold DI-OAV PVs."""
 
-    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -90,9 +88,6 @@ class OAV_DI_OAV(ComponentConfig):
     ioc_name: str = "S03SIM-DI-OAV-01"
 
     def __call__(self) -> Component:  # noqa: D102
-        with open(self.waveforms_file, "rb") as f:
-            self.initial_edgeTop = np.load(f)
-            self.initial_edgeBottom = np.load(f)
         return DeviceSimulation(
             name=self.name,
             device=OAVDevice(),
@@ -107,7 +102,6 @@ class OAV_DI_OAV(ComponentConfig):
 class OAV_DI_IOC(ComponentConfig):
     """To hold DI-IOC PVs."""
 
-    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -115,9 +109,6 @@ class OAV_DI_IOC(ComponentConfig):
     ioc_name: str = "S03SIM-DI-IOC-01"
 
     def __call__(self) -> Component:  # noqa: D102
-        with open(self.waveforms_file, "rb") as f:
-            self.initial_edgeTop = np.load(f)
-            self.initial_edgeBottom = np.load(f)
         return DeviceSimulation(
             name=self.name,
             device=OAVDevice(),
@@ -132,7 +123,6 @@ class OAV_DI_IOC(ComponentConfig):
 class OAV_EA_FSCN(ComponentConfig):
     """To hold EA-FSCN PVs."""
 
-    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -140,9 +130,6 @@ class OAV_EA_FSCN(ComponentConfig):
     ioc_name: str = "S03SIM-EA-FSCN-01"
 
     def __call__(self) -> Component:  # noqa: D102
-        with open(self.waveforms_file, "rb") as f:
-            self.initial_edgeTop = np.load(f)
-            self.initial_edgeBottom = np.load(f)
         return DeviceSimulation(
             name=self.name,
             device=OAVDevice(),
@@ -157,7 +144,6 @@ class OAV_EA_FSCN(ComponentConfig):
 class OAV_EA_OAV(ComponentConfig):
     """To hold EA-OAV PVs."""
 
-    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -165,9 +151,6 @@ class OAV_EA_OAV(ComponentConfig):
     ioc_name: str = "S03SIM-EA-OAV-01"
 
     def __call__(self) -> Component:  # noqa: D102
-        with open(self.waveforms_file, "rb") as f:
-            self.initial_edgeTop = np.load(f)
-            self.initial_edgeBottom = np.load(f)
         return DeviceSimulation(
             name=self.name,
             device=OAVDevice(),
@@ -180,9 +163,8 @@ class OAV_EA_OAV(ComponentConfig):
 
 @dataclass
 class OAV_EA_BL(ComponentConfig):
-    """To hold EA-OAV PVs."""
+    """To hold EA-BL PVs."""
 
-    waveforms_file: str = "tickit_devices/oav/db_files/edge_waveforms.npy"
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -190,9 +172,27 @@ class OAV_EA_BL(ComponentConfig):
     ioc_name: str = "S03SIM-EA-BL-01"
 
     def __call__(self) -> Component:  # noqa: D102
-        with open(self.waveforms_file, "rb") as f:
-            self.initial_edgeTop = np.load(f)
-            self.initial_edgeBottom = np.load(f)
+        return DeviceSimulation(
+            name=self.name,
+            device=OAVDevice(),
+            adapters=[
+                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
+                OAVEpicsAdapter(self.db_file, self.ioc_name),
+            ],
+        )
+
+
+@dataclass
+class OAV_MO_IOC(ComponentConfig):
+    """To hold MO-IOC PVs."""
+
+    host: str = "localhost"
+    port: int = 25565
+    format: ByteFormat = ByteFormat(b"%b\r\n")
+    db_file: str = "tickit_devices/oav/db_files/MO-IOC.db"
+    ioc_name: str = "S03SIM-MO-IOC-01"
+
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
             device=OAVDevice(),
