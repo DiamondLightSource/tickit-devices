@@ -7,9 +7,9 @@
 #% macro, ADDR, Asyn Port address, default 0
 
 # This associates a BOY screen with the template
-# % gui, OAV.CAM, boydetail, aravisApp_opi/aravis_detail.opi, P=S03SIM-DI-OAV-01, R=:CAM:, DESC=Camera
-# % gui, OAV.CAM, boyembed, aravisApp_opi/aravis_embed_box.opi, P=S03SIM-DI-OAV-01, R=:CAM:, DESC=Camera
-# % gui, OAV.CAM, boyembed, aravisApp_opi/aravis_embed.opi, P=S03SIM-DI-OAV-01, R=:CAM:, DESC=Camera
+# % gui, OAV.CAM, boydetail, aravisApp_opi/aravis_detail.opi, P=BL03S-DI-OAV-01, R=:CAM:, DESC=Camera
+# % gui, OAV.CAM, boyembed, aravisApp_opi/aravis_embed_box.opi, P=BL03S-DI-OAV-01, R=:CAM:, DESC=Camera
+# % gui, OAV.CAM, boyembed, aravisApp_opi/aravis_embed.opi, P=BL03S-DI-OAV-01, R=:CAM:, DESC=Camera
 
 ## ADGenICam.template
 ## Template database file to control some features of ADGenICam.
@@ -44,7 +44,7 @@
 #  This record contains the version of ADCore                     #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:ADCoreVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:ADCoreVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)ADCORE_VERSION")
@@ -56,7 +56,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:ADCoreVersion_RBV")
 #  This record contains the version of the driver or plugin       #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:DriverVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:DriverVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)DRIVER_VERSION")
@@ -68,7 +68,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:DriverVersion_RBV")
 #  This record contains the asyn port name of this detector       #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:PortName_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:PortName_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)PORT_NAME_SELF")
@@ -80,7 +80,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:PortName_RBV")
 #  These records contain basic information about the detector     # 
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:Manufacturer_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:Manufacturer_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)MANUFACTURER")
@@ -88,7 +88,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:Manufacturer_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:Model_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:Model_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)MODEL")
@@ -96,7 +96,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:Model_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:SerialNumber_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:SerialNumber_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)SERIAL_NUMBER")
@@ -104,7 +104,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:SerialNumber_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:SDKVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:SDKVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)SDK_VERSION")
@@ -112,7 +112,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:SDKVersion_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CAM:FirmwareVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:FirmwareVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)FIRMWARE_VERSION")
@@ -124,15 +124,15 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:FirmwareVersion_RBV")
 #  These records control acquisition start and stop               #
 ###################################################################
 
-record(bi, "S03SIM-DI-OAV-01:CAM:Acquire") {
+record(bi, "BL03S-DI-OAV-01:CAM:Acquire") {
    field(DTYP, "asynInt32")
    field(ZNAM, "Done")
    field(VAL,  "0")
-   field(FLNK, "S03SIM-DI-OAV-01:CAM:SetAcquireBusy")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:SetAcquireBusy")
    info(bi:READBACK, "1")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:Acquire_RBV") {
+record(bi, "BL03S-DI-OAV-01:CAM:Acquire_RBV") {
    field(DTYP, "asynInt32")
    field(INP, "@asyn(OAV.CAM,0,1)ACQUIRE")
    field(ZNAM, "Done")
@@ -142,15 +142,15 @@ record(bi, "S03SIM-DI-OAV-01:CAM:Acquire_RBV") {
    field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CAM:SetAcquireBusy")
+record(calcout, "BL03S-DI-OAV-01:CAM:SetAcquireBusy")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CAM:Acquire NPP")
+    field(INPA, "BL03S-DI-OAV-01:CAM:Acquire NPP")
     field(CALC, "A")
     field(OOPT, "Transition To Non-zero")
-    field(OUT,  "S03SIM-DI-OAV-01:CAM:AcquireBusy PP")
+    field(OUT,  "BL03S-DI-OAV-01:CAM:AcquireBusy PP")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:AcquireBusy") {
+record(bi, "BL03S-DI-OAV-01:CAM:AcquireBusy") {
    field(ZNAM, "Done")
    field(ZSV,  "NO_ALARM")
    field(ONAM, "Acquiring")
@@ -158,7 +158,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:AcquireBusy") {
    field(VAL,  "0")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:AcquireBusyCB") {
+record(bi, "BL03S-DI-OAV-01:CAM:AcquireBusyCB") {
    field(DTYP, "asynInt32")
    field(INP, "@asyn(OAV.CAM,0,1)ACQUIRE_BUSY")
    field(ZNAM, "Done")
@@ -168,14 +168,14 @@ record(bi, "S03SIM-DI-OAV-01:CAM:AcquireBusyCB") {
    field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CAM:ClearAcquireBusy") {
-    field(INPA, "S03SIM-DI-OAV-01:CAM:AcquireBusyCB CP")
+record(calcout, "BL03S-DI-OAV-01:CAM:ClearAcquireBusy") {
+    field(INPA, "BL03S-DI-OAV-01:CAM:AcquireBusyCB CP")
     field(CALC, "A")
     field(OOPT, "Transition To Zero")
-    field(OUT,  "S03SIM-DI-OAV-01:CAM:AcquireBusy PP")
+    field(OUT,  "BL03S-DI-OAV-01:CAM:AcquireBusy PP")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CAM:WaitForPlugins") {
+record(bo, "BL03S-DI-OAV-01:CAM:WaitForPlugins") {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT, "@asyn(OAV.CAM,0,1)WAIT_FOR_PLUGINS")
@@ -188,13 +188,13 @@ record(bo, "S03SIM-DI-OAV-01:CAM:WaitForPlugins") {
 #  These records are the array size and data type                 #
 ###################################################################
 # The number of dimensions
-record(longout, "S03SIM-DI-OAV-01:CAM:NDimensions")
+record(longout, "BL03S-DI-OAV-01:CAM:NDimensions")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CAM,0,1)ARRAY_NDIMENSIONS")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:NDimensions_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:NDimensions_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_NDIMENSIONS")
@@ -202,346 +202,346 @@ record(longin, "S03SIM-DI-OAV-01:CAM:NDimensions_RBV")
 }
 
 # The array dimensions waveform records
-record(waveform, "S03SIM-DI-OAV-01:CAM:Dimensions")
+record(waveform, "BL03S-DI-OAV-01:CAM:Dimensions")
 {
     field(DTYP, "asynInt32ArrayOut")
     field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_DIMENSIONS")
     field(FTVL, "LONG")
     field(NELM, "10")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim0SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim0SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim0SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim0SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "0")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize0")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize0")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize0")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim0SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim1SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim0SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim1SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim1SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim1SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "1")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize1")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize1")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize1")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize1")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim1SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim2SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim1SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim2SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim2SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim2SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "2")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize2")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize2")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize2")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize2")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim2SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim3SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim2SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim3SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim3SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim3SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "3")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize3")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize3")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize3")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize3")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim3SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim4SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim3SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim4SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim4SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim4SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "4")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize4")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize4")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize4")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize4")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim4SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim5SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim4SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim5SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim5SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim5SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "5")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize5")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize5")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize5")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize5")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim5SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim6SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim5SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim6SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim6SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim6SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "6")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize6")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize6")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize6")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize6")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim6SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim7SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim6SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim7SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim7SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim7SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "7")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize7")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize7")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize7")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize7")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim7SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim8SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim7SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim8SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim8SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim8SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "8")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize8")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize8")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize8")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize8")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim8SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim9SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim8SA")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim9SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim9SA")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim9SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "9")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize9")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize9")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize9")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize9")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim9SA")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim9SA")
 }
 
 
-record(waveform, "S03SIM-DI-OAV-01:CAM:Dimensions_RBV")
+record(waveform, "BL03S-DI-OAV-01:CAM:Dimensions_RBV")
 {
     field(DTYP, "asynInt32ArrayIn")
     field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_DIMENSIONS")
     field(FTVL, "LONG")
     field(NELM, "10")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim0SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim0SA_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim0SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim0SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "0")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize0_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize0_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize0_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize0_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim0SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim1SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim0SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim1SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim1SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim1SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "1")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize1_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize1_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize1_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize1_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim1SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim2SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim1SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim2SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim2SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim2SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "2")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize2_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize2_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize2_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize2_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim2SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim3SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim2SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim3SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim3SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim3SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "3")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize3_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize3_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize3_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize3_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim3SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim4SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim3SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim4SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim4SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim4SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "4")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize4_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize4_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize4_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize4_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim4SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim5SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim4SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim5SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim5SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim5SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "5")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize5_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize5_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize5_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize5_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim5SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim6SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim5SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim6SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim6SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim6SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "6")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize6_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize6_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize6_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize6_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim6SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim7SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim6SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim7SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim7SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim7SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "7")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize7_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize7_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize7_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize7_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim7SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim8SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim7SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim8SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim8SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim8SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "8")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize8_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize8_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize8_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize8_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim8SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:Dim9SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim8SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:Dim9SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CAM:Dim9SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CAM:Dim9SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "9")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ArraySize9_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ArraySize9_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize9_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize9_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CAM:Dim9SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CAM:Dim9SA_RBV")
 }
 
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:BayerPattern_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:BayerPattern_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)BAYER_PATTERN")
@@ -556,28 +556,28 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:BayerPattern_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySizeX_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_SIZE_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySizeY_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_SIZE_Y")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySizeZ_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeZ_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_SIZE_Z")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArraySize_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_SIZE")
@@ -587,7 +587,7 @@ record(longin, "S03SIM-DI-OAV-01:CAM:ArraySize_RBV")
 ###################################################################
 #  These records have information on the compression              # 
 ###################################################################
-record(stringin, "S03SIM-DI-OAV-01:CAM:Codec_RBV")
+record(stringin, "BL03S-DI-OAV-01:CAM:Codec_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CAM,0,1)CODEC")
@@ -595,7 +595,7 @@ record(stringin, "S03SIM-DI-OAV-01:CAM:Codec_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:CompressedSize_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:CompressedSize_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)COMPRESSED_SIZE")
@@ -606,7 +606,7 @@ record(longin, "S03SIM-DI-OAV-01:CAM:CompressedSize_RBV")
 #  These records control the data type                            # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:CAM:DataType")
+record(mbbo, "BL03S-DI-OAV-01:CAM:DataType")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -635,7 +635,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:DataType")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:DataType_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:DataType_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)DATA_TYPE")
@@ -667,7 +667,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:DataType_RBV")
 #  These choices must agree with NDColorMode_t in NDArray.h       # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ColorMode")
+record(mbbo, "BL03S-DI-OAV-01:CAM:ColorMode")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -691,7 +691,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ColorMode")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ColorMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:ColorMode_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)COLOR_MODE")
@@ -717,14 +717,14 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ColorMode_RBV")
 ###################################################################
 #  These records are the uniqueId and time stamps of the array     #
 ###################################################################
-record(longin, "S03SIM-DI-OAV-01:CAM:UniqueId_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:UniqueId_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)UNIQUE_ID")
     field(SCAN, "I/O Intr")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:TimeStamp_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:TimeStamp_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.CAM,0,1)TIME_STAMP")
@@ -732,14 +732,14 @@ record(ai, "S03SIM-DI-OAV-01:CAM:TimeStamp_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:EpicsTSSec_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:EpicsTSSec_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)EPICS_TS_SEC")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:EpicsTSNsec_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:EpicsTSNsec_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)EPICS_TS_NSEC")
@@ -750,13 +750,13 @@ record(longin, "S03SIM-DI-OAV-01:CAM:EpicsTSNsec_RBV")
 #  These records provide statistics on array callbacks and        #
 #  array callback rates                                           # 
 ###################################################################
-record(longout, "S03SIM-DI-OAV-01:CAM:ArrayCounter")
+record(longout, "BL03S-DI-OAV-01:CAM:ArrayCounter")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CAM,0,1)ARRAY_COUNTER")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ArrayCounter_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:ArrayCounter_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_COUNTER")
@@ -764,12 +764,12 @@ record(longin, "S03SIM-DI-OAV-01:CAM:ArrayCounter_RBV")
 }
 
 # Updated rate calculation to use a smoothing factor w/ guard against negative values
-record(calc, "S03SIM-DI-OAV-01:CAM:ArrayRate_RBV")
+record(calc, "BL03S-DI-OAV-01:CAM:ArrayRate_RBV")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CAM:ArrayRate_RBV.LB NPP NMS")   # Previous counter value
-    field(INPB, "S03SIM-DI-OAV-01:CAM:ArrayCounter_RBV NPP NMS")   # Current counter value
+    field(INPA, "BL03S-DI-OAV-01:CAM:ArrayRate_RBV.LB NPP NMS")   # Previous counter value
+    field(INPB, "BL03S-DI-OAV-01:CAM:ArrayCounter_RBV NPP NMS")   # Current counter value
     field(INPC, "1.0")                                # Delta time in seconds
-    field(INPD, "S03SIM-DI-OAV-01:CAM:ArrayRate_RBV.VAL NPP NMS")  # Previous rate
+    field(INPD, "BL03S-DI-OAV-01:CAM:ArrayRate_RBV.VAL NPP NMS")  # Previous rate
     field(INPE, "0.0")                 # Smoothing factor
     field(CALC, "(D*E)/C+MAX(0,B-A)*(1-E)/C")
     field(PREC, "2" )
@@ -780,7 +780,7 @@ record(calc, "S03SIM-DI-OAV-01:CAM:ArrayRate_RBV")
 ###################################################################
 #  These records control NDArray callacks                         # 
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:CAM:ArrayCallbacks")
+record(bo, "BL03S-DI-OAV-01:CAM:ArrayCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -793,7 +793,7 @@ record(bo, "S03SIM-DI-OAV-01:CAM:ArrayCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:ArrayCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:CAM:ArrayCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_CALLBACKS")
@@ -808,7 +808,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:ArrayCallbacks_RBV")
 #  This record contains macro definitions for the attributes      # 
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:CAM:NDAttributesMacros")
+record(waveform, "BL03S-DI-OAV-01:CAM:NDAttributesMacros")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -822,7 +822,7 @@ record(waveform, "S03SIM-DI-OAV-01:CAM:NDAttributesMacros")
 #  This record is the name of a file defining attributes          # 
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:CAM:NDAttributesFile")
+record(waveform, "BL03S-DI-OAV-01:CAM:NDAttributesFile")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -836,7 +836,7 @@ record(waveform, "S03SIM-DI-OAV-01:CAM:NDAttributesFile")
 #  This record defines the status of reading attributes file      # 
 ###################################################################
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:NDAttributesStatus")
+record(mbbi, "BL03S-DI-OAV-01:CAM:NDAttributesStatus")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)ND_ATTRIBUTES_STATUS")
@@ -859,7 +859,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:NDAttributesStatus")
 #  Status of NDArrayPool - number of buffers, memory used etc.    # 
 ###################################################################
 
-record(ai, "S03SIM-DI-OAV-01:CAM:PoolMaxMem")
+record(ai, "BL03S-DI-OAV-01:CAM:PoolMaxMem")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)POOL_MAX_MEMORY")
@@ -869,59 +869,59 @@ record(ai, "S03SIM-DI-OAV-01:CAM:PoolMaxMem")
    field(PINI, "YES")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:PoolUsedMem")
+record(ai, "BL03S-DI-OAV-01:CAM:PoolUsedMem")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)POOL_USED_MEMORY")
    field(PREC, "1")
    field(EGU,  "MB")
    field(SCAN, "1 second")
-   field(FLNK, "S03SIM-DI-OAV-01:CAM:PoolAllocBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:PoolAllocBuffers")
    info(autosaveFields, "SCAN")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:PoolAllocBuffers")
+record(longin, "BL03S-DI-OAV-01:CAM:PoolAllocBuffers")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)POOL_ALLOC_BUFFERS")
-   field(FLNK, "S03SIM-DI-OAV-01:CAM:PoolFreeBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:PoolFreeBuffers")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:PoolFreeBuffers")
+record(longin, "BL03S-DI-OAV-01:CAM:PoolFreeBuffers")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)POOL_FREE_BUFFERS")
-   field(FLNK, "S03SIM-DI-OAV-01:CAM:PoolUsedBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:PoolUsedBuffers")
 }
 
-record(calc, "S03SIM-DI-OAV-01:CAM:PoolUsedBuffers")
+record(calc, "BL03S-DI-OAV-01:CAM:PoolUsedBuffers")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CAM:PoolAllocBuffers NPP MS")
-    field(INPB, "S03SIM-DI-OAV-01:CAM:PoolFreeBuffers NPP MS")
+    field(INPA, "BL03S-DI-OAV-01:CAM:PoolAllocBuffers NPP MS")
+    field(INPB, "BL03S-DI-OAV-01:CAM:PoolFreeBuffers NPP MS")
     field(CALC, "A-B")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CAM:EmptyFreeList")
+record(bo, "BL03S-DI-OAV-01:CAM:EmptyFreeList")
 {
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn(OAV.CAM,0,1)POOL_EMPTY_FREELIST")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:NumQueuedArrays")
+record(longin, "BL03S-DI-OAV-01:CAM:NumQueuedArrays")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)NUM_QUEUED_ARRAYS")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:MaxSizeX_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:MaxSizeX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)MAX_SIZE_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:MaxSizeY_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:MaxSizeY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)MAX_SIZE_Y")
@@ -933,7 +933,7 @@ record(longin, "S03SIM-DI-OAV-01:CAM:MaxSizeY_RBV")
 #  including binning, region start and size                       # 
 ###################################################################
 
-record(longout, "S03SIM-DI-OAV-01:CAM:BinX")
+record(longout, "BL03S-DI-OAV-01:CAM:BinX")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -942,14 +942,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:BinX")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:BinX_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:BinX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)BIN_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:BinY")
+record(longout, "BL03S-DI-OAV-01:CAM:BinY")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -958,14 +958,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:BinY")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:BinY_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:BinY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)BIN_Y")
    field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:MinX")
+record(longout, "BL03S-DI-OAV-01:CAM:MinX")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -974,14 +974,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:MinX")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:MinX_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:MinX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)MIN_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:MinY")
+record(longout, "BL03S-DI-OAV-01:CAM:MinY")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -990,14 +990,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:MinY")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:MinY_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:MinY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)MIN_Y")
    field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:SizeX")
+record(longout, "BL03S-DI-OAV-01:CAM:SizeX")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1006,14 +1006,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:SizeX")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:SizeX_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:SizeX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)SIZE_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:SizeY")
+record(longout, "BL03S-DI-OAV-01:CAM:SizeY")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1022,14 +1022,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:SizeY")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:SizeY_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:SizeY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)SIZE_Y")
    field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CAM:ReverseX")
+record(bo, "BL03S-DI-OAV-01:CAM:ReverseX")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1040,7 +1040,7 @@ record(bo, "S03SIM-DI-OAV-01:CAM:ReverseX")
    info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:ReverseX_RBV")
+record(bi, "BL03S-DI-OAV-01:CAM:ReverseX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)REVERSE_X")
@@ -1049,7 +1049,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:ReverseX_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CAM:ReverseY")
+record(bo, "BL03S-DI-OAV-01:CAM:ReverseY")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1060,7 +1060,7 @@ record(bo, "S03SIM-DI-OAV-01:CAM:ReverseY")
    info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:ReverseY_RBV")
+record(bi, "BL03S-DI-OAV-01:CAM:ReverseY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)REVERSE_Y")
@@ -1074,7 +1074,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:ReverseY_RBV")
 #  These records control the acquisition time and                 #
 #  period                                                         # 
 ###################################################################
-record(ao, "S03SIM-DI-OAV-01:CAM:AcquireTime")
+record(ao, "BL03S-DI-OAV-01:CAM:AcquireTime")
 {
    field(PINI, "YES")
    field(DTYP, "asynFloat64")
@@ -1084,7 +1084,7 @@ record(ao, "S03SIM-DI-OAV-01:CAM:AcquireTime")
    info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:AcquireTime_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:AcquireTime_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)ACQ_TIME")
@@ -1092,7 +1092,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:AcquireTime_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CAM:AcquirePeriod")
+record(ao, "BL03S-DI-OAV-01:CAM:AcquirePeriod")
 {
    field(PINI, "YES")
    field(DTYP, "asynFloat64")
@@ -1102,7 +1102,7 @@ record(ao, "S03SIM-DI-OAV-01:CAM:AcquirePeriod")
    info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:AcquirePeriod_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:AcquirePeriod_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)ACQ_PERIOD")
@@ -1110,7 +1110,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:AcquirePeriod_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:TimeRemaining_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:TimeRemaining_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)TIME_REMAINING")
@@ -1121,7 +1121,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:TimeRemaining_RBV")
 ###################################################################
 #  These records control the gain                                 # 
 ###################################################################
-record(ao, "S03SIM-DI-OAV-01:CAM:Gain")
+record(ao, "BL03S-DI-OAV-01:CAM:Gain")
 {
    field(PINI, "YES")
    field(DTYP, "asynFloat64")
@@ -1131,7 +1131,7 @@ record(ao, "S03SIM-DI-OAV-01:CAM:Gain")
    info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:Gain_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:Gain_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)GAIN")
@@ -1142,7 +1142,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:Gain_RBV")
 ###################################################################
 #  These records control the frame type                           # 
 ###################################################################
-record(mbbo, "S03SIM-DI-OAV-01:CAM:FrameType")
+record(mbbo, "BL03S-DI-OAV-01:CAM:FrameType")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1159,7 +1159,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:FrameType")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:FrameType_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:FrameType_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)FRAME_TYPE")
@@ -1177,7 +1177,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:FrameType_RBV")
 ###################################################################
 #  These records control the acquisition mode                     # 
 ###################################################################
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ImageMode")
+record(mbbo, "BL03S-DI-OAV-01:CAM:ImageMode")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1192,7 +1192,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ImageMode")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ImageMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:ImageMode_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)IMAGE_MODE")
@@ -1208,7 +1208,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ImageMode_RBV")
 ###################################################################
 #  These records control the trigger mode                         # 
 ###################################################################
-record(mbbo, "S03SIM-DI-OAV-01:CAM:TriggerMode")
+record(mbbo, "BL03S-DI-OAV-01:CAM:TriggerMode")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1221,7 +1221,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:TriggerMode")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:TriggerMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:TriggerMode_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)TRIGGER_MODE")
@@ -1236,7 +1236,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:TriggerMode_RBV")
 #  These records control the number of exposures and              #
 #  number of images                                               # 
 ###################################################################
-record(longout, "S03SIM-DI-OAV-01:CAM:NumExposures")
+record(longout, "BL03S-DI-OAV-01:CAM:NumExposures")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1245,20 +1245,20 @@ record(longout, "S03SIM-DI-OAV-01:CAM:NumExposures")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:NumExposures_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:NumExposures_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)NEXPOSURES")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:NumExposuresCounter_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:NumExposuresCounter_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)NEXPOSURES_COUNTER")
    field(SCAN, "I/O Intr")
 }
-record(longout, "S03SIM-DI-OAV-01:CAM:NumImages")
+record(longout, "BL03S-DI-OAV-01:CAM:NumImages")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1267,14 +1267,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:NumImages")
    info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:NumImages_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:NumImages_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)NIMAGES")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:NumImagesCounter_RBV")
+record(longin, "BL03S-DI-OAV-01:CAM:NumImagesCounter_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)NIMAGES_COUNTER")
@@ -1285,7 +1285,7 @@ record(longin, "S03SIM-DI-OAV-01:CAM:NumImagesCounter_RBV")
 #  These records are for the detector state                       # 
 ###################################################################
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:DetectorState_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:DetectorState_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)STATUS")
@@ -1330,7 +1330,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:DetectorState_RBV")
 ###################################################################
 
 # Status message.
-record(waveform, "S03SIM-DI-OAV-01:CAM:StatusMessage_RBV")
+record(waveform, "BL03S-DI-OAV-01:CAM:StatusMessage_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.CAM,0,1)STATUS_MESSAGE")
@@ -1339,7 +1339,7 @@ record(waveform, "S03SIM-DI-OAV-01:CAM:StatusMessage_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(waveform, "S03SIM-DI-OAV-01:CAM:StringToServer_RBV")
+record(waveform, "BL03S-DI-OAV-01:CAM:StringToServer_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.CAM,0,1)STRING_TO_SERVER")
@@ -1348,7 +1348,7 @@ record(waveform, "S03SIM-DI-OAV-01:CAM:StringToServer_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(waveform, "S03SIM-DI-OAV-01:CAM:StringFromServer_RBV")
+record(waveform, "BL03S-DI-OAV-01:CAM:StringFromServer_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.CAM,0,1)STRING_FROM_SERVER")
@@ -1360,7 +1360,7 @@ record(waveform, "S03SIM-DI-OAV-01:CAM:StringFromServer_RBV")
 ################################################################@###
 #  This record can be used to force a read of the detector status  # 
 ####################################################################
-record(bo,"S03SIM-DI-OAV-01:CAM:ReadStatus") {
+record(bo,"BL03S-DI-OAV-01:CAM:ReadStatus") {
     field(DTYP,"asynInt32")
     field(OUT, "@asyn(OAV.CAM,0,1)READ_STATUS")
     field(VAL, "1")
@@ -1372,7 +1372,7 @@ record(bo,"S03SIM-DI-OAV-01:CAM:ReadStatus") {
 #  These records control the shutter                              # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ShutterMode")
+record(mbbo, "BL03S-DI-OAV-01:CAM:ShutterMode")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -1387,7 +1387,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ShutterMode")
     info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ShutterMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:ShutterMode_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)SHUTTER_MODE")
@@ -1400,7 +1400,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ShutterMode_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CAM:ShutterControl")
+record(bo, "BL03S-DI-OAV-01:CAM:ShutterControl")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -1410,7 +1410,7 @@ record(bo, "S03SIM-DI-OAV-01:CAM:ShutterControl")
     field(VAL,  "0")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:ShutterControl_RBV")
+record(bi, "BL03S-DI-OAV-01:CAM:ShutterControl_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)SHUTTER_CONTROL")
@@ -1419,7 +1419,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:ShutterControl_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:ShutterStatus_RBV")
+record(bi, "BL03S-DI-OAV-01:CAM:ShutterStatus_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)SHUTTER_STATUS")
@@ -1430,7 +1430,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:ShutterStatus_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CAM:ShutterOpenDelay")
+record(ao, "BL03S-DI-OAV-01:CAM:ShutterOpenDelay")
 {
    field(PINI, "YES")
    field(DTYP, "asynFloat64")
@@ -1440,7 +1440,7 @@ record(ao, "S03SIM-DI-OAV-01:CAM:ShutterOpenDelay")
    info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:ShutterOpenDelay_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:ShutterOpenDelay_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)SHUTTER_OPEN_DELAY")
@@ -1448,7 +1448,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:ShutterOpenDelay_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CAM:ShutterCloseDelay")
+record(ao, "BL03S-DI-OAV-01:CAM:ShutterCloseDelay")
 {
    field(PINI, "YES")
    field(DTYP, "asynFloat64")
@@ -1458,7 +1458,7 @@ record(ao, "S03SIM-DI-OAV-01:CAM:ShutterCloseDelay")
    info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:ShutterCloseDelay_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:ShutterCloseDelay_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)SHUTTER_CLOSE_DELAY")
@@ -1467,7 +1467,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:ShutterCloseDelay_RBV")
 }
 
 # This record changes state when the driver opens/closes an EPICS shutter
-record(bi, "S03SIM-DI-OAV-01:CAM:ShutterControlEPICS")
+record(bi, "BL03S-DI-OAV-01:CAM:ShutterControlEPICS")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CAM,0,1)SHUTTER_CONTROL_EPICS")
@@ -1476,18 +1476,18 @@ record(bi, "S03SIM-DI-OAV-01:CAM:ShutterControlEPICS")
     field(ONAM, "Open")
     field(OSV,  "MINOR")
     field(SCAN, "I/O Intr")
-    field(FLNK, "S03SIM-DI-OAV-01:CAM:ShutterFanout.PROC")
+    field(FLNK, "BL03S-DI-OAV-01:CAM:ShutterFanout.PROC")
 }
 
-record(fanout, "S03SIM-DI-OAV-01:CAM:ShutterFanout")
+record(fanout, "BL03S-DI-OAV-01:CAM:ShutterFanout")
 {
-    field(LNK1, "S03SIM-DI-OAV-01:CAM:ShutterOpenEPICS.PROC PP MS")
-    field(LNK2, "S03SIM-DI-OAV-01:CAM:ShutterCloseEPICS.PROC PP MS")
+    field(LNK1, "BL03S-DI-OAV-01:CAM:ShutterOpenEPICS.PROC PP MS")
+    field(LNK2, "BL03S-DI-OAV-01:CAM:ShutterCloseEPICS.PROC PP MS")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CAM:ShutterOpenEPICS")
+record(calcout, "BL03S-DI-OAV-01:CAM:ShutterOpenEPICS")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CAM:ShutterControlEPICS.VAL NPP NMS")
+    field(INPA, "BL03S-DI-OAV-01:CAM:ShutterControlEPICS.VAL NPP NMS")
     field(CALC, "A")
     field(OOPT, "Transition To Non-zero")
     field(DOPT, "Use OCAL")
@@ -1496,9 +1496,9 @@ record(calcout, "S03SIM-DI-OAV-01:CAM:ShutterOpenEPICS")
     info(autosaveFields, "OUT OCAL")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CAM:ShutterCloseEPICS")
+record(calcout, "BL03S-DI-OAV-01:CAM:ShutterCloseEPICS")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CAM:ShutterControlEPICS.VAL NPP NMS")
+    field(INPA, "BL03S-DI-OAV-01:CAM:ShutterControlEPICS.VAL NPP NMS")
     field(CALC, "A")
     field(OOPT, "Transition To Zero")
     field(DOPT, "Use OCAL")
@@ -1507,7 +1507,7 @@ record(calcout, "S03SIM-DI-OAV-01:CAM:ShutterCloseEPICS")
     info(autosaveFields, "OUT OCAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ShutterStatusEPICS_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:ShutterStatusEPICS_RBV")
 {
     field(DTYP, "Raw Soft Channel")
     field(INP,  "test CP MS")
@@ -1524,7 +1524,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ShutterStatusEPICS_RBV")
 #  These records control the detector temperature                 # 
 ###################################################################
  
-record(ao, "S03SIM-DI-OAV-01:CAM:Temperature")
+record(ao, "BL03S-DI-OAV-01:CAM:Temperature")
 {
    field(PINI, "YES")
    field(DTYP, "asynFloat64")
@@ -1535,7 +1535,7 @@ record(ao, "S03SIM-DI-OAV-01:CAM:Temperature")
    info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:Temperature_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:Temperature_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)TEMPERATURE")
@@ -1544,7 +1544,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:Temperature_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:TemperatureActual")
+record(ai, "BL03S-DI-OAV-01:CAM:TemperatureActual")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)TEMPERATURE_ACTUAL")
@@ -1562,21 +1562,21 @@ record(ai, "S03SIM-DI-OAV-01:CAM:TemperatureActual")
 
 # Some cameras use both AcquisitionFrameRate and AcquirePeriod.
 # Make AcquirePeriod update if FrameRate is changed.
-record(ao, "S03SIM-DI-OAV-01:CAM:AcquirePeriod")
+record(ao, "BL03S-DI-OAV-01:CAM:AcquirePeriod")
 {
    info(ai:READBACK, "1")
 }
 
 # This record hides the fact that some cameras use FrameRate and some use FrameRateAbs
 # This is not PINI=YES because AcquirePeriod is and they control the same thing
-record(ao, "S03SIM-DI-OAV-01:CAM:FrameRate")
+record(ao, "BL03S-DI-OAV-01:CAM:FrameRate")
 {
    field(DTYP, "asynFloat64")
    field(OUT,  "@asyn(OAV.CAM 0)GC_FRAMERATE")
    field(PREC, "3")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:FrameRate_RBV")
+record(ai, "BL03S-DI-OAV-01:CAM:FrameRate_RBV")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM 0)GC_FRAMERATE")
@@ -1586,7 +1586,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:FrameRate_RBV")
 
 # Some cameras (Basler, Point Grey, FLIR) use AcquisitionFrameRateEnable or AcquisitionFrameRateEnabled
 # This record hides the fact that the feature name may differ; the record name is always the same.
-record(bo, "S03SIM-DI-OAV-01:CAM:FrameRateEnable")
+record(bo, "BL03S-DI-OAV-01:CAM:FrameRateEnable")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1595,7 +1595,7 @@ record(bo, "S03SIM-DI-OAV-01:CAM:FrameRateEnable")
    field(ONAM, "Yes")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CAM:FrameRateEnable_RBV")
+record(bi, "BL03S-DI-OAV-01:CAM:FrameRateEnable_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_FRAMERATE_ENABLE")
@@ -1605,7 +1605,7 @@ record(bi, "S03SIM-DI-OAV-01:CAM:FrameRateEnable_RBV")
 }
 
 # This record is used to ensure there is a record for TriggerSource even if there is no such GenICam feature
-record(mbbo, "S03SIM-DI-OAV-01:CAM:TriggerSource")
+record(mbbo, "BL03S-DI-OAV-01:CAM:TriggerSource")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1614,7 +1614,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:TriggerSource")
    field(ZRVL, "0")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:TriggerSource_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:TriggerSource_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_TRIGGER_SOURCE")
@@ -1624,7 +1624,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:TriggerSource_RBV")
 }
 
 # This record is used to ensure there is a record for TriggerOverlap even if there is no such GenICam feature
-record(mbbo, "S03SIM-DI-OAV-01:CAM:TriggerOverlap")
+record(mbbo, "BL03S-DI-OAV-01:CAM:TriggerOverlap")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1633,7 +1633,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:TriggerOverlap")
    field(ZRVL, "0")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:TriggerOverlap_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:TriggerOverlap_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_TRIGGER_OVERLAP")
@@ -1643,7 +1643,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:TriggerOverlap_RBV")
 }
 
 # This record is used to ensure there is a record for TriggerSoftware even if there is no such GenICam feature
-record(bo, "S03SIM-DI-OAV-01:CAM:TriggerSoftware")
+record(bo, "BL03S-DI-OAV-01:CAM:TriggerSoftware")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1653,7 +1653,7 @@ record(bo, "S03SIM-DI-OAV-01:CAM:TriggerSoftware")
 }
 
 # This record is used to ensure there is a record for ExposureMode even if there is no such GenICam feature
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ExposureMode")
+record(mbbo, "BL03S-DI-OAV-01:CAM:ExposureMode")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1662,7 +1662,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ExposureMode")
    field(ZRVL, "0")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ExposureMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:ExposureMode_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_EXPOSURE_MODE")
@@ -1672,7 +1672,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ExposureMode_RBV")
 }
 
 # This record is used to ensure there is a record for ExposureAuto even if there is no such GenICam feature
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ExposureAuto")
+record(mbbo, "BL03S-DI-OAV-01:CAM:ExposureAuto")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1681,7 +1681,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ExposureAuto")
    field(ZRVL, "0")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ExposureAuto_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:ExposureAuto_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_EXPOSURE_AUTO")
@@ -1691,7 +1691,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ExposureAuto_RBV")
 }
 
 # This record is used to ensure there is a record for GainAuto even if there is no such GenICam feature
-record(mbbo, "S03SIM-DI-OAV-01:CAM:GainAuto")
+record(mbbo, "BL03S-DI-OAV-01:CAM:GainAuto")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1700,7 +1700,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:GainAuto")
    field(ZRVL, "0")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:GainAuto_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:GainAuto_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_GAIN_AUTO")
@@ -1710,7 +1710,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:GainAuto_RBV")
 }
 
 # This record is used to ensure there is a record for PixelFormat even if there is no such GenICam feature
-record(mbbo, "S03SIM-DI-OAV-01:CAM:PixelFormat")
+record(mbbo, "BL03S-DI-OAV-01:CAM:PixelFormat")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -1719,7 +1719,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:PixelFormat")
    field(ZRVL, "0")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:PixelFormat_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CAM:PixelFormat_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM 0)GC_PIXEL_FORMAT")
@@ -1728,7 +1728,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:PixelFormat_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:ARFramesCompleted")
+record(ai, "BL03S-DI-OAV-01:CAM:ARFramesCompleted")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_COMPLETED")
@@ -1736,7 +1736,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:ARFramesCompleted")
    info(autosaveFields, "DESC LLSV LOLO LOW LSV")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:ARFrameFailures")
+record(ai, "BL03S-DI-OAV-01:CAM:ARFrameFailures")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_FAILURES")
@@ -1744,7 +1744,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:ARFrameFailures")
    info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CAM:ARFrameUnderruns")
+record(ai, "BL03S-DI-OAV-01:CAM:ARFrameUnderruns")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_UNDERRUNS")
@@ -1752,7 +1752,7 @@ record(ai, "S03SIM-DI-OAV-01:CAM:ARFrameUnderruns")
    info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ARMissingPackets")
+record(longin, "BL03S-DI-OAV-01:CAM:ARMissingPackets")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_MISSING_PKTS")
@@ -1760,7 +1760,7 @@ record(longin, "S03SIM-DI-OAV-01:CAM:ARMissingPackets")
    info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CAM:ARResentPackets")
+record(longin, "BL03S-DI-OAV-01:CAM:ARResentPackets")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_RESENT_PKTS")
@@ -1768,7 +1768,7 @@ record(longin, "S03SIM-DI-OAV-01:CAM:ARResentPackets")
    info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
 }
 
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ARPacketResendEnable")
+record(mbbo, "BL03S-DI-OAV-01:CAM:ARPacketResendEnable")
 {
    field(DESC, "Packet resend enable")
    field(DTYP, "asynInt32")
@@ -1782,7 +1782,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ARPacketResendEnable")
    info(autosaveFields, "DESC ONSV ZRSV PINI VAL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:ARPacketTimeout")
+record(longout, "BL03S-DI-OAV-01:CAM:ARPacketTimeout")
 {
    field(DESC, "Delay in us before packet resend request")
    field(DTYP, "asynInt32")
@@ -1793,7 +1793,7 @@ record(longout, "S03SIM-DI-OAV-01:CAM:ARPacketTimeout")
    info(autosaveFields, "DESC HHSV HIHI HIGH HSV LLSV LOLO LOW LSV PINI VAL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:ARFrameRetention")
+record(longout, "BL03S-DI-OAV-01:CAM:ARFrameRetention")
 {
    field(DESC, "Frame timeout in us after last packet")
    field(DTYP, "asynInt32")
@@ -1804,14 +1804,14 @@ record(longout, "S03SIM-DI-OAV-01:CAM:ARFrameRetention")
    info(autosaveFields, "DESC HHSV HIHI HIGH HSV LLSV LOLO LOW LSV PINI VAL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:ARResetCamera")
+record(longout, "BL03S-DI-OAV-01:CAM:ARResetCamera")
 {
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn(OAV.CAM,0,1)ARAVIS_RESET")
-   field(FLNK, "S03SIM-DI-OAV-01:CAM:ARConnectCamera")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:ARConnectCamera")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CAM:ARConnectCamera")
+record(longout, "BL03S-DI-OAV-01:CAM:ARConnectCamera")
 {
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn(OAV.CAM,0,1)ARAVIS_CONNECTION")
@@ -1819,16 +1819,16 @@ record(longout, "S03SIM-DI-OAV-01:CAM:ARConnectCamera")
    field(PINI, "1")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CAM:ARCheckConnection")
+record(calcout, "BL03S-DI-OAV-01:CAM:ARCheckConnection")
 {
    field(SCAN, "1 second")
-   field(INPA, "S03SIM-DI-OAV-01:CAM:ARConnectCamera.SEVR CP")
+   field(INPA, "BL03S-DI-OAV-01:CAM:ARConnectCamera.SEVR CP")
    field(CALC, "A==0")
    field(OOPT, "When Non-zero")
-   field(OUT,  "S03SIM-DI-OAV-01:CAM:ARConnectCamera.PROC PP")
+   field(OUT,  "BL03S-DI-OAV-01:CAM:ARConnectCamera.PROC PP")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ARConvertPixelFormat_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:CAM:ARConvertPixelFormat_RBV") {
   field(DTYP, "asynInt32")
   field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_CONVERT_PIXEL_FORMAT")
   field(ZRST, "Mono16Low")
@@ -1842,7 +1842,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ARConvertPixelFormat_RBV") {
 
 ## When unpacking Mono12Packed or Mono12p selects whether 16-bit output is 
 ## left shifted by 4 bits (Mono16High) or not (Mono16Low)
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ARConvertPixelFormat") {
+record(mbbo, "BL03S-DI-OAV-01:CAM:ARConvertPixelFormat") {
   field(DTYP, "asynInt32")
   field(OUT,  "@asyn(OAV.CAM,0,1)ARAVIS_CONVERT_PIXEL_FORMAT")
   field(ZRST, "Mono16Low")
@@ -1854,7 +1854,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ARConvertPixelFormat") {
 }
 
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ARShiftDir_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:CAM:ARShiftDir_RBV") {
   field(DTYP, "asynInt32")
   field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_SHIFT_DIR")
   field(ZRST, "None")
@@ -1868,7 +1868,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ARShiftDir_RBV") {
 }
 
 ## Select no shift, left shift, or right shift when reading data 
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ARShiftDir") {
+record(mbbo, "BL03S-DI-OAV-01:CAM:ARShiftDir") {
   field(DTYP, "asynInt32")
   field(OUT,  "@asyn(OAV.CAM,0,1)ARAVIS_SHIFT_DIR")
   field(ZRST, "None")
@@ -1881,7 +1881,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ARShiftDir") {
   info(autosaveFields, "DESC ZRSV ONSV VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CAM:ARShiftBits_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:CAM:ARShiftBits_RBV") {
   field(DTYP, "asynInt32")
   field(INP,  "@asyn(OAV.CAM,0,1)ARAVIS_SHIFT_BITS")
   field(ZRST, "1")
@@ -1905,7 +1905,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CAM:ARShiftBits_RBV") {
 }
 
 ## Selects how many bits to shift left or right when reading data 
-record(mbbo, "S03SIM-DI-OAV-01:CAM:ARShiftBits") {
+record(mbbo, "BL03S-DI-OAV-01:CAM:ARShiftBits") {
   field(DTYP, "asynInt32")
   field(OUT,  "@asyn(OAV.CAM,0,1)ARAVIS_SHIFT_BITS")
   field(ZRST, "1")
@@ -1965,7 +1965,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CAM:ARShiftBits") {
 #  This record contains the version of ADCore                     #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:ADCoreVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:ADCoreVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)ADCORE_VERSION")
@@ -1977,7 +1977,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:ADCoreVersion_RBV")
 #  This record contains the version of the driver or plugin       #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:DriverVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:DriverVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)DRIVER_VERSION")
@@ -1989,7 +1989,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:DriverVersion_RBV")
 #  This record contains the asyn port name of this detector       #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:PortName_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:PortName_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)PORT_NAME_SELF")
@@ -2001,7 +2001,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:PortName_RBV")
 #  These records contain basic information about the detector     # 
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:Manufacturer_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:Manufacturer_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)MANUFACTURER")
@@ -2009,7 +2009,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:Manufacturer_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:Model_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:Model_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)MODEL")
@@ -2017,7 +2017,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:Model_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:SerialNumber_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:SerialNumber_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)SERIAL_NUMBER")
@@ -2025,7 +2025,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:SerialNumber_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:SDKVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:SDKVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)SDK_VERSION")
@@ -2033,7 +2033,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:SDKVersion_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:FirmwareVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:FirmwareVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)FIRMWARE_VERSION")
@@ -2045,17 +2045,17 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:FirmwareVersion_RBV")
 #  These records control acquisition start and stop               #
 ###################################################################
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:Acquire") {
+record(bo, "BL03S-DI-OAV-01:MXSC:Acquire") {
    field(DTYP, "asynInt32")
    field(OUT, "@asyn(OAV.MXSC,0,1)ACQUIRE")
    field(ZNAM, "Done")
    field(ONAM, "Acquire")
    field(VAL,  "0")
-   field(FLNK, "S03SIM-DI-OAV-01:MXSC:SetAcquireBusy")
+   field(FLNK, "BL03S-DI-OAV-01:MXSC:SetAcquireBusy")
    info(ai:READBACK, "1")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:Acquire_RBV") {
+record(bi, "BL03S-DI-OAV-01:MXSC:Acquire_RBV") {
    field(DTYP, "asynInt32")
    field(INP, "@asyn(OAV.MXSC,0,1)ACQUIRE")
    field(ZNAM, "Done")
@@ -2065,15 +2065,15 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:Acquire_RBV") {
    field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:MXSC:SetAcquireBusy")
+record(calcout, "BL03S-DI-OAV-01:MXSC:SetAcquireBusy")
 {
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:Acquire NPP")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:Acquire NPP")
     field(CALC, "A")
     field(OOPT, "Transition To Non-zero")
-    field(OUT,  "S03SIM-DI-OAV-01:MXSC:AcquireBusy PP")
+    field(OUT,  "BL03S-DI-OAV-01:MXSC:AcquireBusy PP")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:AcquireBusy") {
+record(bi, "BL03S-DI-OAV-01:MXSC:AcquireBusy") {
    field(ZNAM, "Done")
    field(ZSV,  "NO_ALARM")
    field(ONAM, "Acquiring")
@@ -2081,7 +2081,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:AcquireBusy") {
    field(VAL,  "0")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:AcquireBusyCB") {
+record(bi, "BL03S-DI-OAV-01:MXSC:AcquireBusyCB") {
    field(DTYP, "asynInt32")
    field(INP, "@asyn(OAV.MXSC,0,1)ACQUIRE_BUSY")
    field(ZNAM, "Done")
@@ -2091,14 +2091,14 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:AcquireBusyCB") {
    field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:MXSC:ClearAcquireBusy") {
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:AcquireBusyCB CP")
+record(calcout, "BL03S-DI-OAV-01:MXSC:ClearAcquireBusy") {
+    field(INPA, "BL03S-DI-OAV-01:MXSC:AcquireBusyCB CP")
     field(CALC, "A")
     field(OOPT, "Transition To Zero")
-    field(OUT,  "S03SIM-DI-OAV-01:MXSC:AcquireBusy PP")
+    field(OUT,  "BL03S-DI-OAV-01:MXSC:AcquireBusy PP")
 }
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:WaitForPlugins") {
+record(bo, "BL03S-DI-OAV-01:MXSC:WaitForPlugins") {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT, "@asyn(OAV.MXSC,0,1)WAIT_FOR_PLUGINS")
@@ -2111,13 +2111,13 @@ record(bo, "S03SIM-DI-OAV-01:MXSC:WaitForPlugins") {
 #  These records are the array size and data type                 #
 ###################################################################
 # The number of dimensions
-record(longout, "S03SIM-DI-OAV-01:MXSC:NDimensions")
+record(longout, "BL03S-DI-OAV-01:MXSC:NDimensions")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)ARRAY_NDIMENSIONS")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:NDimensions_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:NDimensions_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_NDIMENSIONS")
@@ -2125,346 +2125,346 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:NDimensions_RBV")
 }
 
 # The array dimensions waveform records
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Dimensions")
+record(waveform, "BL03S-DI-OAV-01:MXSC:Dimensions")
 {
     field(DTYP, "asynInt32ArrayOut")
     field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_DIMENSIONS")
     field(FTVL, "LONG")
     field(NELM, "10")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim0SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim0SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim0SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim0SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "0")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize0")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize0")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize0")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim0SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim1SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim0SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim1SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim1SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim1SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "1")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize1")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize1")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize1")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize1")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim1SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim2SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim1SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim2SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim2SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim2SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "2")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize2")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize2")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize2")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize2")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim2SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim3SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim2SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim3SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim3SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim3SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "3")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize3")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize3")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize3")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize3")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim3SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim4SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim3SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim4SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim4SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim4SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "4")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize4")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize4")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize4")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize4")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim4SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim5SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim4SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim5SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim5SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim5SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "5")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize5")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize5")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize5")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize5")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim5SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim6SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim5SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim6SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim6SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim6SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "6")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize6")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize6")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize6")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize6")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim6SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim7SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim6SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim7SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim7SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim7SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "7")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize7")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize7")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize7")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize7")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim7SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim8SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim7SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim8SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim8SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim8SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "8")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize8")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize8")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize8")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize8")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim8SA")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim9SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim8SA")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim9SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim9SA")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim9SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "9")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize9")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize9")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize9")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize9")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim9SA")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim9SA")
 }
 
 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV")
+record(waveform, "BL03S-DI-OAV-01:MXSC:Dimensions_RBV")
 {
     field(DTYP, "asynInt32ArrayIn")
     field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_DIMENSIONS")
     field(FTVL, "LONG")
     field(NELM, "10")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim0SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim0SA_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim0SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim0SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "0")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize0_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize0_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize0_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize0_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim0SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim1SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim0SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim1SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim1SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim1SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "1")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize1_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize1_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize1_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize1_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim1SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim2SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim1SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim2SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim2SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim2SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "2")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize2_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize2_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize2_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize2_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim2SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim3SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim2SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim3SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim3SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim3SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "3")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize3_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize3_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize3_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize3_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim3SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim4SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim3SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim4SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim4SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim4SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "4")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize4_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize4_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize4_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize4_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim4SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim5SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim4SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim5SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim5SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim5SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "5")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize5_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize5_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize5_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize5_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim5SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim6SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim5SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim6SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim6SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim6SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "6")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize6_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize6_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize6_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize6_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim6SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim7SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim6SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim7SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim7SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim7SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "7")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize7_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize7_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize7_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize7_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim7SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim8SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim7SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim8SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim8SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim8SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "8")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize8_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize8_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize8_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize8_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim8SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:Dim9SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim8SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim9SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:MXSC:Dim9SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:MXSC:Dim9SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "9")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:ArraySize9_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:ArraySize9_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize9_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize9_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MXSC:Dim9SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MXSC:Dim9SA_RBV")
 }
 
 
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:BayerPattern_RBV")
+record(mbbi, "BL03S-DI-OAV-01:MXSC:BayerPattern_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)BAYER_PATTERN")
@@ -2479,28 +2479,28 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:BayerPattern_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySizeX_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySizeX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_SIZE_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySizeY_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySizeY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_SIZE_Y")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySizeZ_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySizeZ_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_SIZE_Z")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_SIZE")
@@ -2510,7 +2510,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:ArraySize_RBV")
 ###################################################################
 #  These records have information on the compression              # 
 ###################################################################
-record(stringin, "S03SIM-DI-OAV-01:MXSC:Codec_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:Codec_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)CODEC")
@@ -2518,7 +2518,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:Codec_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:CompressedSize_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:CompressedSize_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)COMPRESSED_SIZE")
@@ -2529,7 +2529,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:CompressedSize_RBV")
 #  These records control the data type                            # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:MXSC:DataType")
+record(mbbo, "BL03S-DI-OAV-01:MXSC:DataType")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -2558,7 +2558,7 @@ record(mbbo, "S03SIM-DI-OAV-01:MXSC:DataType")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:DataType_RBV")
+record(mbbi, "BL03S-DI-OAV-01:MXSC:DataType_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)DATA_TYPE")
@@ -2590,7 +2590,7 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:DataType_RBV")
 #  These choices must agree with NDColorMode_t in NDArray.h       # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:MXSC:ColorMode")
+record(mbbo, "BL03S-DI-OAV-01:MXSC:ColorMode")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -2614,7 +2614,7 @@ record(mbbo, "S03SIM-DI-OAV-01:MXSC:ColorMode")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:ColorMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:MXSC:ColorMode_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)COLOR_MODE")
@@ -2640,14 +2640,14 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:ColorMode_RBV")
 ###################################################################
 #  These records are the uniqueId and time stamps of the array     #
 ###################################################################
-record(longin, "S03SIM-DI-OAV-01:MXSC:UniqueId_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:UniqueId_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)UNIQUE_ID")
     field(SCAN, "I/O Intr")
 }
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:TimeStamp_RBV")
+record(ai, "BL03S-DI-OAV-01:MXSC:TimeStamp_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.MXSC,0,1)TIME_STAMP")
@@ -2655,14 +2655,14 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:TimeStamp_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:EpicsTSSec_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:EpicsTSSec_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)EPICS_TS_SEC")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:EpicsTSNsec_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:EpicsTSNsec_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)EPICS_TS_NSEC")
@@ -2673,13 +2673,13 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:EpicsTSNsec_RBV")
 #  These records provide statistics on array callbacks and        #
 #  array callback rates                                           # 
 ###################################################################
-record(longout, "S03SIM-DI-OAV-01:MXSC:ArrayCounter")
+record(longout, "BL03S-DI-OAV-01:MXSC:ArrayCounter")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)ARRAY_COUNTER")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:ArrayCounter_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:ArrayCounter_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_COUNTER")
@@ -2687,12 +2687,12 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:ArrayCounter_RBV")
 }
 
 # Updated rate calculation to use a smoothing factor w/ guard against negative values
-record(calc, "S03SIM-DI-OAV-01:MXSC:ArrayRate_RBV")
+record(calc, "BL03S-DI-OAV-01:MXSC:ArrayRate_RBV")
 {
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:ArrayRate_RBV.LB NPP NMS")   # Previous counter value
-    field(INPB, "S03SIM-DI-OAV-01:MXSC:ArrayCounter_RBV NPP NMS")   # Current counter value
+    field(INPA, "BL03S-DI-OAV-01:MXSC:ArrayRate_RBV.LB NPP NMS")   # Previous counter value
+    field(INPB, "BL03S-DI-OAV-01:MXSC:ArrayCounter_RBV NPP NMS")   # Current counter value
     field(INPC, "1.0")                                # Delta time in seconds
-    field(INPD, "S03SIM-DI-OAV-01:MXSC:ArrayRate_RBV.VAL NPP NMS")  # Previous rate
+    field(INPD, "BL03S-DI-OAV-01:MXSC:ArrayRate_RBV.VAL NPP NMS")  # Previous rate
     field(INPE, "0.0")                 # Smoothing factor
     field(CALC, "(D*E)/C+MAX(0,B-A)*(1-E)/C")
     field(PREC, "2" )
@@ -2703,7 +2703,7 @@ record(calc, "S03SIM-DI-OAV-01:MXSC:ArrayRate_RBV")
 ###################################################################
 #  These records control NDArray callacks                         # 
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:MXSC:ArrayCallbacks")
+record(bo, "BL03S-DI-OAV-01:MXSC:ArrayCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -2716,7 +2716,7 @@ record(bo, "S03SIM-DI-OAV-01:MXSC:ArrayCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:ArrayCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:MXSC:ArrayCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ARRAY_CALLBACKS")
@@ -2731,7 +2731,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:ArrayCallbacks_RBV")
 #  This record contains macro definitions for the attributes      # 
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:NDAttributesMacros")
+record(waveform, "BL03S-DI-OAV-01:MXSC:NDAttributesMacros")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -2745,7 +2745,7 @@ record(waveform, "S03SIM-DI-OAV-01:MXSC:NDAttributesMacros")
 #  This record is the name of a file defining attributes          # 
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:NDAttributesFile")
+record(waveform, "BL03S-DI-OAV-01:MXSC:NDAttributesFile")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -2759,7 +2759,7 @@ record(waveform, "S03SIM-DI-OAV-01:MXSC:NDAttributesFile")
 #  This record defines the status of reading attributes file      # 
 ###################################################################
 
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:NDAttributesStatus")
+record(mbbi, "BL03S-DI-OAV-01:MXSC:NDAttributesStatus")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ND_ATTRIBUTES_STATUS")
@@ -2782,7 +2782,7 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:NDAttributesStatus")
 #  Status of NDArrayPool - number of buffers, memory used etc.    # 
 ###################################################################
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:PoolMaxMem")
+record(ai, "BL03S-DI-OAV-01:MXSC:PoolMaxMem")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.MXSC,0,1)POOL_MAX_MEMORY")
@@ -2792,45 +2792,45 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:PoolMaxMem")
    field(PINI, "YES")
 }
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:PoolUsedMem")
+record(ai, "BL03S-DI-OAV-01:MXSC:PoolUsedMem")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.MXSC,0,1)POOL_USED_MEMORY")
    field(PREC, "1")
    field(EGU,  "MB")
    field(SCAN, "1 second")
-   field(FLNK, "S03SIM-DI-OAV-01:MXSC:PoolAllocBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:MXSC:PoolAllocBuffers")
    info(autosaveFields, "SCAN")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:PoolAllocBuffers")
+record(longin, "BL03S-DI-OAV-01:MXSC:PoolAllocBuffers")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)POOL_ALLOC_BUFFERS")
-   field(FLNK, "S03SIM-DI-OAV-01:MXSC:PoolFreeBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:MXSC:PoolFreeBuffers")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:PoolFreeBuffers")
+record(longin, "BL03S-DI-OAV-01:MXSC:PoolFreeBuffers")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)POOL_FREE_BUFFERS")
-   field(FLNK, "S03SIM-DI-OAV-01:MXSC:PoolUsedBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:MXSC:PoolUsedBuffers")
 }
 
-record(calc, "S03SIM-DI-OAV-01:MXSC:PoolUsedBuffers")
+record(calc, "BL03S-DI-OAV-01:MXSC:PoolUsedBuffers")
 {
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:PoolAllocBuffers NPP MS")
-    field(INPB, "S03SIM-DI-OAV-01:MXSC:PoolFreeBuffers NPP MS")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:PoolAllocBuffers NPP MS")
+    field(INPB, "BL03S-DI-OAV-01:MXSC:PoolFreeBuffers NPP MS")
     field(CALC, "A-B")
 }
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:EmptyFreeList")
+record(bo, "BL03S-DI-OAV-01:MXSC:EmptyFreeList")
 {
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn(OAV.MXSC,0,1)POOL_EMPTY_FREELIST")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:NumQueuedArrays")
+record(longin, "BL03S-DI-OAV-01:MXSC:NumQueuedArrays")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.MXSC,0,1)NUM_QUEUED_ARRAYS")
@@ -2841,7 +2841,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:NumQueuedArrays")
 #  This record contains the type of plugin                        #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:PluginType_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:PluginType_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.MXSC,0,1)PLUGIN_TYPE")
@@ -2854,7 +2854,7 @@ record(stringin, "S03SIM-DI-OAV-01:MXSC:PluginType_RBV")
 #  an NDArray driver port and address                             #
 ###################################################################
 # Array port name
-record(stringout, "S03SIM-DI-OAV-01:MXSC:NDArrayPort")
+record(stringout, "BL03S-DI-OAV-01:MXSC:NDArrayPort")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -2863,14 +2863,14 @@ record(stringout, "S03SIM-DI-OAV-01:MXSC:NDArrayPort")
     info(autosaveFields, "VAL")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:MXSC:NDArrayPort_RBV")
+record(stringin, "BL03S-DI-OAV-01:MXSC:NDArrayPort_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.MXSC,0,1)NDARRAY_PORT")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:NDArrayAddress")
+record(longout, "BL03S-DI-OAV-01:MXSC:NDArrayAddress")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -2879,7 +2879,7 @@ record(longout, "S03SIM-DI-OAV-01:MXSC:NDArrayAddress")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:NDArrayAddress_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:NDArrayAddress_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)NDARRAY_ADDR")
@@ -2890,7 +2890,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:NDArrayAddress_RBV")
 #  These records control whether callbacks are enabled and        #
 #  minimum time between callbacks                                 #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:MXSC:EnableCallbacks")
+record(bo, "BL03S-DI-OAV-01:MXSC:EnableCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -2901,7 +2901,7 @@ record(bo, "S03SIM-DI-OAV-01:MXSC:EnableCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:EnableCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:MXSC:EnableCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ENABLE_CALLBACKS")
@@ -2912,7 +2912,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:EnableCallbacks_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:MXSC:MinCallbackTime")
+record(ao, "BL03S-DI-OAV-01:MXSC:MinCallbackTime")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
@@ -2924,7 +2924,7 @@ record(ao, "S03SIM-DI-OAV-01:MXSC:MinCallbackTime")
     info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:MinCallbackTime_RBV")
+record(ai, "BL03S-DI-OAV-01:MXSC:MinCallbackTime_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.MXSC,0,1)MIN_CALLBACK_TIME")
@@ -2933,33 +2933,33 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:MinCallbackTime_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:MXSC:MaxArrayRate")
+record(ao, "BL03S-DI-OAV-01:MXSC:MaxArrayRate")
 {
     field(DTYP, "Soft Channel")
-    field(OUT,  "S03SIM-DI-OAV-01:MXSC:MaxArrayRate_COUT PP")
+    field(OUT,  "BL03S-DI-OAV-01:MXSC:MaxArrayRate_COUT PP")
     field(EGU,  "Hz")
     field(PREC, "3")
     field(VAL,  "0.0")
     info(autosaveFields, "VAL")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:MXSC:MaxArrayRate_COUT")
+record(calcout, "BL03S-DI-OAV-01:MXSC:MaxArrayRate_COUT")
 {
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:MaxArrayRate")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:MaxArrayRate")
     field(CALC, "A=0?0:1.0/A")
-    field(OUT,  "S03SIM-DI-OAV-01:MXSC:MinCallbackTime PP")
+    field(OUT,  "BL03S-DI-OAV-01:MXSC:MinCallbackTime PP")
 }
 
-record(calc, "S03SIM-DI-OAV-01:MXSC:MaxArrayRate_RBV")
+record(calc, "BL03S-DI-OAV-01:MXSC:MaxArrayRate_RBV")
 {
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:MinCallbackTime_RBV CP")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:MinCallbackTime_RBV CP")
     field(CALC, "A=0?0:1.0/A")
     field(EGU,  "Hz")
     field(PREC, "3")
     field(SCAN, "Passive")
 }
 
-record(ao, "S03SIM-DI-OAV-01:MXSC:MaxByteRate")
+record(ao, "BL03S-DI-OAV-01:MXSC:MaxByteRate")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
@@ -2971,7 +2971,7 @@ record(ao, "S03SIM-DI-OAV-01:MXSC:MaxByteRate")
     info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:MaxByteRate_RBV")
+record(ai, "BL03S-DI-OAV-01:MXSC:MaxByteRate_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.MXSC,0,1)MAX_BYTE_RATE")
@@ -2983,7 +2983,7 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:MaxByteRate_RBV")
 ###################################################################
 #  This record contains the last execution time of the plugin     #
 ###################################################################
-record(ai, "S03SIM-DI-OAV-01:MXSC:ExecutionTime_RBV")
+record(ai, "BL03S-DI-OAV-01:MXSC:ExecutionTime_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.MXSC,0,1)EXECUTION_TIME")
@@ -2996,7 +2996,7 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:ExecutionTime_RBV")
 #  This record requests that the plugin execute again with the    #
 #  same NDArray                                                   #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:MXSC:ProcessPlugin")
+record(bo, "BL03S-DI-OAV-01:MXSC:ProcessPlugin")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)PROCESS_PLUGIN")
@@ -3006,7 +3006,7 @@ record(bo, "S03SIM-DI-OAV-01:MXSC:ProcessPlugin")
 ###################################################################
 #  These records control whether callbacks block or not           #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:MXSC:BlockingCallbacks")
+record(bo, "BL03S-DI-OAV-01:MXSC:BlockingCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -3017,7 +3017,7 @@ record(bo, "S03SIM-DI-OAV-01:MXSC:BlockingCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:BlockingCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:MXSC:BlockingCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)BLOCKING_CALLBACKS")
@@ -3027,7 +3027,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:BlockingCallbacks_RBV")
 }
 
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:DroppedArrays")
+record(longout, "BL03S-DI-OAV-01:MXSC:DroppedArrays")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -3035,53 +3035,53 @@ record(longout, "S03SIM-DI-OAV-01:MXSC:DroppedArrays")
     field(VAL,  "0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:DroppedArrays_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:DroppedArrays_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)DROPPED_ARRAYS")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:QueueSize")
+record(longout, "BL03S-DI-OAV-01:MXSC:QueueSize")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)QUEUE_SIZE")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:QueueSize_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:QueueSize_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)QUEUE_SIZE")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:QueueFreeLow")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:QueueFreeLow")
     field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:MXSC:QueueFreeLow") {
+record(calcout, "BL03S-DI-OAV-01:MXSC:QueueFreeLow") {
     field(CALC, "A*0.25")
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:QueueSize")
-    field(OUT,  "S03SIM-DI-OAV-01:MXSC:QueueFree.LOW")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:QueueUseHIGH")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:QueueSize")
+    field(OUT,  "BL03S-DI-OAV-01:MXSC:QueueFree.LOW")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:QueueUseHIGH")
 }
 
 # Set a HIGH warning level for the input queue fill level to 75%
 # of the full size of the queue
-record(calcout, "S03SIM-DI-OAV-01:MXSC:QueueUseHIGH") {
+record(calcout, "BL03S-DI-OAV-01:MXSC:QueueUseHIGH") {
    field(CALC, "A*0.75")
-   field(INPA, "S03SIM-DI-OAV-01:MXSC:QueueSize")
-   field(OUT,  "S03SIM-DI-OAV-01:MXSC:QueueUse.HIGH")
-   field(FLNK, "S03SIM-DI-OAV-01:MXSC:QueueUseHIHI")
+   field(INPA, "BL03S-DI-OAV-01:MXSC:QueueSize")
+   field(OUT,  "BL03S-DI-OAV-01:MXSC:QueueUse.HIGH")
+   field(FLNK, "BL03S-DI-OAV-01:MXSC:QueueUseHIHI")
 }
 
 # Set a HIHI level for the input queue fill level to indicate an error
 # (MAJOR alarm)  when it fills up to the full size of the queue (frames start dropping)
-record(calcout, "S03SIM-DI-OAV-01:MXSC:QueueUseHIHI") {
+record(calcout, "BL03S-DI-OAV-01:MXSC:QueueUseHIHI") {
    field(CALC, "A*1.0")
-   field(INPA, "S03SIM-DI-OAV-01:MXSC:QueueSize")
-   field(OUT,  "S03SIM-DI-OAV-01:MXSC:QueueUse.HIHI")
+   field(INPA, "BL03S-DI-OAV-01:MXSC:QueueSize")
+   field(OUT,  "BL03S-DI-OAV-01:MXSC:QueueUse.HIHI")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:QueueFree")
+record(longin, "BL03S-DI-OAV-01:MXSC:QueueFree")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)QUEUE_FREE")
@@ -3093,17 +3093,17 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:QueueFree")
 }
 
 # Display the fill level on the plugins input queue
-record(calc, "S03SIM-DI-OAV-01:MXSC:QueueUse") {
+record(calc, "BL03S-DI-OAV-01:MXSC:QueueUse") {
     field(CALC, "A-B")
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:QueueSize")
-    field(INPB, "S03SIM-DI-OAV-01:MXSC:QueueFree CP")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:QueueSize")
+    field(INPB, "BL03S-DI-OAV-01:MXSC:QueueFree CP")
     field(SCAN, "Passive")
     field(HHSV, "MAJOR")
     field(HSV,  "MINOR")
     field(HYST, "1")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:NumThreads")
+record(longout, "BL03S-DI-OAV-01:MXSC:NumThreads")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)NUM_THREADS")
@@ -3111,14 +3111,14 @@ record(longout, "S03SIM-DI-OAV-01:MXSC:NumThreads")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:NumThreads_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:NumThreads_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)NUM_THREADS")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:MaxThreads_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:MaxThreads_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)MAX_THREADS")
@@ -3128,7 +3128,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:MaxThreads_RBV")
 ###################################################################
 #  These records control output array sorting                     #
 ###################################################################
-record(mbbo, "S03SIM-DI-OAV-01:MXSC:SortMode") {
+record(mbbo, "BL03S-DI-OAV-01:MXSC:SortMode") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)SORT_MODE")
@@ -3138,7 +3138,7 @@ record(mbbo, "S03SIM-DI-OAV-01:MXSC:SortMode") {
     field(ONST, "Sorted")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:SortMode_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:MXSC:SortMode_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)SORT_MODE")
     field(ZRVL, "0")
@@ -3148,7 +3148,7 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:SortMode_RBV") {
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:MXSC:SortTime") {
+record(ao, "BL03S-DI-OAV-01:MXSC:SortTime") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn(OAV.MXSC,0,1)SORT_TIME")
@@ -3156,14 +3156,14 @@ record(ao, "S03SIM-DI-OAV-01:MXSC:SortTime") {
     field(VAL, "0.1")
 }
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:SortTime_RBV") {
+record(ai, "BL03S-DI-OAV-01:MXSC:SortTime_RBV") {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.MXSC,0,1)SORT_TIME")
     field(PREC, "3")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:SortSize")
+record(longout, "BL03S-DI-OAV-01:MXSC:SortSize")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)SORT_SIZE")
@@ -3171,15 +3171,15 @@ record(longout, "S03SIM-DI-OAV-01:MXSC:SortSize")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:SortSize_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:SortSize_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)SORT_SIZE")
-    field(FLNK, "S03SIM-DI-OAV-01:MXSC:SortFreeLow")
+    field(FLNK, "BL03S-DI-OAV-01:MXSC:SortFreeLow")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:SortFree") {
+record(longin, "BL03S-DI-OAV-01:MXSC:SortFree") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)SORT_FREE")
     field(LLSV, "MAJOR")
@@ -3189,13 +3189,13 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:SortFree") {
     field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:MXSC:SortFreeLow") {
+record(calcout, "BL03S-DI-OAV-01:MXSC:SortFreeLow") {
     field(CALC, "A*0.25")
-    field(INPA, "S03SIM-DI-OAV-01:MXSC:SortSize")
-    field(OUT,  "S03SIM-DI-OAV-01:MXSC:SortFree.LOW")
+    field(INPA, "BL03S-DI-OAV-01:MXSC:SortSize")
+    field(OUT,  "BL03S-DI-OAV-01:MXSC:SortFree.LOW")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:DroppedOutputArrays")
+record(longout, "BL03S-DI-OAV-01:MXSC:DroppedOutputArrays")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -3203,21 +3203,21 @@ record(longout, "S03SIM-DI-OAV-01:MXSC:DroppedOutputArrays")
     field(VAL,  "0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:DroppedOutputArrays_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:DroppedOutputArrays_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)DROPPED_OUTPUT_ARRAYS")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:DisorderedArrays")
+record(longout, "BL03S-DI-OAV-01:MXSC:DisorderedArrays")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)DISORDERED_ARRAYS")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:DisorderedArrays_RBV")
+record(longin, "BL03S-DI-OAV-01:MXSC:DisorderedArrays_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)DISORDERED_ARRAYS")
@@ -3231,7 +3231,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:DisorderedArrays_RBV")
 ###################################################################
  
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:Time_RBV")
+record(ai, "BL03S-DI-OAV-01:MXSC:Time_RBV")
 {
     field(DTYP, "asynFloat64")
     field(DESC, "Time taken for plugin to run")
@@ -3243,7 +3243,7 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:Time_RBV")
 
 # File path.
 # % autosave 2 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Filename")
+record(waveform, "BL03S-DI-OAV-01:MXSC:Filename")
 {
     field(DTYP, "asynOctetWrite")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_FILENAME")
@@ -3251,7 +3251,7 @@ record(waveform, "S03SIM-DI-OAV-01:MXSC:Filename")
     field(NELM, "256")
 }
 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Filename_RBV")
+record(waveform, "BL03S-DI-OAV-01:MXSC:Filename_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_FILENAME")
@@ -3262,7 +3262,7 @@ record(waveform, "S03SIM-DI-OAV-01:MXSC:Filename_RBV")
 
 # Class name.
 # % autosave 2 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Classname")
+record(waveform, "BL03S-DI-OAV-01:MXSC:Classname")
 {
     field(DTYP, "asynOctetWrite")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_CLASSNAME")
@@ -3270,7 +3270,7 @@ record(waveform, "S03SIM-DI-OAV-01:MXSC:Classname")
     field(NELM, "256")
 }
 
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Classname_RBV")
+record(waveform, "BL03S-DI-OAV-01:MXSC:Classname_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_CLASSNAME")
@@ -3280,14 +3280,14 @@ record(waveform, "S03SIM-DI-OAV-01:MXSC:Classname_RBV")
 }
 
 # Read file
-record(bi, "S03SIM-DI-OAV-01:MXSC:ReadFile")
+record(bi, "BL03S-DI-OAV-01:MXSC:ReadFile")
 {
     field(DTYP, "asynInt32")
     field(ZNAM, "Done")
     field(ONAM, "Read")
 }
 
-record(bi, "S03SIM-DI-OAV-01:MXSC:ReadFile_RBV")
+record(bi, "BL03S-DI-OAV-01:MXSC:ReadFile_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_LOAD")
@@ -3296,7 +3296,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:ReadFile_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:PluginState_RBV")
+record(mbbi, "BL03S-DI-OAV-01:MXSC:PluginState_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_STATE")
@@ -3312,7 +3312,7 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:PluginState_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:AbortProcessing")
+record(bo, "BL03S-DI-OAV-01:MXSC:AbortProcessing")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)ADPYTHON_PROC_ABORT")
@@ -3320,14 +3320,14 @@ record(bo, "S03SIM-DI-OAV-01:MXSC:AbortProcessing")
     field(ONAM, "Abort")
 }
 
-record(ao, "S03SIM-DI-OAV-01:MXSC:Timeout")
+record(ao, "BL03S-DI-OAV-01:MXSC:Timeout")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)ADPYTHON_PROC_TIMEOUT")
     field(EGU,  "ms")
 }
 
-record(ai, "S03SIM-DI-OAV-01:MXSC:Timeout_RBV")
+record(ai, "BL03S-DI-OAV-01:MXSC:Timeout_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)ADPYTHON_PROC_TIMEOUT")
@@ -3338,12 +3338,12 @@ record(ai, "S03SIM-DI-OAV-01:MXSC:Timeout_RBV")
 # % macro, PORT, Asyn Port name
 # % macro, TIMEOUT, Timeout
 # % macro, ADDR, Asyn Port address
-# % gui, OAV.MXSC, edmtab, adPythonMxSampleDetect.edl, P=S03SIM-DI-OAV-01,R=:MXSC:
+# % gui, OAV.MXSC, edmtab, adPythonMxSampleDetect.edl, P=BL03S-DI-OAV-01,R=:MXSC:
 
 
 # Records relating to preprocessing.
 
-record(mbbo, "S03SIM-DI-OAV-01:MXSC:Preprocess") {
+record(mbbo, "BL03S-DI-OAV-01:MXSC:Preprocess") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)preprocess")
@@ -3371,7 +3371,7 @@ record(mbbo, "S03SIM-DI-OAV-01:MXSC:Preprocess") {
     field(TEST, "None")
     field(TEVL, "10")
 }
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:Preprocess_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:MXSC:Preprocess_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)preprocess")
@@ -3401,7 +3401,7 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:Preprocess_RBV") {
 }
 
 # Abuse a couple of mbbis to provide descriptions of preprocess parameters.
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:PpParam1Name") {
+record(mbbi, "BL03S-DI-OAV-01:MXSC:PpParam1Name") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)preprocess")
@@ -3429,7 +3429,7 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:PpParam1Name") {
     field(TEST, "(Unused)")
     field(TEVL, "10")
 }
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:PpParam2Name") {
+record(mbbi, "BL03S-DI-OAV-01:MXSC:PpParam2Name") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)preprocess")
@@ -3458,23 +3458,23 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:PpParam2Name") {
     field(TEVL, "10")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:PpParam1") {
+record(longout, "BL03S-DI-OAV-01:MXSC:PpParam1") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)pp_param1")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:PpParam1_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:PpParam1_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)pp_param1")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:PpParam2") {
+record(longout, "BL03S-DI-OAV-01:MXSC:PpParam2") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)pp_param2")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:PpParam2_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:PpParam2_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)pp_param2")
@@ -3483,23 +3483,23 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:PpParam2_RBV") {
 
 # Records relating to edge detection.
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:CannyUpper") {
+record(longout, "BL03S-DI-OAV-01:MXSC:CannyUpper") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)canny_upper")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:CannyUpper_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:CannyUpper_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)canny_upper")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:CannyLower") {
+record(longout, "BL03S-DI-OAV-01:MXSC:CannyLower") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)canny_lower")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:CannyLower_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:CannyLower_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)canny_lower")
@@ -3508,23 +3508,23 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:CannyLower_RBV") {
 
 # Records relating to "close" morphological operation.
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:CloseKsize") {
+record(longout, "BL03S-DI-OAV-01:MXSC:CloseKsize") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)close_ksize")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:CloseKsize_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:CloseKsize_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)close_ksize")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:CloseIterations") {
+record(longout, "BL03S-DI-OAV-01:MXSC:CloseIterations") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)close_iterations")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:CloseIterations_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:CloseIterations_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)close_iterations")
@@ -3533,7 +3533,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:CloseIterations_RBV") {
 
 # Records relating to sample detection.
 
-record(mbbo, "S03SIM-DI-OAV-01:MXSC:ScanDirection") {
+record(mbbo, "BL03S-DI-OAV-01:MXSC:ScanDirection") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)scan_direction")
@@ -3543,7 +3543,7 @@ record(mbbo, "S03SIM-DI-OAV-01:MXSC:ScanDirection") {
     field(ONST, "Right to left")
     field(ONVL, "-1")
 }
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:ScanDirection_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:MXSC:ScanDirection_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)scan_direction")
@@ -3554,12 +3554,12 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:ScanDirection_RBV") {
     field(ONVL, "-1")
 }
 
-record(longout, "S03SIM-DI-OAV-01:MXSC:MinTipHeight") {
+record(longout, "BL03S-DI-OAV-01:MXSC:MinTipHeight") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)min_tip_height")
 }
-record(longin, "S03SIM-DI-OAV-01:MXSC:MinTipHeight_RBV") {
+record(longin, "BL03S-DI-OAV-01:MXSC:MinTipHeight_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)min_tip_height")
@@ -3568,36 +3568,7 @@ record(longin, "S03SIM-DI-OAV-01:MXSC:MinTipHeight_RBV") {
 
 # Records relating to output.
 
-record(longin, "S03SIM-DI-OAV-01:MXSC:TipX") {
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn(OAV.MXSC,0,1)tip_x")
-}
-record(longin, "S03SIM-DI-OAV-01:MXSC:TipY") {
-    field(SCAN, "I/O Intr")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn(OAV.MXSC,0,1)tip_y")
-}
-
-
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Top")
-{
-   field(SCAN, "I/O Intr")
-   field(DTYP, "asynInt32ArrayIn")
-   field(INP,  "@asyn(OAV.MXSC,0,1)top")
-   field(FTVL, "LONG")
-   field(NELM, "1024")
-}
-record(waveform, "S03SIM-DI-OAV-01:MXSC:Bottom")
-{
-   field(SCAN, "I/O Intr")
-   field(DTYP, "asynInt32ArrayIn")
-   field(INP,  "@asyn(OAV.MXSC,0,1)bottom")
-   field(FTVL, "LONG")
-   field(NELM, "1024")
-}
-
-record(mbbo, "S03SIM-DI-OAV-01:MXSC:OutputArray") {
+record(mbbo, "BL03S-DI-OAV-01:MXSC:OutputArray") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)out_arr")
@@ -3613,7 +3584,7 @@ record(mbbo, "S03SIM-DI-OAV-01:MXSC:OutputArray") {
     field(FRST, "Closed edges")
     field(FRVL, "4")
 }
-record(mbbi, "S03SIM-DI-OAV-01:MXSC:OutputArray_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:MXSC:OutputArray_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)out_arr")
@@ -3630,14 +3601,14 @@ record(mbbi, "S03SIM-DI-OAV-01:MXSC:OutputArray_RBV") {
     field(FRVL, "4")
 }
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:DrawTip") {
+record(bo, "BL03S-DI-OAV-01:MXSC:DrawTip") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)draw_circle")
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
 }
-record(bi, "S03SIM-DI-OAV-01:MXSC:DrawTip_RBV") {
+record(bi, "BL03S-DI-OAV-01:MXSC:DrawTip_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)draw_circle")
@@ -3645,14 +3616,14 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:DrawTip_RBV") {
     field(ONAM, "Enabled")
 }
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:DrawEdges") {
+record(bo, "BL03S-DI-OAV-01:MXSC:DrawEdges") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)draw_edges")
     field(ZNAM, "Disabled")
     field(ONAM, "Enabled")
 }
-record(bi, "S03SIM-DI-OAV-01:MXSC:DrawEdges_RBV") {
+record(bi, "BL03S-DI-OAV-01:MXSC:DrawEdges_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)draw_edges")
@@ -3660,14 +3631,14 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:DrawEdges_RBV") {
     field(ONAM, "Enabled")
 }
 
-record(bo, "S03SIM-DI-OAV-01:MXSC:ForceColor") {
+record(bo, "BL03S-DI-OAV-01:MXSC:ForceColor") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.MXSC,0,1)force_color")
     field(ZNAM, "No")
     field(ONAM, "Yes")
 }
-record(bi, "S03SIM-DI-OAV-01:MXSC:ForceColor_RBV") {
+record(bi, "BL03S-DI-OAV-01:MXSC:ForceColor_RBV") {
     field(SCAN, "I/O Intr")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.MXSC,0,1)force_color")
@@ -3688,7 +3659,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:ForceColor_RBV") {
 # % macro, ADDR, Asyn Port address
 
 # This associates the template with an edm screen
-# % gui, OAV.CCON, edmtab, NDColorConvert.edl, P=S03SIM-DI-OAV-01,R=:CCON:
+# % gui, OAV.CCON, edmtab, NDColorConvert.edl, P=BL03S-DI-OAV-01,R=:CCON:
 
 #=================================================================#
 # Template file: NDPluginBase.template
@@ -3717,7 +3688,7 @@ record(bi, "S03SIM-DI-OAV-01:MXSC:ForceColor_RBV") {
 #  This record contains the version of ADCore                     #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:ADCoreVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:ADCoreVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)ADCORE_VERSION")
@@ -3729,7 +3700,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:ADCoreVersion_RBV")
 #  This record contains the version of the driver or plugin       #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:DriverVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:DriverVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)DRIVER_VERSION")
@@ -3741,7 +3712,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:DriverVersion_RBV")
 #  This record contains the asyn port name of this detector       #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:PortName_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:PortName_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)PORT_NAME_SELF")
@@ -3753,7 +3724,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:PortName_RBV")
 #  These records contain basic information about the detector     # 
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:Manufacturer_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:Manufacturer_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)MANUFACTURER")
@@ -3761,7 +3732,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:Manufacturer_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:Model_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:Model_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)MODEL")
@@ -3769,7 +3740,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:Model_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:SerialNumber_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:SerialNumber_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)SERIAL_NUMBER")
@@ -3777,7 +3748,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:SerialNumber_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:SDKVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:SDKVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)SDK_VERSION")
@@ -3785,7 +3756,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:SDKVersion_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:FirmwareVersion_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:FirmwareVersion_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)FIRMWARE_VERSION")
@@ -3797,17 +3768,17 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:FirmwareVersion_RBV")
 #  These records control acquisition start and stop               #
 ###################################################################
 
-record(bo, "S03SIM-DI-OAV-01:CCON:Acquire") {
+record(bo, "BL03S-DI-OAV-01:CCON:Acquire") {
    field(DTYP, "asynInt32")
    field(OUT, "@asyn(OAV.CCON,0,1)ACQUIRE")
    field(ZNAM, "Done")
    field(ONAM, "Acquire")
    field(VAL,  "0")
-   field(FLNK, "S03SIM-DI-OAV-01:CCON:SetAcquireBusy")
+   field(FLNK, "BL03S-DI-OAV-01:CCON:SetAcquireBusy")
    info(ai:READBACK, "1")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CCON:Acquire_RBV") {
+record(bi, "BL03S-DI-OAV-01:CCON:Acquire_RBV") {
    field(DTYP, "asynInt32")
    field(INP, "@asyn(OAV.CCON,0,1)ACQUIRE")
    field(ZNAM, "Done")
@@ -3817,15 +3788,15 @@ record(bi, "S03SIM-DI-OAV-01:CCON:Acquire_RBV") {
    field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CCON:SetAcquireBusy")
+record(calcout, "BL03S-DI-OAV-01:CCON:SetAcquireBusy")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CCON:Acquire NPP")
+    field(INPA, "BL03S-DI-OAV-01:CCON:Acquire NPP")
     field(CALC, "A")
     field(OOPT, "Transition To Non-zero")
-    field(OUT,  "S03SIM-DI-OAV-01:CCON:AcquireBusy PP")
+    field(OUT,  "BL03S-DI-OAV-01:CCON:AcquireBusy PP")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CCON:AcquireBusy") {
+record(bi, "BL03S-DI-OAV-01:CCON:AcquireBusy") {
    field(ZNAM, "Done")
    field(ZSV,  "NO_ALARM")
    field(ONAM, "Acquiring")
@@ -3833,7 +3804,7 @@ record(bi, "S03SIM-DI-OAV-01:CCON:AcquireBusy") {
    field(VAL,  "0")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CCON:AcquireBusyCB") {
+record(bi, "BL03S-DI-OAV-01:CCON:AcquireBusyCB") {
    field(DTYP, "asynInt32")
    field(INP, "@asyn(OAV.CCON,0,1)ACQUIRE_BUSY")
    field(ZNAM, "Done")
@@ -3843,14 +3814,14 @@ record(bi, "S03SIM-DI-OAV-01:CCON:AcquireBusyCB") {
    field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CCON:ClearAcquireBusy") {
-    field(INPA, "S03SIM-DI-OAV-01:CCON:AcquireBusyCB CP")
+record(calcout, "BL03S-DI-OAV-01:CCON:ClearAcquireBusy") {
+    field(INPA, "BL03S-DI-OAV-01:CCON:AcquireBusyCB CP")
     field(CALC, "A")
     field(OOPT, "Transition To Zero")
-    field(OUT,  "S03SIM-DI-OAV-01:CCON:AcquireBusy PP")
+    field(OUT,  "BL03S-DI-OAV-01:CCON:AcquireBusy PP")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CCON:WaitForPlugins") {
+record(bo, "BL03S-DI-OAV-01:CCON:WaitForPlugins") {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT, "@asyn(OAV.CCON,0,1)WAIT_FOR_PLUGINS")
@@ -3863,13 +3834,13 @@ record(bo, "S03SIM-DI-OAV-01:CCON:WaitForPlugins") {
 #  These records are the array size and data type                 #
 ###################################################################
 # The number of dimensions
-record(longout, "S03SIM-DI-OAV-01:CCON:NDimensions")
+record(longout, "BL03S-DI-OAV-01:CCON:NDimensions")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)ARRAY_NDIMENSIONS")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:NDimensions_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:NDimensions_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_NDIMENSIONS")
@@ -3877,346 +3848,346 @@ record(longin, "S03SIM-DI-OAV-01:CCON:NDimensions_RBV")
 }
 
 # The array dimensions waveform records
-record(waveform, "S03SIM-DI-OAV-01:CCON:Dimensions")
+record(waveform, "BL03S-DI-OAV-01:CCON:Dimensions")
 {
     field(DTYP, "asynInt32ArrayOut")
     field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_DIMENSIONS")
     field(FTVL, "LONG")
     field(NELM, "10")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim0SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim0SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim0SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim0SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "0")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize0")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize0")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize0")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim0SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim1SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim0SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim1SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim1SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim1SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "1")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize1")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize1")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize1")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize1")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim1SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim2SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim1SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim2SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim2SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim2SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "2")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize2")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize2")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize2")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize2")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim2SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim3SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim2SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim3SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim3SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim3SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "3")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize3")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize3")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize3")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize3")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim3SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim4SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim3SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim4SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim4SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim4SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "4")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize4")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize4")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize4")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize4")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim4SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim5SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim4SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim5SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim5SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim5SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "5")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize5")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize5")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize5")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize5")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim5SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim6SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim5SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim6SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim6SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim6SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "6")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize6")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize6")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize6")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize6")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim6SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim7SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim6SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim7SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim7SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim7SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "7")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize7")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize7")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize7")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize7")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim7SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim8SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim7SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim8SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim8SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim8SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "8")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize8")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize8")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize8")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize8")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim8SA")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim9SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim8SA")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim9SA")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim9SA")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim9SA")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "9")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize9")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize9")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize9")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize9")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim9SA")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim9SA")
 }
 
 
-record(waveform, "S03SIM-DI-OAV-01:CCON:Dimensions_RBV")
+record(waveform, "BL03S-DI-OAV-01:CCON:Dimensions_RBV")
 {
     field(DTYP, "asynInt32ArrayIn")
     field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_DIMENSIONS")
     field(FTVL, "LONG")
     field(NELM, "10")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim0SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim0SA_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim0SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim0SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "0")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize0_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize0_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize0_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize0_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim0SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim1SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim0SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim1SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim1SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim1SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "1")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize1_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize1_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize1_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize1_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim1SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim2SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim1SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim2SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim2SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim2SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "2")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize2_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize2_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize2_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize2_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim2SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim3SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim2SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim3SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim3SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim3SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "3")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize3_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize3_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize3_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize3_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim3SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim4SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim3SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim4SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim4SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim4SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "4")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize4_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize4_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize4_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize4_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim4SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim5SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim4SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim5SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim5SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim5SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "5")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize5_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize5_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize5_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize5_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim5SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim6SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim5SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim6SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim6SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim6SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "6")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize6_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize6_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize6_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize6_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim6SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim7SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim6SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim7SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim7SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim7SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "7")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize7_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize7_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize7_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize7_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim7SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim8SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim7SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim8SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim8SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim8SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "8")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize8_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize8_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize8_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize8_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim8SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:Dim9SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim8SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:Dim9SA_RBV")
 }
 
-record(subArray, "S03SIM-DI-OAV-01:CCON:Dim9SA_RBV")
+record(subArray, "BL03S-DI-OAV-01:CCON:Dim9SA_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dimensions_RBV NPP NMS")
     field(FTVL, "LONG")
     field(MALM, "10")
     field(NELM, "1")
     field(INDX, "9")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:ArraySize9_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:ArraySize9_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize9_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize9_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:CCON:Dim9SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:CCON:Dim9SA_RBV")
 }
 
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:BayerPattern_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CCON:BayerPattern_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)BAYER_PATTERN")
@@ -4231,28 +4202,28 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:BayerPattern_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySizeX_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySizeX_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_SIZE_X")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySizeY_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySizeY_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_SIZE_Y")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySizeZ_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySizeZ_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_SIZE_Z")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArraySize_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_SIZE")
@@ -4262,7 +4233,7 @@ record(longin, "S03SIM-DI-OAV-01:CCON:ArraySize_RBV")
 ###################################################################
 #  These records have information on the compression              # 
 ###################################################################
-record(stringin, "S03SIM-DI-OAV-01:CCON:Codec_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:Codec_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)CODEC")
@@ -4270,7 +4241,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:Codec_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:CompressedSize_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:CompressedSize_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)COMPRESSED_SIZE")
@@ -4281,7 +4252,7 @@ record(longin, "S03SIM-DI-OAV-01:CCON:CompressedSize_RBV")
 #  These records control the data type                            # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:CCON:DataType")
+record(mbbo, "BL03S-DI-OAV-01:CCON:DataType")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -4310,7 +4281,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CCON:DataType")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:DataType_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CCON:DataType_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)DATA_TYPE")
@@ -4342,7 +4313,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:DataType_RBV")
 #  These choices must agree with NDColorMode_t in NDArray.h       # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:CCON:ColorMode")
+record(mbbo, "BL03S-DI-OAV-01:CCON:ColorMode")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -4366,7 +4337,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CCON:ColorMode")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:ColorMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CCON:ColorMode_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)COLOR_MODE")
@@ -4392,14 +4363,14 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:ColorMode_RBV")
 ###################################################################
 #  These records are the uniqueId and time stamps of the array     #
 ###################################################################
-record(longin, "S03SIM-DI-OAV-01:CCON:UniqueId_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:UniqueId_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)UNIQUE_ID")
     field(SCAN, "I/O Intr")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CCON:TimeStamp_RBV")
+record(ai, "BL03S-DI-OAV-01:CCON:TimeStamp_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.CCON,0,1)TIME_STAMP")
@@ -4407,14 +4378,14 @@ record(ai, "S03SIM-DI-OAV-01:CCON:TimeStamp_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:EpicsTSSec_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:EpicsTSSec_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)EPICS_TS_SEC")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:EpicsTSNsec_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:EpicsTSNsec_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)EPICS_TS_NSEC")
@@ -4425,13 +4396,13 @@ record(longin, "S03SIM-DI-OAV-01:CCON:EpicsTSNsec_RBV")
 #  These records provide statistics on array callbacks and        #
 #  array callback rates                                           # 
 ###################################################################
-record(longout, "S03SIM-DI-OAV-01:CCON:ArrayCounter")
+record(longout, "BL03S-DI-OAV-01:CCON:ArrayCounter")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)ARRAY_COUNTER")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:ArrayCounter_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:ArrayCounter_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_COUNTER")
@@ -4439,12 +4410,12 @@ record(longin, "S03SIM-DI-OAV-01:CCON:ArrayCounter_RBV")
 }
 
 # Updated rate calculation to use a smoothing factor w/ guard against negative values
-record(calc, "S03SIM-DI-OAV-01:CCON:ArrayRate_RBV")
+record(calc, "BL03S-DI-OAV-01:CCON:ArrayRate_RBV")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CCON:ArrayRate_RBV.LB NPP NMS")   # Previous counter value
-    field(INPB, "S03SIM-DI-OAV-01:CCON:ArrayCounter_RBV NPP NMS")   # Current counter value
+    field(INPA, "BL03S-DI-OAV-01:CCON:ArrayRate_RBV.LB NPP NMS")   # Previous counter value
+    field(INPB, "BL03S-DI-OAV-01:CCON:ArrayCounter_RBV NPP NMS")   # Current counter value
     field(INPC, "1.0")                                # Delta time in seconds
-    field(INPD, "S03SIM-DI-OAV-01:CCON:ArrayRate_RBV.VAL NPP NMS")  # Previous rate
+    field(INPD, "BL03S-DI-OAV-01:CCON:ArrayRate_RBV.VAL NPP NMS")  # Previous rate
     field(INPE, "0.0")                 # Smoothing factor
     field(CALC, "(D*E)/C+MAX(0,B-A)*(1-E)/C")
     field(PREC, "2" )
@@ -4455,7 +4426,7 @@ record(calc, "S03SIM-DI-OAV-01:CCON:ArrayRate_RBV")
 ###################################################################
 #  These records control NDArray callacks                         # 
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:CCON:ArrayCallbacks")
+record(bo, "BL03S-DI-OAV-01:CCON:ArrayCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -4468,7 +4439,7 @@ record(bo, "S03SIM-DI-OAV-01:CCON:ArrayCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CCON:ArrayCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:CCON:ArrayCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)ARRAY_CALLBACKS")
@@ -4483,7 +4454,7 @@ record(bi, "S03SIM-DI-OAV-01:CCON:ArrayCallbacks_RBV")
 #  This record contains macro definitions for the attributes      # 
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:CCON:NDAttributesMacros")
+record(waveform, "BL03S-DI-OAV-01:CCON:NDAttributesMacros")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -4497,7 +4468,7 @@ record(waveform, "S03SIM-DI-OAV-01:CCON:NDAttributesMacros")
 #  This record is the name of a file defining attributes          # 
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:CCON:NDAttributesFile")
+record(waveform, "BL03S-DI-OAV-01:CCON:NDAttributesFile")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -4511,7 +4482,7 @@ record(waveform, "S03SIM-DI-OAV-01:CCON:NDAttributesFile")
 #  This record defines the status of reading attributes file      # 
 ###################################################################
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:NDAttributesStatus")
+record(mbbi, "BL03S-DI-OAV-01:CCON:NDAttributesStatus")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)ND_ATTRIBUTES_STATUS")
@@ -4534,7 +4505,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:NDAttributesStatus")
 #  Status of NDArrayPool - number of buffers, memory used etc.    # 
 ###################################################################
 
-record(ai, "S03SIM-DI-OAV-01:CCON:PoolMaxMem")
+record(ai, "BL03S-DI-OAV-01:CCON:PoolMaxMem")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CCON,0,1)POOL_MAX_MEMORY")
@@ -4544,45 +4515,45 @@ record(ai, "S03SIM-DI-OAV-01:CCON:PoolMaxMem")
    field(PINI, "YES")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CCON:PoolUsedMem")
+record(ai, "BL03S-DI-OAV-01:CCON:PoolUsedMem")
 {
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn(OAV.CCON,0,1)POOL_USED_MEMORY")
    field(PREC, "1")
    field(EGU,  "MB")
    field(SCAN, "1 second")
-   field(FLNK, "S03SIM-DI-OAV-01:CCON:PoolAllocBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:CCON:PoolAllocBuffers")
    info(autosaveFields, "SCAN")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:PoolAllocBuffers")
+record(longin, "BL03S-DI-OAV-01:CCON:PoolAllocBuffers")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)POOL_ALLOC_BUFFERS")
-   field(FLNK, "S03SIM-DI-OAV-01:CCON:PoolFreeBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:CCON:PoolFreeBuffers")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:PoolFreeBuffers")
+record(longin, "BL03S-DI-OAV-01:CCON:PoolFreeBuffers")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)POOL_FREE_BUFFERS")
-   field(FLNK, "S03SIM-DI-OAV-01:CCON:PoolUsedBuffers")
+   field(FLNK, "BL03S-DI-OAV-01:CCON:PoolUsedBuffers")
 }
 
-record(calc, "S03SIM-DI-OAV-01:CCON:PoolUsedBuffers")
+record(calc, "BL03S-DI-OAV-01:CCON:PoolUsedBuffers")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CCON:PoolAllocBuffers NPP MS")
-    field(INPB, "S03SIM-DI-OAV-01:CCON:PoolFreeBuffers NPP MS")
+    field(INPA, "BL03S-DI-OAV-01:CCON:PoolAllocBuffers NPP MS")
+    field(INPB, "BL03S-DI-OAV-01:CCON:PoolFreeBuffers NPP MS")
     field(CALC, "A-B")
 }
 
-record(bo, "S03SIM-DI-OAV-01:CCON:EmptyFreeList")
+record(bo, "BL03S-DI-OAV-01:CCON:EmptyFreeList")
 {
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn(OAV.CCON,0,1)POOL_EMPTY_FREELIST")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:NumQueuedArrays")
+record(longin, "BL03S-DI-OAV-01:CCON:NumQueuedArrays")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)NUM_QUEUED_ARRAYS")
@@ -4593,7 +4564,7 @@ record(longin, "S03SIM-DI-OAV-01:CCON:NumQueuedArrays")
 #  This record contains the type of plugin                        #
 ###################################################################
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:PluginType_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:PluginType_RBV")
 {
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn(OAV.CCON,0,1)PLUGIN_TYPE")
@@ -4606,7 +4577,7 @@ record(stringin, "S03SIM-DI-OAV-01:CCON:PluginType_RBV")
 #  an NDArray driver port and address                             #
 ###################################################################
 # Array port name
-record(stringout, "S03SIM-DI-OAV-01:CCON:NDArrayPort")
+record(stringout, "BL03S-DI-OAV-01:CCON:NDArrayPort")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -4615,14 +4586,14 @@ record(stringout, "S03SIM-DI-OAV-01:CCON:NDArrayPort")
     info(autosaveFields, "VAL")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:CCON:NDArrayPort_RBV")
+record(stringin, "BL03S-DI-OAV-01:CCON:NDArrayPort_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.CCON,0,1)NDARRAY_PORT")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CCON:NDArrayAddress")
+record(longout, "BL03S-DI-OAV-01:CCON:NDArrayAddress")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -4631,7 +4602,7 @@ record(longout, "S03SIM-DI-OAV-01:CCON:NDArrayAddress")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:NDArrayAddress_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:NDArrayAddress_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)NDARRAY_ADDR")
@@ -4642,7 +4613,7 @@ record(longin, "S03SIM-DI-OAV-01:CCON:NDArrayAddress_RBV")
 #  These records control whether callbacks are enabled and        #
 #  minimum time between callbacks                                 #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:CCON:EnableCallbacks")
+record(bo, "BL03S-DI-OAV-01:CCON:EnableCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -4653,7 +4624,7 @@ record(bo, "S03SIM-DI-OAV-01:CCON:EnableCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CCON:EnableCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:CCON:EnableCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)ENABLE_CALLBACKS")
@@ -4664,7 +4635,7 @@ record(bi, "S03SIM-DI-OAV-01:CCON:EnableCallbacks_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CCON:MinCallbackTime")
+record(ao, "BL03S-DI-OAV-01:CCON:MinCallbackTime")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
@@ -4676,7 +4647,7 @@ record(ao, "S03SIM-DI-OAV-01:CCON:MinCallbackTime")
     info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CCON:MinCallbackTime_RBV")
+record(ai, "BL03S-DI-OAV-01:CCON:MinCallbackTime_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.CCON,0,1)MIN_CALLBACK_TIME")
@@ -4685,33 +4656,33 @@ record(ai, "S03SIM-DI-OAV-01:CCON:MinCallbackTime_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CCON:MaxArrayRate")
+record(ao, "BL03S-DI-OAV-01:CCON:MaxArrayRate")
 {
     field(DTYP, "Soft Channel")
-    field(OUT,  "S03SIM-DI-OAV-01:CCON:MaxArrayRate_COUT PP")
+    field(OUT,  "BL03S-DI-OAV-01:CCON:MaxArrayRate_COUT PP")
     field(EGU,  "Hz")
     field(PREC, "3")
     field(VAL,  "0.0")
     info(autosaveFields, "VAL")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CCON:MaxArrayRate_COUT")
+record(calcout, "BL03S-DI-OAV-01:CCON:MaxArrayRate_COUT")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CCON:MaxArrayRate")
+    field(INPA, "BL03S-DI-OAV-01:CCON:MaxArrayRate")
     field(CALC, "A=0?0:1.0/A")
-    field(OUT,  "S03SIM-DI-OAV-01:CCON:MinCallbackTime PP")
+    field(OUT,  "BL03S-DI-OAV-01:CCON:MinCallbackTime PP")
 }
 
-record(calc, "S03SIM-DI-OAV-01:CCON:MaxArrayRate_RBV")
+record(calc, "BL03S-DI-OAV-01:CCON:MaxArrayRate_RBV")
 {
-    field(INPA, "S03SIM-DI-OAV-01:CCON:MinCallbackTime_RBV CP")
+    field(INPA, "BL03S-DI-OAV-01:CCON:MinCallbackTime_RBV CP")
     field(CALC, "A=0?0:1.0/A")
     field(EGU,  "Hz")
     field(PREC, "3")
     field(SCAN, "Passive")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CCON:MaxByteRate")
+record(ao, "BL03S-DI-OAV-01:CCON:MaxByteRate")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
@@ -4723,7 +4694,7 @@ record(ao, "S03SIM-DI-OAV-01:CCON:MaxByteRate")
     info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CCON:MaxByteRate_RBV")
+record(ai, "BL03S-DI-OAV-01:CCON:MaxByteRate_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.CCON,0,1)MAX_BYTE_RATE")
@@ -4735,7 +4706,7 @@ record(ai, "S03SIM-DI-OAV-01:CCON:MaxByteRate_RBV")
 ###################################################################
 #  This record contains the last execution time of the plugin     #
 ###################################################################
-record(ai, "S03SIM-DI-OAV-01:CCON:ExecutionTime_RBV")
+record(ai, "BL03S-DI-OAV-01:CCON:ExecutionTime_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.CCON,0,1)EXECUTION_TIME")
@@ -4748,7 +4719,7 @@ record(ai, "S03SIM-DI-OAV-01:CCON:ExecutionTime_RBV")
 #  This record requests that the plugin execute again with the    #
 #  same NDArray                                                   #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:CCON:ProcessPlugin")
+record(bo, "BL03S-DI-OAV-01:CCON:ProcessPlugin")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)PROCESS_PLUGIN")
@@ -4758,7 +4729,7 @@ record(bo, "S03SIM-DI-OAV-01:CCON:ProcessPlugin")
 ###################################################################
 #  These records control whether callbacks block or not           #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:CCON:BlockingCallbacks")
+record(bo, "BL03S-DI-OAV-01:CCON:BlockingCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -4769,7 +4740,7 @@ record(bo, "S03SIM-DI-OAV-01:CCON:BlockingCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:CCON:BlockingCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:CCON:BlockingCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)BLOCKING_CALLBACKS")
@@ -4779,7 +4750,7 @@ record(bi, "S03SIM-DI-OAV-01:CCON:BlockingCallbacks_RBV")
 }
 
 
-record(longout, "S03SIM-DI-OAV-01:CCON:DroppedArrays")
+record(longout, "BL03S-DI-OAV-01:CCON:DroppedArrays")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -4787,53 +4758,53 @@ record(longout, "S03SIM-DI-OAV-01:CCON:DroppedArrays")
     field(VAL,  "0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:DroppedArrays_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:DroppedArrays_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)DROPPED_ARRAYS")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CCON:QueueSize")
+record(longout, "BL03S-DI-OAV-01:CCON:QueueSize")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)QUEUE_SIZE")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:QueueSize_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:QueueSize_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)QUEUE_SIZE")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:QueueFreeLow")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:QueueFreeLow")
     field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CCON:QueueFreeLow") {
+record(calcout, "BL03S-DI-OAV-01:CCON:QueueFreeLow") {
     field(CALC, "A*0.25")
-    field(INPA, "S03SIM-DI-OAV-01:CCON:QueueSize")
-    field(OUT,  "S03SIM-DI-OAV-01:CCON:QueueFree.LOW")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:QueueUseHIGH")
+    field(INPA, "BL03S-DI-OAV-01:CCON:QueueSize")
+    field(OUT,  "BL03S-DI-OAV-01:CCON:QueueFree.LOW")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:QueueUseHIGH")
 }
 
 # Set a HIGH warning level for the input queue fill level to 75%
 # of the full size of the queue
-record(calcout, "S03SIM-DI-OAV-01:CCON:QueueUseHIGH") {
+record(calcout, "BL03S-DI-OAV-01:CCON:QueueUseHIGH") {
    field(CALC, "A*0.75")
-   field(INPA, "S03SIM-DI-OAV-01:CCON:QueueSize")
-   field(OUT,  "S03SIM-DI-OAV-01:CCON:QueueUse.HIGH")
-   field(FLNK, "S03SIM-DI-OAV-01:CCON:QueueUseHIHI")
+   field(INPA, "BL03S-DI-OAV-01:CCON:QueueSize")
+   field(OUT,  "BL03S-DI-OAV-01:CCON:QueueUse.HIGH")
+   field(FLNK, "BL03S-DI-OAV-01:CCON:QueueUseHIHI")
 }
 
 # Set a HIHI level for the input queue fill level to indicate an error
 # (MAJOR alarm)  when it fills up to the full size of the queue (frames start dropping)
-record(calcout, "S03SIM-DI-OAV-01:CCON:QueueUseHIHI") {
+record(calcout, "BL03S-DI-OAV-01:CCON:QueueUseHIHI") {
    field(CALC, "A*1.0")
-   field(INPA, "S03SIM-DI-OAV-01:CCON:QueueSize")
-   field(OUT,  "S03SIM-DI-OAV-01:CCON:QueueUse.HIHI")
+   field(INPA, "BL03S-DI-OAV-01:CCON:QueueSize")
+   field(OUT,  "BL03S-DI-OAV-01:CCON:QueueUse.HIHI")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:QueueFree")
+record(longin, "BL03S-DI-OAV-01:CCON:QueueFree")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)QUEUE_FREE")
@@ -4845,17 +4816,17 @@ record(longin, "S03SIM-DI-OAV-01:CCON:QueueFree")
 }
 
 # Display the fill level on the plugins input queue
-record(calc, "S03SIM-DI-OAV-01:CCON:QueueUse") {
+record(calc, "BL03S-DI-OAV-01:CCON:QueueUse") {
     field(CALC, "A-B")
-    field(INPA, "S03SIM-DI-OAV-01:CCON:QueueSize")
-    field(INPB, "S03SIM-DI-OAV-01:CCON:QueueFree CP")
+    field(INPA, "BL03S-DI-OAV-01:CCON:QueueSize")
+    field(INPB, "BL03S-DI-OAV-01:CCON:QueueFree CP")
     field(SCAN, "Passive")
     field(HHSV, "MAJOR")
     field(HSV,  "MINOR")
     field(HYST, "1")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CCON:NumThreads")
+record(longout, "BL03S-DI-OAV-01:CCON:NumThreads")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)NUM_THREADS")
@@ -4863,14 +4834,14 @@ record(longout, "S03SIM-DI-OAV-01:CCON:NumThreads")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:NumThreads_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:NumThreads_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)NUM_THREADS")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:MaxThreads_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:MaxThreads_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)MAX_THREADS")
@@ -4880,7 +4851,7 @@ record(longin, "S03SIM-DI-OAV-01:CCON:MaxThreads_RBV")
 ###################################################################
 #  These records control output array sorting                     #
 ###################################################################
-record(mbbo, "S03SIM-DI-OAV-01:CCON:SortMode") {
+record(mbbo, "BL03S-DI-OAV-01:CCON:SortMode") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)SORT_MODE")
@@ -4890,7 +4861,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CCON:SortMode") {
     field(ONST, "Sorted")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:SortMode_RBV") {
+record(mbbi, "BL03S-DI-OAV-01:CCON:SortMode_RBV") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)SORT_MODE")
     field(ZRVL, "0")
@@ -4900,7 +4871,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:SortMode_RBV") {
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:CCON:SortTime") {
+record(ao, "BL03S-DI-OAV-01:CCON:SortTime") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn(OAV.CCON,0,1)SORT_TIME")
@@ -4908,14 +4879,14 @@ record(ao, "S03SIM-DI-OAV-01:CCON:SortTime") {
     field(VAL, "0.1")
 }
 
-record(ai, "S03SIM-DI-OAV-01:CCON:SortTime_RBV") {
+record(ai, "BL03S-DI-OAV-01:CCON:SortTime_RBV") {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.CCON,0,1)SORT_TIME")
     field(PREC, "3")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CCON:SortSize")
+record(longout, "BL03S-DI-OAV-01:CCON:SortSize")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)SORT_SIZE")
@@ -4923,15 +4894,15 @@ record(longout, "S03SIM-DI-OAV-01:CCON:SortSize")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:SortSize_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:SortSize_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)SORT_SIZE")
-    field(FLNK, "S03SIM-DI-OAV-01:CCON:SortFreeLow")
+    field(FLNK, "BL03S-DI-OAV-01:CCON:SortFreeLow")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:SortFree") {
+record(longin, "BL03S-DI-OAV-01:CCON:SortFree") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)SORT_FREE")
     field(LLSV, "MAJOR")
@@ -4941,13 +4912,13 @@ record(longin, "S03SIM-DI-OAV-01:CCON:SortFree") {
     field(SCAN, "I/O Intr")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:CCON:SortFreeLow") {
+record(calcout, "BL03S-DI-OAV-01:CCON:SortFreeLow") {
     field(CALC, "A*0.25")
-    field(INPA, "S03SIM-DI-OAV-01:CCON:SortSize")
-    field(OUT,  "S03SIM-DI-OAV-01:CCON:SortFree.LOW")
+    field(INPA, "BL03S-DI-OAV-01:CCON:SortSize")
+    field(OUT,  "BL03S-DI-OAV-01:CCON:SortFree.LOW")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CCON:DroppedOutputArrays")
+record(longout, "BL03S-DI-OAV-01:CCON:DroppedOutputArrays")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -4955,21 +4926,21 @@ record(longout, "S03SIM-DI-OAV-01:CCON:DroppedOutputArrays")
     field(VAL,  "0")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:DroppedOutputArrays_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:DroppedOutputArrays_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)DROPPED_OUTPUT_ARRAYS")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:CCON:DisorderedArrays")
+record(longout, "BL03S-DI-OAV-01:CCON:DisorderedArrays")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.CCON,0,1)DISORDERED_ARRAYS")
     field(PINI, "YES")
 }
 
-record(longin, "S03SIM-DI-OAV-01:CCON:DisorderedArrays_RBV")
+record(longin, "BL03S-DI-OAV-01:CCON:DisorderedArrays_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.CCON,0,1)DISORDERED_ARRAYS")
@@ -4981,7 +4952,7 @@ record(longin, "S03SIM-DI-OAV-01:CCON:DisorderedArrays_RBV")
 #  These choices must agree with NDColorMode_t in NDArray.h       # 
 ###################################################################
 
-record(mbbo, "S03SIM-DI-OAV-01:CCON:ColorModeOut")
+record(mbbo, "BL03S-DI-OAV-01:CCON:ColorModeOut")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -5005,7 +4976,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CCON:ColorModeOut")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:ColorModeOut_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CCON:ColorModeOut_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)COLOR_MODE_OUT")
@@ -5028,7 +4999,7 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:ColorModeOut_RBV")
    field(SCAN, "I/O Intr")
 }
 
-record(mbbo, "S03SIM-DI-OAV-01:CCON:FalseColor")
+record(mbbo, "BL03S-DI-OAV-01:CCON:FalseColor")
 {
    field(PINI, "YES")
    field(DTYP, "asynInt32")
@@ -5042,7 +5013,7 @@ record(mbbo, "S03SIM-DI-OAV-01:CCON:FalseColor")
    info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:CCON:FalseColor_RBV")
+record(mbbi, "BL03S-DI-OAV-01:CCON:FalseColor_RBV")
 {
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CCON,0,1)FALSE_COLOR")
@@ -5060,15 +5031,15 @@ record(mbbi, "S03SIM-DI-OAV-01:CCON:FalseColor_RBV")
 #  These records control the overlay definition                   #
 ###################################################################
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:PositionXLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:PositionXLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:PositionX PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:PositionX PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:PositionX")
+record(longout, "BL03S-DI-OAV-01:OVER:2:PositionX")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5077,22 +5048,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:PositionX")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:PositionX_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:PositionX_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_POSITION_X")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:PositionYLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:PositionYLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:PositionY PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:PositionY PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:PositionY")
+record(longout, "BL03S-DI-OAV-01:OVER:2:PositionY")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5101,22 +5072,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:PositionY")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:PositionY_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:PositionY_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_POSITION_Y")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:CenterXLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:CenterXLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:CenterX PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:CenterX PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:CenterX")
+record(longout, "BL03S-DI-OAV-01:OVER:2:CenterX")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.over,1,1)OVERLAY_CENTER_X")
@@ -5124,22 +5095,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:CenterX")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:CenterX_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:CenterX_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_CENTER_X")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:CenterYLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:CenterYLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:CenterY PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:CenterY PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:CenterY")
+record(longout, "BL03S-DI-OAV-01:OVER:2:CenterY")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(OAV.over,1,1)OVERLAY_CENTER_Y")
@@ -5147,22 +5118,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:CenterY")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:CenterY_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:CenterY_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_CENTER_Y")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:SizeXLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:SizeXLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:SizeX PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:SizeX PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:SizeX")
+record(longout, "BL03S-DI-OAV-01:OVER:2:SizeX")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5173,22 +5144,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:SizeX")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:SizeX_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:SizeX_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_SIZE_X")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:SizeYLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:SizeYLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:SizeY PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:SizeY PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:SizeY")
+record(longout, "BL03S-DI-OAV-01:OVER:2:SizeY")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5196,22 +5167,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:SizeY")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:SizeY_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:SizeY_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_SIZE_Y")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:WidthXLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:WidthXLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:WidthX PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:WidthX PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:WidthX")
+record(longout, "BL03S-DI-OAV-01:OVER:2:WidthX")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5219,22 +5190,22 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:WidthX")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:WidthX_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:WidthX_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_WIDTH_X")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:WidthYLink")
+record(longout, "BL03S-DI-OAV-01:OVER:2:WidthYLink")
 {
     field(DOL,  " CP MS")
     field(OMSL, "closed_loop")
-    field(OUT, "S03SIM-DI-OAV-01:OVER:2:WidthY PP")
+    field(OUT, "BL03S-DI-OAV-01:OVER:2:WidthY PP")
     info(autosaveFields, "DOL")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:WidthY")
+record(longout, "BL03S-DI-OAV-01:OVER:2:WidthY")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5242,14 +5213,14 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:WidthY")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:WidthY_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:WidthY_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_WIDTH_Y")
     field(SCAN, "I/O Intr")
 }
 
-record(mbbo, "S03SIM-DI-OAV-01:OVER:2:Shape")
+record(mbbo, "BL03S-DI-OAV-01:OVER:2:Shape")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5266,7 +5237,7 @@ record(mbbo, "S03SIM-DI-OAV-01:OVER:2:Shape")
     info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:OVER:2:Shape_RBV")
+record(mbbi, "BL03S-DI-OAV-01:OVER:2:Shape_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_SHAPE")
@@ -5281,7 +5252,7 @@ record(mbbi, "S03SIM-DI-OAV-01:OVER:2:Shape_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(mbbo, "S03SIM-DI-OAV-01:OVER:2:DrawMode")
+record(mbbo, "BL03S-DI-OAV-01:OVER:2:DrawMode")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5293,7 +5264,7 @@ record(mbbo, "S03SIM-DI-OAV-01:OVER:2:DrawMode")
     info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:OVER:2:DrawMode_RBV")
+record(mbbi, "BL03S-DI-OAV-01:OVER:2:DrawMode_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_DRAW_MODE")
@@ -5304,7 +5275,7 @@ record(mbbi, "S03SIM-DI-OAV-01:OVER:2:DrawMode_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:Red")
+record(longout, "BL03S-DI-OAV-01:OVER:2:Red")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5313,14 +5284,14 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:Red")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:Red_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:Red_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_RED")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:Green")
+record(longout, "BL03S-DI-OAV-01:OVER:2:Green")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5329,14 +5300,14 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:Green")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:Green_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:Green_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_GREEN")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:2:Blue")
+record(longout, "BL03S-DI-OAV-01:OVER:2:Blue")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5345,7 +5316,7 @@ record(longout, "S03SIM-DI-OAV-01:OVER:2:Blue")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:Blue_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:2:Blue_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_BLUE")
@@ -5357,41 +5328,41 @@ record(longin, "S03SIM-DI-OAV-01:OVER:2:Blue_RBV")
 #  and size to the maximum for the input array                    #
 ###################################################################
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:MaxSizeX")
+record(longin, "BL03S-DI-OAV-01:OVER:2:MaxSizeX")
 {
-    field(INP,  "S03SIM-DI-OAV-01:OVER:MaxSizeX_RBV CP")
-    field(FLNK, "S03SIM-DI-OAV-01:OVER:2:SetXHOPR.PROC PP")
+    field(INP,  "BL03S-DI-OAV-01:OVER:MaxSizeX_RBV CP")
+    field(FLNK, "BL03S-DI-OAV-01:OVER:2:SetXHOPR.PROC PP")
 }
 
-record(dfanout, "S03SIM-DI-OAV-01:OVER:2:SetXHOPR")
+record(dfanout, "BL03S-DI-OAV-01:OVER:2:SetXHOPR")
 {
-    field(DOL,  "S03SIM-DI-OAV-01:OVER:2:MaxSizeX NPP")
+    field(DOL,  "BL03S-DI-OAV-01:OVER:2:MaxSizeX NPP")
     field(OMSL, "closed_loop")
-    field(OUTA, "S03SIM-DI-OAV-01:OVER:2:PositionX.HOPR NPP")
-    field(OUTB, "S03SIM-DI-OAV-01:OVER:2:CenterX.HOPR NPP")
-    field(OUTC, "S03SIM-DI-OAV-01:OVER:2:SizeX.HOPR NPP")
+    field(OUTA, "BL03S-DI-OAV-01:OVER:2:PositionX.HOPR NPP")
+    field(OUTB, "BL03S-DI-OAV-01:OVER:2:CenterX.HOPR NPP")
+    field(OUTC, "BL03S-DI-OAV-01:OVER:2:SizeX.HOPR NPP")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:2:MaxSizeY")
+record(longin, "BL03S-DI-OAV-01:OVER:2:MaxSizeY")
 {
-    field(INP,  "S03SIM-DI-OAV-01:OVER:MaxSizeY_RBV CP")
-    field(FLNK, "S03SIM-DI-OAV-01:OVER:2:SetYHOPR.PROC PP")
+    field(INP,  "BL03S-DI-OAV-01:OVER:MaxSizeY_RBV CP")
+    field(FLNK, "BL03S-DI-OAV-01:OVER:2:SetYHOPR.PROC PP")
 }
 
-record(dfanout, "S03SIM-DI-OAV-01:OVER:2:SetYHOPR")
+record(dfanout, "BL03S-DI-OAV-01:OVER:2:SetYHOPR")
 {
-    field(DOL,  "S03SIM-DI-OAV-01:OVER:2:MaxSizeY NPP")
+    field(DOL,  "BL03S-DI-OAV-01:OVER:2:MaxSizeY NPP")
     field(OMSL, "closed_loop")
-    field(OUTA, "S03SIM-DI-OAV-01:OVER:2:PositionY.HOPR NPP")
-    field(OUTB, "S03SIM-DI-OAV-01:OVER:2:CenterY.HOPR NPP")
-    field(OUTC, "S03SIM-DI-OAV-01:OVER:2:SizeY.HOPR NPP")
+    field(OUTA, "BL03S-DI-OAV-01:OVER:2:PositionY.HOPR NPP")
+    field(OUTB, "BL03S-DI-OAV-01:OVER:2:CenterY.HOPR NPP")
+    field(OUTC, "BL03S-DI-OAV-01:OVER:2:SizeY.HOPR NPP")
 }
 
 ###################################################################
 #  Text overlay (Keith Brister 2014-06-26)
 ###################################################################
 
-record(waveform, "S03SIM-DI-OAV-01:OVER:2:DisplayText")
+record(waveform, "BL03S-DI-OAV-01:OVER:2:DisplayText")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -5401,7 +5372,7 @@ record(waveform, "S03SIM-DI-OAV-01:OVER:2:DisplayText")
     info(autosaveFields, "VAL")
 }
 
-record(waveform, "S03SIM-DI-OAV-01:OVER:2:DisplayText_RBV")
+record(waveform, "BL03S-DI-OAV-01:OVER:2:DisplayText_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_DISPLAY_TEXT")
@@ -5410,7 +5381,7 @@ record(waveform, "S03SIM-DI-OAV-01:OVER:2:DisplayText_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(stringout, "S03SIM-DI-OAV-01:OVER:2:TimeStampFormat")
+record(stringout, "BL03S-DI-OAV-01:OVER:2:TimeStampFormat")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -5419,14 +5390,14 @@ record(stringout, "S03SIM-DI-OAV-01:OVER:2:TimeStampFormat")
     info(autosaveFields, "VAL")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:OVER:2:TimeStampFormat_RBV")
+record(stringin, "BL03S-DI-OAV-01:OVER:2:TimeStampFormat_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_TIMESTAMP_FORMAT")
     field(SCAN, "I/O Intr")
 }
 
-record(mbbo, "S03SIM-DI-OAV-01:OVER:2:Font")
+record(mbbo, "BL03S-DI-OAV-01:OVER:2:Font")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5442,7 +5413,7 @@ record(mbbo, "S03SIM-DI-OAV-01:OVER:2:Font")
     info(autosaveFields, "VAL")
 }
 
-record(mbbi, "S03SIM-DI-OAV-01:OVER:2:Font_RBV")
+record(mbbi, "BL03S-DI-OAV-01:OVER:2:Font_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)OVERLAY_FONT")
@@ -5460,7 +5431,7 @@ record(mbbi, "S03SIM-DI-OAV-01:OVER:2:Font_RBV")
 ###################################################################
 #  These records control whether this overlay is used             #
 ###################################################################
-record(bo, "S03SIM-DI-OAV-01:OVER:2:Use")
+record(bo, "BL03S-DI-OAV-01:OVER:2:Use")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5471,7 +5442,7 @@ record(bo, "S03SIM-DI-OAV-01:OVER:2:Use")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:OVER:2:Use_RBV")
+record(bi, "BL03S-DI-OAV-01:OVER:2:Use_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,1,1)USE")
@@ -5482,7 +5453,7 @@ record(bi, "S03SIM-DI-OAV-01:OVER:2:Use_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-EA-FSCN-01:OVER:1:Use")
+record(bo, "BL03S-EA-FSCN-01:OVER:1:Use")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5493,7 +5464,7 @@ record(bo, "S03SIM-EA-FSCN-01:OVER:1:Use")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-EA-FSCN-01:OVER:1:Use_RBV")
+record(bi, "BL03S-EA-FSCN-01:OVER:1:Use_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(FSCN1.over,0,1)USE")
@@ -5504,7 +5475,7 @@ record(bi, "S03SIM-EA-FSCN-01:OVER:1:Use_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-DI-OAV-01:OVER:EnableCallbacks")
+record(bo, "BL03S-DI-OAV-01:OVER:EnableCallbacks")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5515,7 +5486,7 @@ record(bo, "S03SIM-DI-OAV-01:OVER:EnableCallbacks")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:OVER:EnableCallbacks_RBV")
+record(bi, "BL03S-DI-OAV-01:OVER:EnableCallbacks_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,0,1)ENABLE_CALLBACKS")
@@ -5526,7 +5497,7 @@ record(bi, "S03SIM-DI-OAV-01:OVER:EnableCallbacks_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:OVER:MinCallbackTime")
+record(ao, "BL03S-DI-OAV-01:OVER:MinCallbackTime")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
@@ -5538,7 +5509,7 @@ record(ao, "S03SIM-DI-OAV-01:OVER:MinCallbackTime")
     info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:OVER:MinCallbackTime_RBV")
+record(ai, "BL03S-DI-OAV-01:OVER:MinCallbackTime_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.over,0,1)MIN_CALLBACK_TIME")
@@ -5547,33 +5518,33 @@ record(ai, "S03SIM-DI-OAV-01:OVER:MinCallbackTime_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "S03SIM-DI-OAV-01:OVER:MaxArrayRate")
+record(ao, "BL03S-DI-OAV-01:OVER:MaxArrayRate")
 {
     field(DTYP, "Soft Channel")
-    field(OUT,  "S03SIM-DI-OAV-01:OVER:MaxArrayRate_COUT PP")
+    field(OUT,  "BL03S-DI-OAV-01:OVER:MaxArrayRate_COUT PP")
     field(EGU,  "Hz")
     field(PREC, "3")
     field(VAL,  "0.0")
     info(autosaveFields, "VAL")
 }
 
-record(calcout, "S03SIM-DI-OAV-01:OVER:MaxArrayRate_COUT")
+record(calcout, "BL03S-DI-OAV-01:OVER:MaxArrayRate_COUT")
 {
-    field(INPA, "S03SIM-DI-OAV-01:OVER:MaxArrayRate")
+    field(INPA, "BL03S-DI-OAV-01:OVER:MaxArrayRate")
     field(CALC, "A=0?0:1.0/A")
-    field(OUT,  "S03SIM-DI-OAV-01:OVER:MinCallbackTime PP")
+    field(OUT,  "BL03S-DI-OAV-01:OVER:MinCallbackTime PP")
 }
 
-record(calc, "S03SIM-DI-OAV-01:OVER:MaxArrayRate_RBV")
+record(calc, "BL03S-DI-OAV-01:OVER:MaxArrayRate_RBV")
 {
-    field(INPA, "S03SIM-DI-OAV-01:OVER:MinCallbackTime_RBV CP")
+    field(INPA, "BL03S-DI-OAV-01:OVER:MinCallbackTime_RBV CP")
     field(CALC, "A=0?0:1.0/A")
     field(EGU,  "Hz")
     field(PREC, "3")
     field(SCAN, "Passive")
 }
 
-record(ao, "S03SIM-DI-OAV-01:OVER:MaxByteRate")
+record(ao, "BL03S-DI-OAV-01:OVER:MaxByteRate")
 {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
@@ -5585,7 +5556,7 @@ record(ao, "S03SIM-DI-OAV-01:OVER:MaxByteRate")
     info(autosaveFields, "VAL")
 }
 
-record(ai, "S03SIM-DI-OAV-01:OVER:MaxByteRate_RBV")
+record(ai, "BL03S-DI-OAV-01:OVER:MaxByteRate_RBV")
 {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn(OAV.over,0,1)MAX_BYTE_RATE")
@@ -5594,7 +5565,7 @@ record(ai, "S03SIM-DI-OAV-01:OVER:MaxByteRate_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(stringout, "S03SIM-DI-OAV-01:OVER:NDArrayPort")
+record(stringout, "BL03S-DI-OAV-01:OVER:NDArrayPort")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -5603,14 +5574,14 @@ record(stringout, "S03SIM-DI-OAV-01:OVER:NDArrayPort")
     info(autosaveFields, "VAL")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:OVER:NDArrayPort_RBV")
+record(stringin, "BL03S-DI-OAV-01:OVER:NDArrayPort_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.over,0,1)NDARRAY_PORT")
     field(SCAN, "I/O Intr")
 }
 
-record(longout, "S03SIM-DI-OAV-01:OVER:NDArrayAddress")
+record(longout, "BL03S-DI-OAV-01:OVER:NDArrayAddress")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5619,14 +5590,14 @@ record(longout, "S03SIM-DI-OAV-01:OVER:NDArrayAddress")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "S03SIM-DI-OAV-01:OVER:NDArrayAddress_RBV")
+record(longin, "BL03S-DI-OAV-01:OVER:NDArrayAddress_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,0,1)NDARRAY_ADDR")
     field(SCAN, "I/O Intr")
 }
 
-record(bo, "S03SIM-DI-OAV-01:OVER:1:Use")
+record(bo, "BL03S-DI-OAV-01:OVER:1:Use")
 {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
@@ -5637,7 +5608,7 @@ record(bo, "S03SIM-DI-OAV-01:OVER:1:Use")
     info(autosaveFields, "VAL")
 }
 
-record(bi, "S03SIM-DI-OAV-01:OVER:1:Use_RBV")
+record(bi, "BL03S-DI-OAV-01:OVER:1:Use_RBV")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn(OAV.over,0,1)USE")
@@ -5648,23 +5619,23 @@ record(bi, "S03SIM-DI-OAV-01:OVER:1:Use_RBV")
     field(SCAN, "I/O Intr")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MJPG:ArraySize1_RBV")
+record(longin, "BL03S-DI-OAV-01:MJPG:ArraySize1_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MJPG:Dim1SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MJPG:Dim2SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MJPG:Dim1SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MJPG:Dim2SA_RBV")
 }
-record(longin, "S03SIM-DI-OAV-01:MJPG:JPG_URL_RBV")
+record(longin, "BL03S-DI-OAV-01:MJPG:JPG_URL_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MJPG:Dim1SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MJPG:Dim2SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MJPG:Dim1SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MJPG:Dim2SA_RBV")
 }
 
-record(longin, "S03SIM-DI-OAV-01:MJPG:ArraySize2_RBV")
+record(longin, "BL03S-DI-OAV-01:MJPG:ArraySize2_RBV")
 {
-    field(INP,  "S03SIM-DI-OAV-01:MJPG:Dim2SA_RBV")
-    field(FLNK, "S03SIM-DI-OAV-01:MJPG:Dim3SA_RBV")
+    field(INP,  "BL03S-DI-OAV-01:MJPG:Dim2SA_RBV")
+    field(FLNK, "BL03S-DI-OAV-01:MJPG:Dim3SA_RBV")
 }
-record(stringout, "S03SIM-DI-OAV-01:MJPG:NDArrayPort")
+record(stringout, "BL03S-DI-OAV-01:MJPG:NDArrayPort")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
@@ -5673,7 +5644,7 @@ record(stringout, "S03SIM-DI-OAV-01:MJPG:NDArrayPort")
     info(autosaveFields, "VAL")
 }
 
-record(stringin, "S03SIM-DI-OAV-01:MJPG:NDArrayPort_RBV")
+record(stringin, "BL03S-DI-OAV-01:MJPG:NDArrayPort_RBV")
 {
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn(OAV.mjpg,0,1)NDARRAY_PORT")

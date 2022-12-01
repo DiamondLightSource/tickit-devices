@@ -2,9 +2,9 @@
 #% macro, IOC, Device prefix
 
 # Used by Channel Access Security to determine access to this IOC.
-record(mbbo, "S03SIM-DI-IOC-01:ACCESS")
+record(mbbo, "BL03S-DI-IOC-01:ACCESS")
 {
-  field(DESC, "S03SIM-DI-IOC-01 Acc Mode")
+  field(DESC, "BL03S-DI-IOC-01 Acc Mode")
   field(PINI, "YES")
   field(ZRST, "Running")
   field(ZRSV, "NO_ALARM")
@@ -16,35 +16,35 @@ record(mbbo, "S03SIM-DI-IOC-01:ACCESS")
   field(THSV, "MAJOR")
   info(autosaveFields, "VAL")
 }
-record(stringin, "S03SIM-DI-IOC-01:STARTTOD")
+record(stringin, "BL03S-DI-IOC-01:STARTTOD")
 {
     field(DESC, "Time and date of startup")
     field(DTYP, "Soft Timestamp")
     field(PINI, "YES")
     field(INP, "@%Y-%m-%d %H:%M:%S")
 }
-record(stringin, "S03SIM-DI-IOC-01:TOD")
+record(stringin, "BL03S-DI-IOC-01:TOD")
 {
     field(DESC, "Current time and date")
     field(DTYP, "Soft Timestamp")
     field(SCAN, "1 second")
     field(INP, "@%Y-%m-%d %H:%M:%S")
 }
-record(calcout, "S03SIM-DI-IOC-01:HEARTBEAT")
+record(calcout, "BL03S-DI-IOC-01:HEARTBEAT")
 {
     field(DESC, "1 Hz counter since startup")
     field(CALC, "(A<2147483647)?A+1:1")
     field(SCAN, "1 second")
-    field(INPA, "S03SIM-DI-IOC-01:HEARTBEAT")
+    field(INPA, "BL03S-DI-IOC-01:HEARTBEAT")
 }
 # if autosave is working, START_CNT creates a running count of 
 # number of times the IOC was started.
-record(calcout, "S03SIM-DI-IOC-01:START_CNT")
+record(calcout, "BL03S-DI-IOC-01:START_CNT")
 {
     field(DESC, "Increments at startup")
     field(CALC, "A+1")
     field(PINI, "YES")
-    field(INPA, "S03SIM-DI-IOC-01:START_CNT")
+    field(INPA, "BL03S-DI-IOC-01:START_CNT")
     info(autosaveFields_pass0, "VAL")
 }
 #
@@ -52,16 +52,16 @@ record(calcout, "S03SIM-DI-IOC-01:START_CNT")
 # PV updates the Access Security mechanism dynamically.
 # The .acf file is re-read.
 #
-record( sub, "S03SIM-DI-IOC-01:READACF")
+record( sub, "BL03S-DI-IOC-01:READACF")
 {
-    field( DESC, "S03SIM-DI-IOC-01 ACF Update")
+    field( DESC, "BL03S-DI-IOC-01 ACF Update")
     field( INAM, "asSubInit")
     field( SNAM, "asSubProcess")
     field( BRSV, "INVALID")
 }
-record(sub, "S03SIM-DI-IOC-01:SYSRESET")
+record(sub, "BL03S-DI-IOC-01:SYSRESET")
 {
-    alias("S03SIM-DI-IOC-01:SysReset")
+    alias("BL03S-DI-IOC-01:SysReset")
     field(DESC, "IOC Restart" )
     field(SNAM, "rebootProc")
     field(BRSV,"INVALID")
@@ -70,7 +70,7 @@ record(sub, "S03SIM-DI-IOC-01:SYSRESET")
 
 #% archiver 1 Monitor
 #% alh
-record(ai, "S03SIM-DI-IOC-01:CA_CLNT_CNT") {
+record(ai, "BL03S-DI-IOC-01:CA_CLNT_CNT") {
   field(DESC, "Number of CA Clients")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -85,7 +85,7 @@ record(ai, "S03SIM-DI-IOC-01:CA_CLNT_CNT") {
 
 #% archiver 1 Monitor
 #% alh
-record(ai, "S03SIM-DI-IOC-01:CA_CONN_CNT") {
+record(ai, "BL03S-DI-IOC-01:CA_CONN_CNT") {
   field(DESC, "Number of CA Connections")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -98,35 +98,35 @@ record(ai, "S03SIM-DI-IOC-01:CA_CONN_CNT") {
   info(autosaveFields_pass0, "HOPR LOPR HIHI HIGH LOW LOLO HHSV HSV LSV LLSV")
 }
 
-record(ai, "S03SIM-DI-IOC-01:RECORD_CNT") {
+record(ai, "BL03S-DI-IOC-01:RECORD_CNT") {
   field(DESC, "Number of Records")
   field(PINI, "YES")
   field(DTYP, "IOC stats")
   field(INP, "@records")
 }
 
-record(ai, "S03SIM-DI-IOC-01:FD_MAX") {
+record(ai, "BL03S-DI-IOC-01:FD_MAX") {
   field(DESC, "Max File Descriptors")
   field(PINI, "YES")
   field(DTYP, "IOC stats")
   field(INP, "@maxfd")
 }
 
-record(ai, "S03SIM-DI-IOC-01:FD_CNT") {
+record(ai, "BL03S-DI-IOC-01:FD_CNT") {
   field(DESC, "Allocated File Descriptors")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
-  field(FLNK, "S03SIM-DI-IOC-01:FD_FREE  PP MS")
+  field(FLNK, "BL03S-DI-IOC-01:FD_FREE  PP MS")
   field(INP, "@fd")
 }
 
 #% archiver 1 Monitor
 #% alh
-record(calc, "S03SIM-DI-IOC-01:FD_FREE") {
+record(calc, "BL03S-DI-IOC-01:FD_FREE") {
   field(DESC, "Available FDs")
   field(CALC, "B>0?B-A:C")
-  field(INPA, "S03SIM-DI-IOC-01:FD_CNT  NPP MS")
-  field(INPB, "S03SIM-DI-IOC-01:FD_MAX  NPP MS")
+  field(INPA, "BL03S-DI-IOC-01:FD_CNT  NPP MS")
+  field(INPB, "BL03S-DI-IOC-01:FD_MAX  NPP MS")
   field(INPC, "1000")
   field(HOPR, "150")
   field(LOLO, "5")
@@ -137,7 +137,7 @@ record(calc, "S03SIM-DI-IOC-01:FD_FREE") {
 }
 
 #% archiver 1 Monitor
-record(ai, "S03SIM-DI-IOC-01:SYS_CPU_LOAD") {
+record(ai, "BL03S-DI-IOC-01:SYS_CPU_LOAD") {
   field(DESC, "System CPU Load")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -154,8 +154,8 @@ record(ai, "S03SIM-DI-IOC-01:SYS_CPU_LOAD") {
 
 #% archiver 1 Monitor
 #% alh
-record(ai, "S03SIM-DI-IOC-01:IOC_CPU_LOAD") {
-  alias("S03SIM-DI-IOC-01:LOAD")
+record(ai, "BL03S-DI-IOC-01:IOC_CPU_LOAD") {
+  alias("BL03S-DI-IOC-01:LOAD")
   field(DESC, "IOC CPU Load")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -170,7 +170,7 @@ record(ai, "S03SIM-DI-IOC-01:IOC_CPU_LOAD") {
   info(autosaveFields_pass0, "HOPR LOPR HIHI HIGH LOW LOLO HHSV HSV LSV LLSV")
 }
 
-record(ai, "S03SIM-DI-IOC-01:CPU_CNT") {
+record(ai, "BL03S-DI-IOC-01:CPU_CNT") {
   field(DESC, "Number of CPUs")
   field(DTYP, "IOC stats")
   field(INP, "@no_of_cpus")
@@ -179,7 +179,7 @@ record(ai, "S03SIM-DI-IOC-01:CPU_CNT") {
 
 #% archiver 1 Monitor
 #% alh
-record(ai, "S03SIM-DI-IOC-01:SUSP_TASK_CNT") {
+record(ai, "BL03S-DI-IOC-01:SUSP_TASK_CNT") {
   field(DESC, "Number Suspended Tasks")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -190,7 +190,7 @@ record(ai, "S03SIM-DI-IOC-01:SUSP_TASK_CNT") {
 }
 
 #% archiver 1 Monitor
-record(ai, "S03SIM-DI-IOC-01:MEM_USED") {
+record(ai, "BL03S-DI-IOC-01:MEM_USED") {
   field(DESC, "Allocated Memory")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -199,7 +199,7 @@ record(ai, "S03SIM-DI-IOC-01:MEM_USED") {
 }
 
 #% archiver 1 Monitor
-record(ai, "S03SIM-DI-IOC-01:MEM_FREE") {
+record(ai, "BL03S-DI-IOC-01:MEM_FREE") {
   field(DESC, "Free Memory")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -210,7 +210,7 @@ record(ai, "S03SIM-DI-IOC-01:MEM_FREE") {
   info(autosaveFields_pass0, "HOPR LOPR LOW LOLO LSV LLSV")
 }
 
-record(ai, "S03SIM-DI-IOC-01:MEM_MAX") {
+record(ai, "BL03S-DI-IOC-01:MEM_MAX") {
   field(DESC, "Maximum Memory")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -218,7 +218,7 @@ record(ai, "S03SIM-DI-IOC-01:MEM_MAX") {
   field(EGU, "byte")
 }
 
-record(ao, "S03SIM-DI-IOC-01:CA_UPD_TIME") {
+record(ao, "BL03S-DI-IOC-01:CA_UPD_TIME") {
   field(DESC, "CA Check Update Period")
   field(DTYP, "IOC stats")
   field(OUT, "@ca_scan_rate")
@@ -230,7 +230,7 @@ record(ao, "S03SIM-DI-IOC-01:CA_UPD_TIME") {
   field(PINI, "YES")
 }
 
-record(ao, "S03SIM-DI-IOC-01:FD_UPD_TIME") {
+record(ao, "BL03S-DI-IOC-01:FD_UPD_TIME") {
   field(DESC, "FD Check Update Period")
   field(DTYP, "IOC stats")
   field(OUT, "@fd_scan_rate")
@@ -242,7 +242,7 @@ record(ao, "S03SIM-DI-IOC-01:FD_UPD_TIME") {
   field(PINI, "YES")
 }
 
-record(ao, "S03SIM-DI-IOC-01:LOAD_UPD_TIME") {
+record(ao, "BL03S-DI-IOC-01:LOAD_UPD_TIME") {
   field(DESC, "CPU Check Update Period")
   field(DTYP, "IOC stats")
   field(OUT, "@cpu_scan_rate")
@@ -254,7 +254,7 @@ record(ao, "S03SIM-DI-IOC-01:LOAD_UPD_TIME") {
   field(PINI, "YES")
 }
 
-record(ao, "S03SIM-DI-IOC-01:MEM_UPD_TIME") {
+record(ao, "BL03S-DI-IOC-01:MEM_UPD_TIME") {
   field(DESC, "Memory Check Update Period")
   field(DTYP, "IOC stats")
   field(OUT, "@memory_scan_rate")
@@ -266,21 +266,21 @@ record(ao, "S03SIM-DI-IOC-01:MEM_UPD_TIME") {
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:ST_SCRIPT1") {
+record(stringin, "BL03S-DI-IOC-01:ST_SCRIPT1") {
   field(DESC, "Startup Script Part1")
   field(DTYP, "IOC stats")
   field(INP, "@startup_script_1")
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:ST_SCRIPT2") {
+record(stringin, "BL03S-DI-IOC-01:ST_SCRIPT2") {
   field(DESC, "Startup Script Part2")
   field(DTYP, "IOC stats")
   field(INP, "@startup_script_2")
   field(PINI, "YES")
 }
 
-record(waveform, "S03SIM-DI-IOC-01:ST_SCRIPT") {
+record(waveform, "BL03S-DI-IOC-01:ST_SCRIPT") {
   field(DESC, "Startup Script")
   field(DTYP, "IOC stats")
   field(INP, "@startup_script")
@@ -289,21 +289,21 @@ record(waveform, "S03SIM-DI-IOC-01:ST_SCRIPT") {
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:KERNEL_VERS") {
+record(stringin, "BL03S-DI-IOC-01:KERNEL_VERS") {
   field(DESC, "Kernel Version")
   field(DTYP, "IOC stats")
   field(INP, "@kernel_ver")
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:EPICS_VERS") {
+record(stringin, "BL03S-DI-IOC-01:EPICS_VERS") {
   field(DESC, "EPICS Version")
   field(DTYP, "IOC stats")
   field(INP, "@epics_ver")
   field(PINI, "YES")
 }
 
-record(waveform, "S03SIM-DI-IOC-01:EPICS_VERSION") {
+record(waveform, "BL03S-DI-IOC-01:EPICS_VERSION") {
   field(DESC, "EPICS Version")
   field(DTYP, "IOC stats")
   field(INP, "@epics_ver")
@@ -312,28 +312,28 @@ record(waveform, "S03SIM-DI-IOC-01:EPICS_VERSION") {
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:HOSTNAME") {
+record(stringin, "BL03S-DI-IOC-01:HOSTNAME") {
   field(DESC, "Host Name")
   field(DTYP, "IOC stats")
   field(INP, "@hostname")
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:APP_DIR1") {
+record(stringin, "BL03S-DI-IOC-01:APP_DIR1") {
   field(DESC, "Application Directory Part 1")
   field(DTYP, "IOC stats")
   field(INP, "@pwd1")
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:APP_DIR2") {
+record(stringin, "BL03S-DI-IOC-01:APP_DIR2") {
   field(DESC, "Application Directory Part 2")
   field(DTYP, "IOC stats")
   field(INP, "@pwd2")
   field(PINI, "YES")
 }
 
-record(waveform, "S03SIM-DI-IOC-01:APP_DIR") {
+record(waveform, "BL03S-DI-IOC-01:APP_DIR") {
   field(DESC, "Application Directory")
   field(DTYP, "IOC stats")
   field(INP, "@pwd")
@@ -342,7 +342,7 @@ record(waveform, "S03SIM-DI-IOC-01:APP_DIR") {
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:UPTIME") {
+record(stringin, "BL03S-DI-IOC-01:UPTIME") {
   field(DESC, "Elapsed Time since Start")
   field(SCAN, "1 second")
   field(DTYP, "IOC stats")
@@ -350,41 +350,41 @@ record(stringin, "S03SIM-DI-IOC-01:UPTIME") {
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:ENGINEER") {
+record(stringin, "BL03S-DI-IOC-01:ENGINEER") {
   field(DESC, "Engineer")
   field(DTYP, "IOC stats")
   field(INP, "@engineer")
   field(PINI, "YES")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:LOCATION") {
+record(stringin, "BL03S-DI-IOC-01:LOCATION") {
   field(DESC, "Location")
   field(DTYP, "IOC stats")
   field(INP, "@location")
   field(PINI, "YES")
 }
 
-record(ai, "S03SIM-DI-IOC-01:PROCESS_ID") {
+record(ai, "BL03S-DI-IOC-01:PROCESS_ID") {
   field(DESC, "Process ID")
   field(PINI, "YES")
   field(DTYP, "IOC stats")
   field(INP, "@proc_id")
 }
 
-record(ai, "S03SIM-DI-IOC-01:PARENT_ID") {
+record(ai, "BL03S-DI-IOC-01:PARENT_ID") {
   field(DESC, "Parent Process ID")
   field(PINI, "YES")
   field(DTYP, "IOC stats")
   field(INP, "@parent_proc_id")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:DLSVER") {
+record(stringin, "BL03S-DI-IOC-01:DLSVER") {
   field(DESC, "IOC version")
   field(DTYP, "IOC stats")
   field(INP, "@dlsver")
   field(PINI, "YES")
 }
-record(ai, "S03SIM-DI-IOC-01:GTIM_TIME") {
+record(ai, "BL03S-DI-IOC-01:GTIM_TIME") {
   field(DESC, "Gen Time Secs since 1990")
   field(SCAN, "1 second")
   field(DTYP, "General Time")
@@ -393,7 +393,7 @@ record(ai, "S03SIM-DI-IOC-01:GTIM_TIME") {
   field(EGU,  "sec")
 }
 
-record(bo, "S03SIM-DI-IOC-01:GTIM_RESET") {
+record(bo, "BL03S-DI-IOC-01:GTIM_RESET") {
   field(DESC, "Gen Time Error Reset")
   field(DTYP, "General Time")
   field(OUT,  "@RSTERRCNT")
@@ -401,7 +401,7 @@ record(bo, "S03SIM-DI-IOC-01:GTIM_RESET") {
   field(ONAM, "Reset")
 }
 
-record(longin, "S03SIM-DI-IOC-01:GTIM_ERR_CNT") {
+record(longin, "BL03S-DI-IOC-01:GTIM_ERR_CNT") {
   field(DESC, "Gen Time Error Count")
   field(DTYP, "General Time")
   field(INP,  "@GETERRCNT")
@@ -410,93 +410,93 @@ record(longin, "S03SIM-DI-IOC-01:GTIM_ERR_CNT") {
   field(HHSV, "MAJOR")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:GTIM_CUR_SRC") {
+record(stringin, "BL03S-DI-IOC-01:GTIM_CUR_SRC") {
   field(DESC, "Gen Time Current Provider")
   field(DTYP, "General Time")
   field(INP,  "@BESTTCP")
   field(SCAN, "1 second")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:GTIM_EVT_SRC") {
+record(stringin, "BL03S-DI-IOC-01:GTIM_EVT_SRC") {
   field(DESC, "Gen Time Event Provider")
   field(DTYP, "General Time")
   field(INP,  "@BESTTEP")
   field(SCAN, "1 second")
 }
 
-record(stringin, "S03SIM-DI-IOC-01:GTIM_HI_SRC") {
+record(stringin, "BL03S-DI-IOC-01:GTIM_HI_SRC") {
   field(DESC, "Gen Time Highest Provider")
   field(DTYP, "General Time")
   field(INP,  "@TOPTCP")
   field(SCAN, "1 second")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_ADDR_LIST") {
+record(stringin, "BL03S-DI-IOC-01:CA_ADDR_LIST") {
   field(DESC, "EPICS_CA_ADDR_LIST")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_ADDR_LIST")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_CONN_TIME") {
+record(stringin, "BL03S-DI-IOC-01:CA_CONN_TIME") {
   field(DESC, "EPICS_CA_CONN_TMO")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_CONN_TMO")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_AUTO_ADDR") {
+record(stringin, "BL03S-DI-IOC-01:CA_AUTO_ADDR") {
   field(DESC, "EPICS_CA_AUTO_ADDR_LIST")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_AUTO_ADDR_LIST")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_RPTR_PORT") {
+record(stringin, "BL03S-DI-IOC-01:CA_RPTR_PORT") {
   field(DESC, "EPICS_CA_REPEATER_PORT")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_REPEATER_PORT")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_SRVR_PORT") {
+record(stringin, "BL03S-DI-IOC-01:CA_SRVR_PORT") {
   field(DESC, "EPICS_CA_SERVER_PORT")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_SERVER_PORT")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_MAX_ARRAY") {
+record(stringin, "BL03S-DI-IOC-01:CA_MAX_ARRAY") {
   field(DESC, "EPICS_CA_MAX_ARRAY_BYTES")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_MAX_ARRAY_BYTES")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_SRCH_TIME") {
+record(stringin, "BL03S-DI-IOC-01:CA_SRCH_TIME") {
   field(DESC, "EPICS_CA_MAX_SEARCH_PERIOD")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_MAX_SEARCH_PERIOD")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:CA_BEAC_TIME") {
+record(stringin, "BL03S-DI-IOC-01:CA_BEAC_TIME") {
   field(DESC, "EPICS_CA_BEACON_PERIOD")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_CA_BEACON_PERIOD")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:TIMEZONE") {
+record(stringin, "BL03S-DI-IOC-01:TIMEZONE") {
   field(DESC, "EPICS_TIMEZONE")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_TIMEZONE")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:TS_NTP_INET") {
+record(stringin, "BL03S-DI-IOC-01:TS_NTP_INET") {
   field(DESC, "EPICS_TS_NTP_INET")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_TS_NTP_INET")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:IOC_LOG_PORT") {
+record(stringin, "BL03S-DI-IOC-01:IOC_LOG_PORT") {
   field(DESC, "EPICS_IOC_LOG_PORT")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_IOC_LOG_PORT")
   field(PINI, "YES")
 }
-record(stringin, "S03SIM-DI-IOC-01:IOC_LOG_INET") {
+record(stringin, "BL03S-DI-IOC-01:IOC_LOG_INET") {
   field(DESC, "EPICS_IOC_LOG_INET")
   field(DTYP, "IOC epics var")
   field(INP, "@EPICS_IOC_LOG_INET")
@@ -505,14 +505,14 @@ record(stringin, "S03SIM-DI-IOC-01:IOC_LOG_INET") {
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:01HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:01HZ_MODE") {
 	field(DESC, "01HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:01HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:01HZ_UPD_TIME") {
 	field(DESC, "01HZ Update Time")
 	field(SCAN, "10 second")
 	field(EGU, "second")
@@ -526,21 +526,21 @@ record(sub, "S03SIM-DI-IOC-01:01HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:01HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:01HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:02HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:02HZ_MODE") {
 	field(DESC, "02HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:02HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:02HZ_UPD_TIME") {
 	field(DESC, "02HZ Update Time")
 	field(SCAN, "5 second")
 	field(EGU, "second")
@@ -554,21 +554,21 @@ record(sub, "S03SIM-DI-IOC-01:02HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:02HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:02HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:05HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:05HZ_MODE") {
 	field(DESC, "05HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:05HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:05HZ_UPD_TIME") {
 	field(DESC, "05HZ Update Time")
 	field(SCAN, "2 second")
 	field(EGU, "second")
@@ -582,21 +582,21 @@ record(sub, "S03SIM-DI-IOC-01:05HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:05HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:05HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:1HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:1HZ_MODE") {
 	field(DESC, "1HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:1HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:1HZ_UPD_TIME") {
 	field(DESC, "1HZ Update Time")
 	field(SCAN, "1 second")
 	field(EGU, "second")
@@ -610,21 +610,21 @@ record(sub, "S03SIM-DI-IOC-01:1HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:1HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:1HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:2HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:2HZ_MODE") {
 	field(DESC, "2HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:2HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:2HZ_UPD_TIME") {
 	field(DESC, "2HZ Update Time")
 	field(SCAN, ".5 second")
 	field(EGU, "second")
@@ -638,21 +638,21 @@ record(sub, "S03SIM-DI-IOC-01:2HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:2HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:2HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:5HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:5HZ_MODE") {
 	field(DESC, "5HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:5HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:5HZ_UPD_TIME") {
 	field(DESC, "5HZ Update Time")
 	field(SCAN, ".2 second")
 	field(EGU, "second")
@@ -666,21 +666,21 @@ record(sub, "S03SIM-DI-IOC-01:5HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:5HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:5HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 #% macro, __doc__, Create some records for reading IOC statistics and details.
 #% macro, IOC, Device prefix
 
-record(bo, "S03SIM-DI-IOC-01:10HZ_MODE") {
+record(bo, "BL03S-DI-IOC-01:10HZ_MODE") {
 	field(DESC, "10HZ Mode")
 	field(DOL, "1")
 	field(PINI, "YES")
 	field(ZNAM, "Relative")
 	field(ONAM, "Absolute")
 }
-record(sub, "S03SIM-DI-IOC-01:10HZ_UPD_TIME") {
+record(sub, "BL03S-DI-IOC-01:10HZ_UPD_TIME") {
 	field(DESC, "10HZ Update Time")
 	field(SCAN, ".1 second")
 	field(EGU, "second")
@@ -694,74 +694,74 @@ record(sub, "S03SIM-DI-IOC-01:10HZ_UPD_TIME") {
 	field(LSV, "MINOR")
 	field(LLSV, "MAJOR")
 	field(BRSV, "INVALID")
-	field(INPA, "S03SIM-DI-IOC-01:10HZ_MODE")
+	field(INPA, "BL03S-DI-IOC-01:10HZ_MODE")
 	field(B,    "1.0")
 	field(C,    "5.0")
 }
 
-record(calc, "S03SIM-DI-IOC-01:SCANMON_SEVR") {
+record(calc, "BL03S-DI-IOC-01:SCANMON_SEVR") {
     field(DESC, "ScanMon Max Severity")
     field(SCAN, "1 second")
     field(CALC, "0")
-    field(INPA, "S03SIM-DI-IOC-01:01HZ_UPD_TIME.SEVR MS")
-    field(INPB, "S03SIM-DI-IOC-01:02HZ_UPD_TIME.SEVR MS")
-    field(INPC, "S03SIM-DI-IOC-01:05HZ_UPD_TIME.SEVR MS")
-    field(INPD, "S03SIM-DI-IOC-01:1HZ_UPD_TIME.SEVR MS")
-    field(INPE, "S03SIM-DI-IOC-01:2HZ_UPD_TIME.SEVR MS")
-    field(INPF, "S03SIM-DI-IOC-01:5HZ_UPD_TIME.SEVR MS")
-    field(INPG, "S03SIM-DI-IOC-01:10HZ_UPD_TIME.SEVR MS")
+    field(INPA, "BL03S-DI-IOC-01:01HZ_UPD_TIME.SEVR MS")
+    field(INPB, "BL03S-DI-IOC-01:02HZ_UPD_TIME.SEVR MS")
+    field(INPC, "BL03S-DI-IOC-01:05HZ_UPD_TIME.SEVR MS")
+    field(INPD, "BL03S-DI-IOC-01:1HZ_UPD_TIME.SEVR MS")
+    field(INPE, "BL03S-DI-IOC-01:2HZ_UPD_TIME.SEVR MS")
+    field(INPF, "BL03S-DI-IOC-01:5HZ_UPD_TIME.SEVR MS")
+    field(INPG, "BL03S-DI-IOC-01:10HZ_UPD_TIME.SEVR MS")
 }
 
 # % macro, name, name for gui elements
 # % macro, EDM_FILE, edm screen, defaults to ioc_stats_softdls.edl
 # % macro, IOC, ioc name
 
-# % gui, DI1, edm, ioc_stats_softdls.edl, ioc=S03SIM-DI-IOC-01
-# % gui, DI1, edmembed, ioc_embed.edl, ioc=S03SIM-DI-IOC-01,EDM_FILE=ioc_stats_softdls.edl
+# % gui, DI1, edm, ioc_stats_softdls.edl, ioc=BL03S-DI-IOC-01
+# % gui, DI1, edmembed, ioc_embed.edl, ioc=BL03S-DI-IOC-01,EDM_FILE=ioc_stats_softdls.edl
 
 
 
 # This associates BOY screens with the template
-# % gui, DI1, boydetail, devIocStatsApp_opi/iocStats_detail.opi, desc=S03SIM-DI-IOC-01, IOC=S03SIM-DI-IOC-01, name=DI1
-# % gui, DI1, boyembed, devIocStatsApp_opi/iocStats_embed.opi, desc=S03SIM-DI-IOC-01,  IOC=S03SIM-DI-IOC-01, name=DI1
-# % gui, DI1, boyembed, devIocStatsApp_opi/iocStats_embed_box.opi, desc=S03SIM-DI-IOC-01,  IOC=S03SIM-DI-IOC-01, name=DI1
+# % gui, DI1, boydetail, devIocStatsApp_opi/iocStats_detail.opi, desc=BL03S-DI-IOC-01, IOC=BL03S-DI-IOC-01, name=DI1
+# % gui, DI1, boyembed, devIocStatsApp_opi/iocStats_embed.opi, desc=BL03S-DI-IOC-01,  IOC=BL03S-DI-IOC-01, name=DI1
+# % gui, DI1, boyembed, devIocStatsApp_opi/iocStats_embed_box.opi, desc=BL03S-DI-IOC-01,  IOC=BL03S-DI-IOC-01, name=DI1
 
 # These define what PVs a detail screen should contain
-# % gui, DI1, readback, Startup Time,S03SIM-DI-IOC-01:STARTOD
-# % gui, DI1, readback, Current Time,S03SIM-DI-IOC-01:TOD
-# % gui, DI1, readback, Up Time,S03SIM-DI-IOC-01:UPTIME
-# % gui, DI1, readback, Heartbeat,S03SIM-DI-IOC-01:HEARTBEAT
-# % gui, DI1, readback, Records,S03SIM-DI-IOC-01:RECORD_CNT
-# % gui, DI1, readback, Host Name,S03SIM-DI-IOC-01:HOSTNAME
-# % gui, DI1, readback, User Name,S03SIM-DI-IOC-01:ENGINEER
-# % gui, DI1, readback, Location,S03SIM-DI-IOC-01:LOCATION
-# % gui, DI1, readback, CA Clients,S03SIM-DI-IOC-01:CA_CLNT_CNT
-# % gui, DI1, readback, CA PV Conns,S03SIM-DI-IOC-01:CA_CONN_CNT
-# % gui, DI1, readback, Susp Tasks,S03SIM-DI-IOC-01:SUSP_TASK_CNT
-# % gui, DI1, readback, EPICS Version,S03SIM-DI-IOC-01:EPICS_VERS
-# % gui, DI1, readback, OS Version,S03SIM-DI-IOC-01:KERNEL_VERS
-# % gui, DI1, readback, Application Directory,S03SIM-DI-IOC-01:APP_DIR1
-# % gui, DI1, readback, Startup Script,S03SIM-DI-IOC-01:ST_SCRIPT1
-# % gui, DI1, readback, Memory Free,S03SIM-DI-IOC-01:MEM_FREE
-# % gui, DI1, readback, Memory Used,S03SIM-DI-IOC-01:MEM_USED
-# % gui, DI1, readback, Memory Max,S03SIM-DI-IOC-01:MEM_MAX
-# % gui, DI1, readback, File Handles Free,S03SIM-DI-IOC-01:FD_FREE
-# % gui, DI1, readback, File Handles Max,S03SIM-DI-IOC-01:FD_MAX
-# % gui, DI1, readback, IOC CPU Load,S03SIM-DI-IOC-01:IOC_CPU_LOAD
-# % gui, DI1, readback, All CPUs Load,S03SIM-DI-IOC-01:SYS_CPU_LOAD
-# % gui, DI1, readback, System CPUs,S03SIM-DI-IOC-01:CPU_CNT
+# % gui, DI1, readback, Startup Time,BL03S-DI-IOC-01:STARTOD
+# % gui, DI1, readback, Current Time,BL03S-DI-IOC-01:TOD
+# % gui, DI1, readback, Up Time,BL03S-DI-IOC-01:UPTIME
+# % gui, DI1, readback, Heartbeat,BL03S-DI-IOC-01:HEARTBEAT
+# % gui, DI1, readback, Records,BL03S-DI-IOC-01:RECORD_CNT
+# % gui, DI1, readback, Host Name,BL03S-DI-IOC-01:HOSTNAME
+# % gui, DI1, readback, User Name,BL03S-DI-IOC-01:ENGINEER
+# % gui, DI1, readback, Location,BL03S-DI-IOC-01:LOCATION
+# % gui, DI1, readback, CA Clients,BL03S-DI-IOC-01:CA_CLNT_CNT
+# % gui, DI1, readback, CA PV Conns,BL03S-DI-IOC-01:CA_CONN_CNT
+# % gui, DI1, readback, Susp Tasks,BL03S-DI-IOC-01:SUSP_TASK_CNT
+# % gui, DI1, readback, EPICS Version,BL03S-DI-IOC-01:EPICS_VERS
+# % gui, DI1, readback, OS Version,BL03S-DI-IOC-01:KERNEL_VERS
+# % gui, DI1, readback, Application Directory,BL03S-DI-IOC-01:APP_DIR1
+# % gui, DI1, readback, Startup Script,BL03S-DI-IOC-01:ST_SCRIPT1
+# % gui, DI1, readback, Memory Free,BL03S-DI-IOC-01:MEM_FREE
+# % gui, DI1, readback, Memory Used,BL03S-DI-IOC-01:MEM_USED
+# % gui, DI1, readback, Memory Max,BL03S-DI-IOC-01:MEM_MAX
+# % gui, DI1, readback, File Handles Free,BL03S-DI-IOC-01:FD_FREE
+# % gui, DI1, readback, File Handles Max,BL03S-DI-IOC-01:FD_MAX
+# % gui, DI1, readback, IOC CPU Load,BL03S-DI-IOC-01:IOC_CPU_LOAD
+# % gui, DI1, readback, All CPUs Load,BL03S-DI-IOC-01:SYS_CPU_LOAD
+# % gui, DI1, readback, System CPUs,BL03S-DI-IOC-01:CPU_CNT
 
-record(stringout,"S03SIM-DI-IOC-01:0:NAME") {
+record(stringout,"BL03S-DI-IOC-01:0:NAME") {
 	field(VAL,"Not In Use")
 	field(DTYP,"Soft Channel")
 }
-record(longout,"S03SIM-DI-IOC-01:0:STATE") {
+record(longout,"BL03S-DI-IOC-01:0:STATE") {
 	field(DTYP,"Soft Channel")
 }
 
 #% archiver 10 Monitor VAL
-#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py S03SIM-DI-IOC-01:0:STATUS
-record(mbbo,"S03SIM-DI-IOC-01:0:STATUS") {
+#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py BL03S-DI-IOC-01:0:STATUS
+record(mbbo,"BL03S-DI-IOC-01:0:STATUS") {
 	field(DTYP,"Soft Channel")
 	field(NOBT,"3")
 	field(ONVL,"1")
@@ -777,25 +777,25 @@ record(mbbo,"S03SIM-DI-IOC-01:0:STATUS") {
 	field(TWSV, "MINOR")
 	field(THSV, "MINOR")
 }
-record(stringout,"S03SIM-DI-IOC-01:0:STATUSST") {
+record(stringout,"BL03S-DI-IOC-01:0:STATUSST") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Status unknown")
 }
-record(stringout,"S03SIM-DI-IOC-01:0:TIME") {
+record(stringout,"BL03S-DI-IOC-01:0:TIME") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Not yet saved")
 }
-record(stringout,"S03SIM-DI-IOC-01:1:NAME") {
+record(stringout,"BL03S-DI-IOC-01:1:NAME") {
 	field(VAL,"Not In Use")
 	field(DTYP,"Soft Channel")
 }
-record(longout,"S03SIM-DI-IOC-01:1:STATE") {
+record(longout,"BL03S-DI-IOC-01:1:STATE") {
 	field(DTYP,"Soft Channel")
 }
 
 #% archiver 10 Monitor VAL
-#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py S03SIM-DI-IOC-01:1:STATUS
-record(mbbo,"S03SIM-DI-IOC-01:1:STATUS") {
+#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py BL03S-DI-IOC-01:1:STATUS
+record(mbbo,"BL03S-DI-IOC-01:1:STATUS") {
 	field(DTYP,"Soft Channel")
 	field(NOBT,"3")
 	field(ONVL,"1")
@@ -811,25 +811,25 @@ record(mbbo,"S03SIM-DI-IOC-01:1:STATUS") {
 	field(TWSV, "MINOR")
 	field(THSV, "MINOR")
 }
-record(stringout,"S03SIM-DI-IOC-01:1:STATUSST") {
+record(stringout,"BL03S-DI-IOC-01:1:STATUSST") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Status unknown")
 }
-record(stringout,"S03SIM-DI-IOC-01:1:TIME") {
+record(stringout,"BL03S-DI-IOC-01:1:TIME") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Not yet saved")
 }
-record(stringout,"S03SIM-DI-IOC-01:2:NAME") {
+record(stringout,"BL03S-DI-IOC-01:2:NAME") {
 	field(VAL,"Not In Use")
 	field(DTYP,"Soft Channel")
 }
-record(longout,"S03SIM-DI-IOC-01:2:STATE") {
+record(longout,"BL03S-DI-IOC-01:2:STATE") {
 	field(DTYP,"Soft Channel")
 }
 
 #% archiver 10 Monitor VAL
-#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py S03SIM-DI-IOC-01:2:STATUS
-record(mbbo,"S03SIM-DI-IOC-01:2:STATUS") {
+#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py BL03S-DI-IOC-01:2:STATUS
+record(mbbo,"BL03S-DI-IOC-01:2:STATUS") {
 	field(DTYP,"Soft Channel")
 	field(NOBT,"3")
 	field(ONVL,"1")
@@ -845,43 +845,43 @@ record(mbbo,"S03SIM-DI-IOC-01:2:STATUS") {
 	field(TWSV, "MINOR")
 	field(THSV, "MINOR")
 }
-record(stringout,"S03SIM-DI-IOC-01:2:STATUSST") {
+record(stringout,"BL03S-DI-IOC-01:2:STATUSST") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Status unknown")
 }
-record(stringout,"S03SIM-DI-IOC-01:2:TIME") {
+record(stringout,"BL03S-DI-IOC-01:2:TIME") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Not yet saved")
 }
 # This associates an edm screen with the template
-# % gui, None, edm, save_restoreStatus_more.edl, P=S03SIM-DI-IOC-01
+# % gui, None, edm, save_restoreStatus_more.edl, P=BL03S-DI-IOC-01
 
 # This associates BOY screens with the template
-# % gui, None, boydetail, asApp_opi/autosave_detail.opi, desc=S03SIM-DI-IOC-01, device=S03SIM-DI-IOC-01, name=None
-# % gui, None, boyembed, asApp_opi/autosave_embed.opi, desc=S03SIM-DI-IOC-01, device=S03SIM-DI-IOC-01, name=None
-# % gui, None, boyembed, asApp_opi/autosave_embed_box.opi, desc=S03SIM-DI-IOC-01, device=S03SIM-DI-IOC-01, name=None
+# % gui, None, boydetail, asApp_opi/autosave_detail.opi, desc=BL03S-DI-IOC-01, device=BL03S-DI-IOC-01, name=None
+# % gui, None, boyembed, asApp_opi/autosave_embed.opi, desc=BL03S-DI-IOC-01, device=BL03S-DI-IOC-01, name=None
+# % gui, None, boyembed, asApp_opi/autosave_embed_box.opi, desc=BL03S-DI-IOC-01, device=BL03S-DI-IOC-01, name=None
 
 # These define what PVs a detail screen should contain
-# % gui, None, readback, General Status, S03SIM-DI-IOC-01:SRSTATUSST
-# % gui, None, readback, Recently, S03SIM-DI-IOC-01:SRRECENTST
-# % gui, None, readback, Reboot Status, S03SIM-DI-IOC-01:RRSTATUSST
-# % gui, None, readback, Reboot time, S03SIM-DI-IOC-01:RRTIME
-# % gui, None, readback, File 0 Status, S03SIM-DI-IOC-01:0:STATUSST
-# % gui, None, readback, File 0 Name, S03SIM-DI-IOC-01:0:NAME
-# % gui, None, readback, File 0 Written, S03SIM-DI-IOC-01:0:TIME
-# % gui, None, readback, File 1 Status, S03SIM-DI-IOC-01:1:STATUSST
-# % gui, None, readback, File 1 Name, S03SIM-DI-IOC-01:1:NAME
-# % gui, None, readback, File 1 Written, S03SIM-DI-IOC-01:1:TIME
-# % gui, None, readback, File 2 Status, S03SIM-DI-IOC-01:2:STATUSST
-# % gui, None, readback, File 2 Name, S03SIM-DI-IOC-01:2:NAME
-# % gui, None, readback, File 2 Written, S03SIM-DI-IOC-01:2:TIME
+# % gui, None, readback, General Status, BL03S-DI-IOC-01:SRSTATUSST
+# % gui, None, readback, Recently, BL03S-DI-IOC-01:SRRECENTST
+# % gui, None, readback, Reboot Status, BL03S-DI-IOC-01:RRSTATUSST
+# % gui, None, readback, Reboot time, BL03S-DI-IOC-01:RRTIME
+# % gui, None, readback, File 0 Status, BL03S-DI-IOC-01:0:STATUSST
+# % gui, None, readback, File 0 Name, BL03S-DI-IOC-01:0:NAME
+# % gui, None, readback, File 0 Written, BL03S-DI-IOC-01:0:TIME
+# % gui, None, readback, File 1 Status, BL03S-DI-IOC-01:1:STATUSST
+# % gui, None, readback, File 1 Name, BL03S-DI-IOC-01:1:NAME
+# % gui, None, readback, File 1 Written, BL03S-DI-IOC-01:1:TIME
+# % gui, None, readback, File 2 Status, BL03S-DI-IOC-01:2:STATUSST
+# % gui, None, readback, File 2 Name, BL03S-DI-IOC-01:2:NAME
+# % gui, None, readback, File 2 Written, BL03S-DI-IOC-01:2:TIME
 
 
 # This makes the component icon reflect the status and severity
 # % gui, None, sevr
 #% archiver 10 Monitor VAL
-#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py S03SIM-DI-IOC-01:RRSTATUS
-record(mbbo,"S03SIM-DI-IOC-01:RRSTATUS") {
+#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py BL03S-DI-IOC-01:RRSTATUS
+record(mbbo,"BL03S-DI-IOC-01:RRSTATUS") {
 	field(DTYP,"Soft Channel")
 	field(NOBT,"3")
 	field(ONVL,"1")
@@ -898,20 +898,20 @@ record(mbbo,"S03SIM-DI-IOC-01:RRSTATUS") {
 	field(THSV, "MINOR")
 }
 
-record(stringout,"S03SIM-DI-IOC-01:RRSTATUSST") {
+record(stringout,"BL03S-DI-IOC-01:RRSTATUSST") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Status unknown")
 }
 
-record(stringout,"S03SIM-DI-IOC-01:RRTIME") {
+record(stringout,"BL03S-DI-IOC-01:RRTIME") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Not yet saved")
 }
 
 # % gui, None, sevr
 #% archiver 10 Monitor VAL
-#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py S03SIM-DI-IOC-01:SRSTATUS
-record(mbbo,"S03SIM-DI-IOC-01:SRSTATUS") {
+#% None $SEVRCOMMAND UP_ANY dls-alh-handler.py BL03S-DI-IOC-01:SRSTATUS
+record(mbbo,"BL03S-DI-IOC-01:SRSTATUS") {
 	field(DTYP,"Soft Channel")
 	field(NOBT,"3")
 	field(ONVL,"1")
@@ -928,16 +928,16 @@ record(mbbo,"S03SIM-DI-IOC-01:SRSTATUS") {
 	field(THSV, "MINOR")
 }
 
-record(bo,"S03SIM-DI-IOC-01:SRHEARTBT") {
+record(bo,"BL03S-DI-IOC-01:SRHEARTBT") {
 	field(DTYP,"Soft Channel")
 }
 
-record(stringout,"S03SIM-DI-IOC-01:SRSTATUSST") {
+record(stringout,"BL03S-DI-IOC-01:SRSTATUSST") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Status unknown")
 }
 
-record(stringout,"S03SIM-DI-IOC-01:SRRECENTST") {
+record(stringout,"BL03S-DI-IOC-01:SRRECENTST") {
 	field(DTYP,"Soft Channel")
 	field(VAL,"Status unknown")
 }

@@ -1,4 +1,4 @@
-record(stringout, "S03SIM-EA-OAV-01:FZOOM:ZOOMPOSCMD")
+record(stringout, "BL03S-EA-OAV-01:FZOOM:ZOOMPOSCMD")
 {
     field(PINI, "YES")
     field(DTYP, "asynOctetWrite")
