@@ -5621,6 +5621,7 @@ record(bi, "BL03S-DI-OAV-01:OVER:1:Use_RBV")
 
 record(longin, "BL03S-DI-OAV-01:MJPG:ArraySize1_RBV")
 {
+    field(VAL,  "1024")
     field(INP,  "BL03S-DI-OAV-01:MJPG:Dim1SA_RBV")
     field(FLNK, "BL03S-DI-OAV-01:MJPG:Dim2SA_RBV")
 }
@@ -5634,6 +5635,7 @@ record(longin, "BL03S-DI-OAV-01:MJPG:ArraySize2_RBV")
 {
     field(INP,  "BL03S-DI-OAV-01:MJPG:Dim2SA_RBV")
     field(FLNK, "BL03S-DI-OAV-01:MJPG:Dim3SA_RBV")
+    field(VAL, "768")
 }
 record(stringout, "BL03S-DI-OAV-01:MJPG:NDArrayPort")
 {

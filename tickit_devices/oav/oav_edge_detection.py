@@ -25,7 +25,9 @@ class OAVDevice(Device):
     def __init__(self):
         pass
 
-    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+    def update(
+        self, time: SimTime, inputs: Inputs, callback_period=int(1e9)
+    ) -> DeviceUpdate[Outputs]:
         """
         The device is only altered by adapters so take no inputs.
 
@@ -37,7 +39,7 @@ class OAVDevice(Device):
             DeviceUpdate[Outputs]:
                 The produced update event.
         """
-        return DeviceUpdate(OAVDevice.Outputs(), None)
+        return DeviceUpdate(OAVDevice.Outputs(), SimTime(time + callback_period))
 
 
 class OAVDeviceMXSC(Device):
@@ -71,8 +73,10 @@ class OAVDeviceMXSC(Device):
         self.tip_y = int(random.uniform(300, 500))
         self.top = np.zeros(1024)
         ln = np.log(np.arange(1, 1025 - self.tip_x))
-        self.top[self.tip_x : 1024] = ln + self.tip_y
+        self.top[self.tip_x : 1024] = ln
         self.bottom = -self.top
+        self.top[self.tip_x :] += self.tip_y
+        self.bottom[self.tip_x :] += self.tip_y
 
         self.set_waveform_based_on_omega()
 
@@ -106,15 +110,19 @@ class OAVDeviceMXSC(Device):
         return self.high_limit_travel
 
     def get_top(self) -> np.ndarray:
+        """Getter for pv."""
         return self.top
 
     def get_bottom(self) -> np.ndarray:
+        """Getter for pv."""
         return self.bottom
 
-    def get_tip_x(self):
+    def get_tip_x(self) -> int:
+        """Getter for pv."""
         return self.tip_x
 
-    def get_tip_y(self):
+    def get_tip_y(self) -> int:
+        """Getter for pv."""
         return self.tip_y
 
     def set_waveform_based_on_omega(self):
@@ -126,12 +134,10 @@ class OAVDeviceMXSC(Device):
             abs(self.omega - self.widest_points[0]) % 180,
             abs(self.omega - self.widest_points[1]) % 180,
         )
-
-        self.top[self.tip_x : self.tip_x + 340] = (
-            self.widest_point_polynomial * (95 - distance_to_widest) / 90
-        ) + self.tip_y
-
-        self.bottom = -self.top
+        distance_to_widest = 0
+        bulge = self.widest_point_polynomial * (95 - distance_to_widest) / 90
+        self.top[self.tip_x : self.tip_x + 340] = bulge + self.tip_y
+        self.bottom[self.tip_x : self.tip_x + 340] = -bulge + self.tip_y
 
 
 class OAVTCPAdapter(ComposedAdapter):
@@ -174,7 +180,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         )
 
     @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_top(self, value: float) -> None:
+    async def set_top(self, value: np.ndarray) -> None:
         """Regex string command that sets the value of beam_current.
 
         Args:
@@ -192,7 +198,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         return str(self.device.top).encode("utf-8")
 
     @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_bottom(self, value: float) -> None:
+    async def set_bottom(self, value: np.ndarray) -> None:
         """Regex string command that sets the value of beam_current.
 
         Args:
@@ -256,11 +262,15 @@ class OAVEpicsAdapterMXSC(EpicsAdapter):
     # Put all the PVs on EPICS
     def on_db_load(self) -> None:
         """Epics adapter for reading device values as a PV through channel access."""
-        # self.device.set_waveform_based_on_omega()
-        self.link_input_on_interrupt(builder.aIn("MXSC:Top"), self.device.get_top)
-        self.link_input_on_interrupt(builder.aIn("MXSC:Bottom"), self.device.get_bottom)
-        self.link_input_on_interrupt(builder.aIn("MXSC:TipX"), self.device.get_tip_x)
-        self.link_input_on_interrupt(builder.aIn("MXSC:TipY"), self.device.get_tip_y)
+        self.link_input_on_interrupt(
+            builder.WaveformOut("MXSC:Top", self.device.top), self.device.get_top
+        )
+        self.link_input_on_interrupt(
+            builder.WaveformOut("MXSC:Bottom", self.device.bottom),
+            self.device.get_bottom,
+        )
+        self.link_input_on_interrupt(builder.aOut("MXSC:TipX"), self.device.get_tip_x)
+        self.link_input_on_interrupt(builder.aOut("MXSC:TipY"), self.device.get_tip_y)
 
 
 class OAVEpicsAdapter(EpicsAdapter):
