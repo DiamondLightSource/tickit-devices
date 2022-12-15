@@ -561,6 +561,7 @@ record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeX_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_SIZE_X")
    field(SCAN, "I/O Intr")
+   field(VAL, 1024)
 }
 
 record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeY_RBV")
@@ -568,6 +569,7 @@ record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeY_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn(OAV.CAM,0,1)ARRAY_SIZE_Y")
    field(SCAN, "I/O Intr")
+   field(VAL, 768)
 }
 
 record(longin, "BL03S-DI-OAV-01:CAM:ArraySizeZ_RBV")
@@ -689,12 +691,12 @@ record(mbbo, "BL03S-DI-OAV-01:CAM:ColorMode")
    field(SVST, "YUV421")
    field(SVVL, "7")
    info(autosaveFields, "VAL")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:ColorMode_RBV PP")
 }
 
 record(mbbi, "BL03S-DI-OAV-01:CAM:ColorMode_RBV")
 {
-   field(DTYP, "asynInt32")
-   field(INP,  "@asyn(OAV.CAM,0,1)COLOR_MODE")
+   field(INP,  "BL03S-DI-OAV-01:CAM:ColorMode")
    field(ZRST, "Mono")
    field(ZRVL, "0")
    field(ONST, "Bayer")
@@ -1077,37 +1079,32 @@ record(bi, "BL03S-DI-OAV-01:CAM:ReverseY_RBV")
 record(ao, "BL03S-DI-OAV-01:CAM:AcquireTime")
 {
    field(PINI, "YES")
-   field(DTYP, "asynFloat64")
-   field(OUT,  "@asyn(OAV.CAM,0,1)ACQ_TIME")
    field(PREC, "3")
    field(VAL,  "1.0")
    info(autosaveFields, "VAL")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:AcquireTime_RBV PP")
 }
 
 record(ai, "BL03S-DI-OAV-01:CAM:AcquireTime_RBV")
 {
-   field(DTYP, "asynFloat64")
-   field(INP,  "@asyn(OAV.CAM,0,1)ACQ_TIME")
    field(PREC, "3")
    field(SCAN, "I/O Intr")
+   field(INP, "BL03S-DI-OAV-01:CAM:AcquireTime")
 }
 
 record(ao, "BL03S-DI-OAV-01:CAM:AcquirePeriod")
 {
    field(PINI, "YES")
-   field(DTYP, "asynFloat64")
-   field(OUT,  "@asyn(OAV.CAM,0,1)ACQ_PERIOD")
    field(PREC, "3")
    field(VAL,  "0")
    info(autosaveFields, "VAL")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:AcquirePeriod_RBV PP")
 }
 
 record(ai, "BL03S-DI-OAV-01:CAM:AcquirePeriod_RBV")
 {
-   field(DTYP, "asynFloat64")
-   field(INP,  "@asyn(OAV.CAM,0,1)ACQ_PERIOD")
    field(PREC, "3")
-   field(SCAN, "I/O Intr")
+   field(INP, "BL03S-DI-OAV-01:CAM:AcquirePeriod")
 }
 
 record(ai, "BL03S-DI-OAV-01:CAM:TimeRemaining_RBV")
@@ -1123,20 +1120,16 @@ record(ai, "BL03S-DI-OAV-01:CAM:TimeRemaining_RBV")
 ###################################################################
 record(ao, "BL03S-DI-OAV-01:CAM:Gain")
 {
-   field(PINI, "YES")
-   field(DTYP, "asynFloat64")
-   field(OUT,  "@asyn(OAV.CAM,0,1)GAIN")
    field(VAL,  "1.0")
    field(PREC, "3")
    info(autosaveFields, "VAL")
+   field(FLNK, "BL03S-DI-OAV-01:CAM:Gain_RBV PP")
 }
 
 record(ai, "BL03S-DI-OAV-01:CAM:Gain_RBV")
 {
-   field(DTYP, "asynFloat64")
-   field(INP,  "@asyn(OAV.CAM,0,1)GAIN")
    field(PREC, "3")
-   field(SCAN, "I/O Intr")
+   field(INP, "BL03S-DI-OAV-01:CAM:Gain")
 }
 
 ###################################################################
@@ -2164,6 +2157,7 @@ record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize1")
 {
     field(INP,  "BL03S-DI-OAV-01:MXSC:Dim1SA")
     field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim2SA")
+    field(VAL, 1024)
 }
 
 record(subArray, "BL03S-DI-OAV-01:MXSC:Dim2SA")
@@ -2180,6 +2174,7 @@ record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize2")
 {
     field(INP,  "BL03S-DI-OAV-01:MXSC:Dim2SA")
     field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim3SA")
+    field(VAL, 768)
 }
 
 record(subArray, "BL03S-DI-OAV-01:MXSC:Dim3SA")
@@ -2334,6 +2329,7 @@ record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize1_RBV")
 {
     field(INP,  "BL03S-DI-OAV-01:MXSC:Dim1SA_RBV")
     field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim2SA_RBV")
+    field(VAL, 1024)
 }
 
 record(subArray, "BL03S-DI-OAV-01:MXSC:Dim2SA_RBV")
@@ -2350,6 +2346,7 @@ record(longin, "BL03S-DI-OAV-01:MXSC:ArraySize2_RBV")
 {
     field(INP,  "BL03S-DI-OAV-01:MXSC:Dim2SA_RBV")
     field(FLNK, "BL03S-DI-OAV-01:MXSC:Dim3SA_RBV")
+    field(VAL, 768)
 }
 
 record(subArray, "BL03S-DI-OAV-01:MXSC:Dim3SA_RBV")

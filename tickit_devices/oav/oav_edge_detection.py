@@ -1,4 +1,5 @@
 import random
+import subprocess
 from dataclasses import dataclass
 
 import numpy as np
@@ -59,7 +60,7 @@ class OAVDeviceMXSC(Device):
         widest_point = random.uniform(0, 180)
         self.widest_points = (widest_point, widest_point - 180)
 
-        # we arbitrarily decide the widest polynomial should be
+        # We arbitrarily decide the widest polynomial should be
         # f(x) = -\frac{1}{360}(x - 180)^2 + 90
         self.widest_point_polynomial = -1 / 360 * (np.arange(0, 340) - 180) ** 2 + 90
 
@@ -69,8 +70,8 @@ class OAVDeviceMXSC(Device):
         self.high_limit_travel = 0
         self.low_limit_travel = 0
 
-        self.tip_x = int(random.uniform(10, 250))
-        self.tip_y = int(random.uniform(300, 500))
+        self.tip_x = int(random.uniform(200, 400))
+        self.tip_y = int(random.uniform(250, 450))
         self.top = np.zeros(1024)
         ln = np.log(np.arange(1, 1025 - self.tip_x))
         self.top[self.tip_x : 1024] = ln
@@ -94,6 +95,9 @@ class OAVDeviceMXSC(Device):
             DeviceUpdate[Outputs]:
                 The produced update event.
         """
+        self.omega = int(
+            subprocess.check_output("caget BL03S-MO-SGON-01:OMEGA", shell=True)
+        )
         self.set_waveform_based_on_omega()
         return DeviceUpdate(OAVDevice.Outputs(), SimTime(time + self.callback_period))
 
@@ -179,7 +183,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
             CommandInterpreter(),
         )
 
-    @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
+    @RegexCommand(r"TOP=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_top(self, value: np.ndarray) -> None:
         """Regex string command that sets the value of beam_current.
 
@@ -188,7 +192,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         self.device.top = value
 
-    @RegexCommand(r"C\?", format="utf-8")
+    @RegexCommand(r"TOP\?", format="utf-8")
     async def get_top(self) -> bytes:
         """Regex string command that returns the utf-8 encoded value of beam_current.
 
@@ -197,7 +201,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         return str(self.device.top).encode("utf-8")
 
-    @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
+    @RegexCommand(r"BOTTOM=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_bottom(self, value: np.ndarray) -> None:
         """Regex string command that sets the value of beam_current.
 
@@ -206,7 +210,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         self.device.bottom = value
 
-    @RegexCommand(r"C\?", format="utf-8")
+    @RegexCommand(r"BOTTOM\?", format="utf-8")
     async def get_bottom(self) -> bytes:
         """Regex string command that returns the utf-8 encoded value of beam_current.
 
@@ -215,7 +219,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         return str(self.device.bottom).encode("utf-8")
 
-    @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
+    @RegexCommand(r"TIPX=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_tip_x(self, value: float) -> None:
         """Regex string command that sets the value of beam_current.
 
@@ -224,7 +228,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         self.device.tip_x = value
 
-    @RegexCommand(r"C\?", format="utf-8")
+    @RegexCommand(r"TIPX\?", format="utf-8")
     async def get_tip_x(self) -> bytes:
         """Regex string command that returns the utf-8 encoded value of beam_current.
 
@@ -233,7 +237,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         return str(self.device.tip_x).encode("utf-8")
 
-    @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
+    @RegexCommand(r"TIPY=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_tip_y(self, value: float) -> None:
         """Regex string command that sets the value of beam_current.
 
@@ -242,7 +246,7 @@ class OAVTCPAdapterMXSC(ComposedAdapter):
         """
         self.device.tip_y = value
 
-    @RegexCommand(r"C\?", format="utf-8")
+    @RegexCommand(r"TIPY\?", format="utf-8")
     async def get_tip_y(self) -> bytes:
         """Regex string command that returns the utf-8 encoded value of beam_current.
 
@@ -274,9 +278,7 @@ class OAVEpicsAdapterMXSC(EpicsAdapter):
 
 
 class OAVEpicsAdapter(EpicsAdapter):
-    """
-    Epics adapter for reading all Attributes as a PV through channel access.
-    """
+    """Epics adapter for reading all Attributes as a PV through channel access."""
 
     device: OAVDevice
 
