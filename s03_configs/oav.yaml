@@ -1,16 +1,30 @@
 - tickit_devices.oav.oav_edge_detection.OAV_DI_OAV:
     name: oav_di_oav
     inputs: {}
-    port: 25565
-- tickit_devices.oav.oav_edge_detection.OAV_DI_IOC:
+    ioc_name: "BLO3S-DI-OAV-01"
+    db_file: "tickit_devices/oav/db_files/DI-OAV.db"
+    port: 25570
+- tickit_devices.oav.oav_edge_detection.OAV_DEVICE_DEFAULT:
     name: oav_di_ioc
     inputs: {}
-    port: 25564
-- tickit_devices.oav.oav_edge_detection.OAV_EA_FSCN:
+    ioc_name: "BLO3S-DI-IOC-01"
+    db_file: "tickit_devices/oav/db_files/DI-IOC.db"
+    port: 25569
+- tickit_devices.oav.oav_edge_detection.OAV_DEVICE_DEFAULT:
     name: oav_ea_fscn
     inputs: {}
-    port: 25563
-- tickit_devices.oav.oav_edge_detection.OAV_EA_OAV:
+    ioc_name: "BLO3S-EA-FSCN-01"
+    db_file: "tickit_devices/oav/db_files/EA-FSCN.db"
+    port: 25568
+- tickit_devices.oav.oav_edge_detection.OAV_DEVICE_DEFAULT:
     name: oav_ea_oav
     inputs: {}
-    port: 25562
+    ioc_name: "BLO3S-EA-OAV-01"
+    db_file: "tickit_devices/oav/db_files/EA-OAV.db"
+    port: 25567
+- tickit_devices.oav.oav_edge_detection.OAV_DEVICE_DEFAULT:
+    name: oav_ea_bl
+    inputs: {}
+    ioc_name: "BL03S-EA-BL-01"
+    db_file: "tickit_devices/oav/db_files/EA-BL.db"
+    port: 25566

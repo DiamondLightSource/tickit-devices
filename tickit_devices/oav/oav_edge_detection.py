@@ -16,6 +16,8 @@ from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
+_MXSC_WAVEFORM_WIDTH = 1024
+
 
 class OAVDevice(Device):
     #: An empty typed mapping of device inputs
@@ -73,8 +75,8 @@ class OAVDeviceMXSC(Device):
         self.tip_x = int(random.uniform(200, 400))
         self.tip_y = int(random.uniform(250, 450))
         self.top = np.zeros(1024)
-        ln = np.log(np.arange(1, 1025 - self.tip_x))
-        self.top[self.tip_x : 1024] = ln
+        ln = np.log(np.arange(1, _MXSC_WAVEFORM_WIDTH + 1 - self.tip_x))
+        self.top[self.tip_x : _MXSC_WAVEFORM_WIDTH] = ln
         self.bottom = -self.top
         self.top[self.tip_x :] += self.tip_y
         self.bottom[self.tip_x :] += self.tip_y
@@ -138,7 +140,6 @@ class OAVDeviceMXSC(Device):
             abs(self.omega - self.widest_points[0]) % 180,
             abs(self.omega - self.widest_points[1]) % 180,
         )
-        distance_to_widest = 0
         bulge = self.widest_point_polynomial * (95 - distance_to_widest) / 90
         self.top[self.tip_x : self.tip_x + 340] = bulge + self.tip_y
         self.bottom[self.tip_x : self.tip_x + 340] = -bulge + self.tip_y
@@ -289,126 +290,52 @@ class OAVEpicsAdapter(EpicsAdapter):
 
 
 @dataclass
+class OAV_DEVICE_DEFAULT(ComponentConfig):
+    """Parent class for various OAV devices."""
+
+    name: str
+    db_file: str
+    port: int
+    ioc_name: str
+    host: str = "localhost"
+    format: ByteFormat = ByteFormat(b"%b\r\n")
+
+    def __call__(self) -> Component:
+        """Set up simulation."""
+        return DeviceSimulation(
+            name=self.name,
+            device=OAVDevice(),
+            adapters=[
+                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
+                OAVEpicsAdapter(self.db_file, self.ioc_name),
+            ],
+        )
+
+
+@dataclass
 class OAV_DI_OAV(ComponentConfig):
     """To hold DI-OAV PVs."""
 
+    name: str
+    db_file: str
+    port: int
+    ioc_name: str
     host: str = "localhost"
-    port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/DI-OAV.db"
-    ioc_name: str = "BL03S-DI-OAV-01"
 
-    def __call__(self) -> Component:  # noqa: D102
+    def __call__(self) -> Component:
+        """Set up simulation."""
         return DeviceSimulation(
             name=self.name,
             device=OAVDeviceMXSC(),
             adapters=[
-                OAVTCPAdapterMXSC(TcpServer(self.host, self.port, self.format)),
+                OAVTCPAdapterMXSC(
+                    TcpServer(
+                        self.host,
+                        self.port,
+                        self.format,
+                    )
+                ),
                 OAVEpicsAdapterMXSC(self.db_file, self.ioc_name),
-            ],
-        )
-
-
-@dataclass
-class OAV_DI_IOC(ComponentConfig):
-    """To hold DI-IOC PVs."""
-
-    host: str = "localhost"
-    port: int = 25564
-    format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/DI-IOC.db"
-    ioc_name: str = "BL03S-DI-IOC-01"
-
-    def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
-            name=self.name,
-            device=OAVDevice(),
-            adapters=[
-                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
-                OAVEpicsAdapter(self.db_file, self.ioc_name),
-            ],
-        )
-
-
-@dataclass
-class OAV_EA_FSCN(ComponentConfig):
-    """To hold EA-FSCN PVs."""
-
-    host: str = "localhost"
-    port: int = 25563
-    format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/EA-FSCN.db"
-    ioc_name: str = "BL03S-EA-FSCN-01"
-
-    def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
-            name=self.name,
-            device=OAVDevice(),
-            adapters=[
-                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
-                OAVEpicsAdapter(self.db_file, self.ioc_name),
-            ],
-        )
-
-
-@dataclass
-class OAV_EA_OAV(ComponentConfig):
-    """To hold EA-OAV PVs."""
-
-    host: str = "localhost"
-    port: int = 25562
-    format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/EA-OAV.db"
-    ioc_name: str = "BL03S-EA-OAV-01"
-
-    def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
-            name=self.name,
-            device=OAVDevice(),
-            adapters=[
-                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
-                OAVEpicsAdapter(self.db_file, self.ioc_name),
-            ],
-        )
-
-
-@dataclass
-class OAV_EA_BL(ComponentConfig):
-    """To hold EA-BL PVs."""
-
-    host: str = "localhost"
-    port: int = 25561
-    format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/EA-BL.db"
-    ioc_name: str = "BL03S-EA-BL-01"
-
-    def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
-            name=self.name,
-            device=OAVDevice(),
-            adapters=[
-                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
-                OAVEpicsAdapter(self.db_file, self.ioc_name),
-            ],
-        )
-
-
-@dataclass
-class OAV_MO_IOC(ComponentConfig):
-    """To hold MO-IOC PVs."""
-
-    host: str = "localhost"
-    port: int = 25560
-    format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "tickit_devices/oav/db_files/MO-IOC.db"
-    ioc_name: str = "BL03S-MO-IOC-01"
-
-    def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
-            name=self.name,
-            device=OAVDevice(),
-            adapters=[
-                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
-                OAVEpicsAdapter(self.db_file, self.ioc_name),
             ],
         )
