@@ -29,19 +29,50 @@ class SynchrotronCurrentDevice(Device):
     #: A typed mapping containing the current output value
     Outputs: TypedDict = TypedDict("Outputs", {"current": float})
 
-    def __init__(self, initial_current: Optional[float]) -> None:
+    def __init__(
+        self,
+        initial_current: Optional[float],
+        callback_period: int = int(1e9),
+        countdown: float = 600.0,
+        fill_time: float = 15.0,
+        target_current: float = 300.0,
+        minimum_current: float = 270.0,
+    ) -> None:
         """Initialise the SynchrotonCurrent device.
 
         Args:
             initial_current (Optional[float]): The inital beam current. Defaults to
-                300mA
+                300mA.
+            callback_period: (int): The number of nanoseconds it will wait
+                between calls
+            countdown (float): Length of time in seconds to deplete
+                charge from target_current to minimum_current.
+            fill_time (float): Length of time in seconds to increase charge
+                charge from target_current to minimum_current.
+            target_current (float): The current the synchrotron should be topped up to.
+            minimum_current (float): The current the synchrotron can fall to before
+                being topped up.
+
         """
-        self.beam_current = initial_current if initial_current is not None else 300
+        self.target_current = target_current
+        self.minimum_current = minimum_current
+        self.beam_current = initial_current if initial_current else self.target_current
+        self.callback_period = callback_period
+
+        self.topup_fill = False
+
+        # it should take 600 seconds to go from target_current 270, 15 seconds to fill
+        self.loss_increment = (self.minimum_current - self.target_current) / countdown
+        self.fill_increment = (self.target_current - self.minimum_current) / fill_time
+
+        self.last_update_time = None
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method that just outputs beam current.
 
         The device is only altered by adapters so take no inputs.
+        The current is lost at a rate of ~0.02mA per second, during the topup
+        phase it gains ~2mA per second
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
@@ -51,8 +82,25 @@ class SynchrotronCurrentDevice(Device):
             DeviceUpdate[Outputs]:
                 The produced update event which contains the value of the beam current.
         """
+        # check to see if topup fill should be activated/deactivated
+        if self.topup_fill:
+            self.topup_fill = self.beam_current < self.target_current
+        else:
+            self.topup_fill = self.beam_current <= self.minimum_current
+
+        period = self.callback_period * 1e-9
+        if self.last_update_time:
+            period = time - self.last_update_time
+
+        self.beam_current += (
+            self.topup_fill * self.fill_increment  # if we're refilling
+            + (not self.topup_fill) * self.loss_increment  # if we're not refilling
+        ) * float(period)
+
+        self.last_time = time
+        call_at = SimTime(time + self.callback_period)
         return DeviceUpdate(
-            SynchrotronCurrentDevice.Outputs(current=self.beam_current), None
+            SynchrotronCurrentDevice.Outputs(current=self.beam_current), call_at
         )
 
     def get_current(self) -> float:
@@ -113,7 +161,8 @@ class SynchrotronCurrentEpicsAdapter(EpicsAdapter):
 class SynchrotronCurrent(ComponentConfig):
     """Synchrotron current component."""
 
-    initial_current: Optional[float] = None
+    initial_current: Optional[float]
+    callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -123,7 +172,10 @@ class SynchrotronCurrent(ComponentConfig):
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            device=SynchrotronCurrentDevice(self.initial_current),
+            device=SynchrotronCurrentDevice(
+                self.initial_current,
+                callback_period=self.callback_period,
+            ),
             adapters=[
                 SynchrotronCurrentTCPAdapter(
                     TcpServer(self.host, self.port, self.format)
