@@ -1,0 +1,9 @@
+
+record(stringout, "BL03S-EA-BL-01:CTRL")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(OUT,  "@asyn(OAV.MXSC,0,1)NDARRAY_PORT")
+    field(VAL,  "Out")
+    info(autosaveFields, "VAL")
+}
