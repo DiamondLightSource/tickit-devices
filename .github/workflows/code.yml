@@ -32,7 +32,7 @@ jobs:
         - name: Run flake8
           uses: TrueBrain/actions-flake8@v2
           with:
-            path: tickit-devices
+            path: tickit_devices
 
 
   tests:
