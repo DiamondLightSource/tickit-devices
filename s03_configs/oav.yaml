@@ -1,6 +1,14 @@
+- tickit_devices.oav.oav_edge_detection.OAV_DEVICE_DEFAULT:
+    name: smargon_getter
+    inputs: {}
+    port: 25571
 - tickit_devices.oav.oav_edge_detection.OAV_DI_OAV:
     name: oav_di_oav
-    inputs: {}
+    inputs:
+      input: smargon_getter:x
+      input: smargon_getter:y
+      input: smargon_getter:z
+      input: smargon_getter:omega
     ioc_name: "BLO3S-DI-OAV-01"
     db_file: "tickit_devices/oav/db_files/DI-OAV.db"
     port: 25570
