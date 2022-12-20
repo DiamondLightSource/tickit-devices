@@ -69,7 +69,9 @@ class SynchrotronCurrentTCPAdapter(ComposedAdapter):
         self,
         server: Server,
     ) -> None:
-        """Synchrotron current adapter, instantiates TcpServer with configured host and port.
+        """
+        Synchrotron current adapter, instantiates TcpServer with configured host
+        and port.
 
         Args:
             server (Server): The immutable data container used to configure a
