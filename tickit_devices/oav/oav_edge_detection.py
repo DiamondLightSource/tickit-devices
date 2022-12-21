@@ -1,5 +1,4 @@
 import random
-import subprocess
 from dataclasses import dataclass
 
 import numpy as np
@@ -52,36 +51,75 @@ class OAVDeviceMXSC(Device):
     """
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict(
+        "Inputs", {"x": float, "y": float, "z": float, "omega": float}
+    )
     #: A typed mapping containing the current output value
     Outputs: TypedDict = TypedDict("Outputs", {})
 
-    def __init__(self, callback_period=1e9):
-        # the pin can be inserted at whatever orientation
+    def __init__(self, callback_period=int(1e9)):
+        self.top = np.zeros(1024)
+        self.bottom = np.zeros(1024)
+        self.tip_x = 0
+        self.tip_y = 0
         self.callback_period = SimTime(callback_period)
-        widest_point = random.uniform(0, 180)
-        self.widest_points = (widest_point, widest_point - 180)
+
+        # Microns per pixels based on a zoom level of 5x
+        self.microns_per_x_pixel = 1.58
+        self.microns_per_y_pixel = 1.58
+
+        # We get x, y, z, omega of the smargon from the PVs directly on update.
+        self.x, self.y, self.z, self.omega = 0.0, 0.0, 0.0, 0.0
+
+        self.tip_distance_x = random.uniform(50, 100)
+        self.tip_distance_y = random.uniform(5, 25)
+
+        # The pin can be inserted at whatever orientation.
+        widest_rotation = random.uniform(0, 180)
+        self.widest_rotation = (widest_rotation, widest_rotation - 180)
+        # Objective centre at the widest rotation.
+        self.objective_centre_x = random.uniform(300, 400)
+        self.objective_centre_y = random.uniform(500, 600)
 
         # We arbitrarily decide the widest polynomial should be
         # f(x) = -\frac{1}{360}(x - 180)^2 + 90
         self.widest_point_polynomial = -1 / 360 * (np.arange(0, 340) - 180) ** 2 + 90
 
-        self.omega = random.uniform(-180, 180)
-
         # For smargons, the limits are set to 0 since it can rotate indefinitely
         self.high_limit_travel = 0
         self.low_limit_travel = 0
 
-        self.tip_x = int(random.uniform(200, 400))
-        self.tip_y = int(random.uniform(250, 450))
+    def reset_waveform_position(self, x, y, z, omega):
+        print("HELLLL")
+        horizontal = int(-x * 1e3 / self.microns_per_x_pixel)
+        vertical = int(
+            (-y * 1e3 / self.microns_per_y_pixel) / np.cos(np.radians(omega))
+        )
+        print(horizontal)
+        print(vertical)
+
+        self.tip_x = horizontal + self.tip_distance_x
+        self.tip_y = vertical + self.tip_distance_y
         self.top = np.zeros(1024)
         ln = np.log(np.arange(1, _MXSC_WAVEFORM_WIDTH + 1 - self.tip_x))
         self.top[self.tip_x : _MXSC_WAVEFORM_WIDTH] = ln
         self.bottom = -self.top
+        print("HELLLL")
         self.top[self.tip_x :] += self.tip_y
         self.bottom[self.tip_x :] += self.tip_y
 
-        self.set_waveform_based_on_omega()
+    def set_waveform_based_on_omega(self):
+        """The pin head is wider if omega is closest to a widest angle."""
+
+        # Get how close omega is to a widest angle.
+        # We need to modulo since self.omega could exceed 180
+        distance_to_widest = min(
+            abs(self.omega - self.widest_rotation[0]) % 180,
+            abs(self.omega - self.widest_rotation[1]) % 180,
+        )
+        bulge = self.widest_point_polynomial * (95 - distance_to_widest) / 90
+        self.top[self.tip_x : self.tip_x + 340] = bulge + self.tip_y
+        self.bottom[self.tip_x : self.tip_x + 340] = -bulge + self.tip_y
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update method, will be unused since camera PVs won't change value without \
@@ -97,11 +135,27 @@ class OAVDeviceMXSC(Device):
             DeviceUpdate[Outputs]:
                 The produced update event.
         """
-        self.omega = int(
-            subprocess.check_output("caget BL03S-MO-SGON-01:OMEGA", shell=True)
+        print("HELLLL")
+        new_x, new_y, new_z, new_omega = (
+            inputs["x"],
+            inputs["y"],
+            inputs["z"],
+            inputs["omega"],
         )
+
+        print("HELLLL")
+        if new_x != self.x or new_y != self.y or new_z != self.y:
+            self.reset_waveform_position(new_x, new_y, new_z, new_omega)
+
+            self.x, self.y, self.z, self.omega = new_x, new_y, new_z, new_omega
+
+        print("HELLLL")
         self.set_waveform_based_on_omega()
-        return DeviceUpdate(OAVDevice.Outputs(), SimTime(time + self.callback_period))
+
+        print("HELLLL")
+        return DeviceUpdate(
+            OAVDeviceMXSC.Outputs(), SimTime(time + self.callback_period)
+        )
 
     def get_omega(self):
         """Getter for pv."""
@@ -130,131 +184,6 @@ class OAVDeviceMXSC(Device):
     def get_tip_y(self) -> int:
         """Getter for pv."""
         return self.tip_y
-
-    def set_waveform_based_on_omega(self):
-        """The pin head is wider if omega is closest to a widest angle."""
-
-        # Get how close omega is to a widest angle.
-        # We need to modulo since self.omega could exceed 180
-        distance_to_widest = min(
-            abs(self.omega - self.widest_points[0]) % 180,
-            abs(self.omega - self.widest_points[1]) % 180,
-        )
-        bulge = self.widest_point_polynomial * (95 - distance_to_widest) / 90
-        self.top[self.tip_x : self.tip_x + 340] = bulge + self.tip_y
-        self.bottom[self.tip_x : self.tip_x + 340] = -bulge + self.tip_y
-
-
-class OAVTCPAdapter(ComposedAdapter):
-    """A TCP adapter to set a OAVDevice_DIOAV PV values."""
-
-    device: OAVDevice
-
-    def __init__(
-        self,
-        server: Server,
-    ) -> None:
-        """OAV adapter, instantiates TcpServer with configured host and port.
-
-        Args:
-            server (Server): The immutable data container used to configure a
-                server.
-        """
-        super().__init__(
-            server,
-            CommandInterpreter(),
-        )
-
-
-class OAVTCPAdapterMXSC(ComposedAdapter):
-    device: OAVDeviceMXSC
-
-    def __init__(
-        self,
-        server: Server,
-    ) -> None:
-        """OAV adapter, instantiates TcpServer with configured host and port.
-
-        Args:
-            server (Server): The immutable data container used to configure a
-                server.
-        """
-        super().__init__(
-            server,
-            CommandInterpreter(),
-        )
-
-    @RegexCommand(r"TOP=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_top(self, value: np.ndarray) -> None:
-        """Regex string command that sets the value of beam_current.
-
-        Args:
-            value (int): The new value of beam_current.
-        """
-        self.device.top = value
-
-    @RegexCommand(r"TOP\?", format="utf-8")
-    async def get_top(self) -> bytes:
-        """Regex string command that returns the utf-8 encoded value of beam_current.
-
-        Returns:
-            bytes: The utf-8 encoded value of beam_current.
-        """
-        return str(self.device.top).encode("utf-8")
-
-    @RegexCommand(r"BOTTOM=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_bottom(self, value: np.ndarray) -> None:
-        """Regex string command that sets the value of beam_current.
-
-        Args:
-            value (int): The new value of beam_current.
-        """
-        self.device.bottom = value
-
-    @RegexCommand(r"BOTTOM\?", format="utf-8")
-    async def get_bottom(self) -> bytes:
-        """Regex string command that returns the utf-8 encoded value of beam_current.
-
-        Returns:
-            bytes: The utf-8 encoded value of beam_current.
-        """
-        return str(self.device.bottom).encode("utf-8")
-
-    @RegexCommand(r"TIPX=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_tip_x(self, value: float) -> None:
-        """Regex string command that sets the value of beam_current.
-
-        Args:
-            value (int): The new value of beam_current.
-        """
-        self.device.tip_x = value
-
-    @RegexCommand(r"TIPX\?", format="utf-8")
-    async def get_tip_x(self) -> bytes:
-        """Regex string command that returns the utf-8 encoded value of beam_current.
-
-        Returns:
-            bytes: The utf-8 encoded value of beam_current.
-        """
-        return str(self.device.tip_x).encode("utf-8")
-
-    @RegexCommand(r"TIPY=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_tip_y(self, value: float) -> None:
-        """Regex string command that sets the value of beam_current.
-
-        Args:
-            value (int): The new value of beam_current.
-        """
-        self.device.tip_y = value
-
-    @RegexCommand(r"TIPY\?", format="utf-8")
-    async def get_tip_y(self) -> bytes:
-        """Regex string command that returns the utf-8 encoded value of beam_current.
-
-        Returns:
-            bytes: The utf-8 encoded value of beam_current.
-        """
-        return str(self.device.tip_y).encode("utf-8")
 
 
 class OAVEpicsAdapterMXSC(EpicsAdapter):
@@ -295,10 +224,7 @@ class OAV_DEVICE_DEFAULT(ComponentConfig):
 
     name: str
     db_file: str
-    port: int
     ioc_name: str
-    host: str = "localhost"
-    format: ByteFormat = ByteFormat(b"%b\r\n")
 
     def __call__(self) -> Component:
         """Set up simulation."""
@@ -306,7 +232,6 @@ class OAV_DEVICE_DEFAULT(ComponentConfig):
             name=self.name,
             device=OAVDevice(),
             adapters=[
-                OAVTCPAdapter(TcpServer(self.host, self.port, self.format)),
                 OAVEpicsAdapter(self.db_file, self.ioc_name),
             ],
         )
@@ -318,10 +243,7 @@ class OAV_DI_OAV(ComponentConfig):
 
     name: str
     db_file: str
-    port: int
     ioc_name: str
-    host: str = "localhost"
-    format: ByteFormat = ByteFormat(b"%b\r\n")
 
     def __call__(self) -> Component:
         """Set up simulation."""
@@ -329,13 +251,6 @@ class OAV_DI_OAV(ComponentConfig):
             name=self.name,
             device=OAVDeviceMXSC(),
             adapters=[
-                OAVTCPAdapterMXSC(
-                    TcpServer(
-                        self.host,
-                        self.port,
-                        self.format,
-                    )
-                ),
                 OAVEpicsAdapterMXSC(self.db_file, self.ioc_name),
             ],
         )

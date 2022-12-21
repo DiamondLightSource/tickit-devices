@@ -1,0 +1,12 @@
+- tickit_devices.oav.smargon_motor_fetcher.SmargonGetter:
+    name: smargon_getter
+    inputs: {}
+    callback_period: 1000000000
+- tickit.devices.sink.Sink:
+    name: smargon_getter_sink
+    inputs:
+      input: smargon_getter:omega
+      input: smargon_getter:x
+      input: smargon_getter:y
+      input: smargon_getter:z
+
