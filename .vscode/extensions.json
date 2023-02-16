@@ -2,6 +2,7 @@
     "recommendations": [
         "ms-vscode-remote.remote-containers",
         "ms-python.python",
+        "ms-python.vscode-pylance",
         "tamasfe.even-better-toml",
         "redhat.vscode-yaml",
         "ryanluker.vscode-coverage-gutters"
