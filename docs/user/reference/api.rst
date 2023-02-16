@@ -1,14 +1,14 @@
 API
 ===
 
-.. automodule:: python3_pip_skeleton
+.. automodule:: tickit-devices
 
-    ``python3_pip_skeleton``
+    ``tickit-devices``
     -----------------------------------
 
-This is the internal API reference for python3_pip_skeleton
+This is the internal API reference for tickit-devices
 
-.. data:: python3_pip_skeleton.__version__
+.. data:: tickit-devices.__version__
     :type: str
 
     Version number as calculated by https://github.com/pypa/setuptools_scm
