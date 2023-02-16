@@ -1,9 +1,16 @@
 tickit-devices
 ===============
 
-|code_ci| |coverage| |license|
+|code_ci| |docs_ci| |coverage| |pypi_version| |license|
 
 A collection of devices simulated using the `tickit <https://github.com/dls-controls/tickit>`_ framework.
+
+============== ==============================================================
+PyPI           ``pip install tickit-devices``
+Source code    https://github.com/dls-controls/tickit-devices
+Documentation  https://dls-controls.github.io/tickit-devices
+Releases       https://github.com/dls-controls/tickit-devices/releases
+============== ==============================================================
 
 
 Adding devices to the S03 simulation
@@ -14,29 +21,21 @@ image has been built with the new device and config, follow the instructions `he
 to include it in S03.
 
 
-Devices
--------
-Information about the current devices and their stage of developement.
-
-Synchrotron
-~~~~~~~~~~~
-A device created for the `Artemis <https://github.com/DiamondLightSource/python-artemis>`_ project. This device currently just acts to provide
-PV values and an IOC which Ophyd can connect with to run system tests.
-
-This device is in its minimum working state. There is much room for improvement.
-
-To do:
-+++++++
-- Add record logic to the devices so they are interconnected
-
-
 .. |code_ci| image:: https://github.com/dls-controls/tickit-devices/workflows/Code%20CI/badge.svg?branch=main
     :target: https://github.com/dls-controls/tickit-devices/actions?query=workflow%3A%22Code+CI%22
     :alt: Code CI
 
+.. |docs_ci| image:: https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml/badge.svg?branch=main
+    :target: https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml
+    :alt: Docs CI
+
 .. |coverage| image:: https://codecov.io/gh/dls-controls/tickit-devices/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/dls-controls/tickit-devices
     :alt: Test Coverage
+
+.. |pypi_version| image:: https://img.shields.io/pypi/v/python3-pip-skeleton.svg
+    :target: https://pypi.org/project/python3-pip-skeleton
+    :alt: Latest PyPI version
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0

@@ -1,33 +1,37 @@
-FROM registry.hub.docker.com/library/python:3.9 AS base
+# This file is for use as a devcontainer and a runtime container
+#
+# The devcontainer should use the build target and run as root with podman
+# or docker with user namespaces.
+#
+FROM python:3.10 as build
 
-ENV PIP_DEPENDENCIES wheel pipenv
-ENV TICKIT_DEVICES_DIR /tickit_devices
+ARG PIP_OPTIONS=.
 
-#Install git while tickit is a git dependency
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y git
+# Add any system dependencies for the developer/build environment here e.g.
+# RUN apt-get update && apt-get upgrade -y && \
+#     apt-get install -y --no-install-recommends \
+#     desired-packages \
+#     && rm -rf /var/lib/apt/lists/*
 
-# Install pip dependencies
-RUN rm -rf /usr/bin/python3.9
-RUN python3.9 -m pip install --upgrade pip
-RUN python3.9 -m pip install ${PIP_DEPENDENCIES}
+# set up a virtual environment and put it in PATH
+RUN python -m venv /venv
+ENV PATH=/venv/bin:$PATH
 
-# Copy tickit code into container
-COPY . ${TICKIT_DEVICES_DIR}
-WORKDIR ${TICKIT_DEVICES_DIR}
+# Copy any required context for the pip install over
+COPY . /context
+WORKDIR /context
 
-RUN pipenv install --python=python3.9 --system --deploy
+# install python package into /venv
+RUN pip install ${PIP_OPTIONS}
 
-##### Runtime Stage ####################################################################
-FROM registry.hub.docker.com/library/python:3.9-slim AS runtime
+FROM python:3.10-slim as runtime
 
-ENV TICKIT_DEVICES_DIR /tickit_devices
-WORKDIR ${TICKIT_DEVICES_DIR}
+# Add apt-get system dependecies for runtime here if needed
 
-ENV PYTHON_SITE_PACKAGES /usr/local/lib/python3.9/site-packages
-COPY --from=base ${PYTHON_SITE_PACKAGES} ${PYTHON_SITE_PACKAGES}
+# copy the virtual environment from the build stage and put it in PATH
+COPY --from=build /venv/ /venv/
+ENV PATH=/venv/bin:$PATH
 
-COPY . ${TICKIT_DEVICES_DIR}
-
-CMD ["python3.9", "-m", "tickit"]
+# change this entrypoint if it is not the same as the repo
+ENTRYPOINT ["tickit"]
+CMD ["--version"]
