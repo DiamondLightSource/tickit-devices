@@ -15,8 +15,8 @@ Releases       https://github.com/dls-controls/tickit-devices/releases
 
 Adding devices to the S03 simulation
 ------------------------------------
-To add a device to s03, the config file required to run the tickit simulation should be present in `s03_configs`.
-Only changes pushed to main will be built into the `tickit-devices` image that s03 pulls from. Once the 
+To add a device to s03, the config file required to run the tickit simulation should be present in ``s03_configs``.
+Only changes pushed to main will be built into the ``tickit-devices`` image that s03 pulls from. Once the 
 image has been built with the new device and config, follow the instructions `here <https://gitlab.diamond.ac.uk/controls/python3/s03_utils>`_
 to include it in S03.
 
@@ -40,3 +40,9 @@ to include it in S03.
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0
     :alt: Apache License
+
+..
+    Anything below this line is used when viewing README.rst and will be replaced
+    when included in index.rst
+
+See https://dls-controls.github.io/tickit-devices for more detailed documentation.
