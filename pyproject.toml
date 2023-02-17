@@ -83,7 +83,10 @@ addopts = """
     --cov=tickit-devices --cov-report term --cov-report xml:cov.xml
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
-filterwarnings = "error"
+filterwarnings = [
+    "error",
+    "ignore::ImportWarning" # Ongoing issue in six, which is used by aiokafa https://github.com/benjaminp/six/issues/368
+]
 # Doctest python code in docs, python code in src docstrings, test functions in tests
 testpaths = "docs src tests"
 
