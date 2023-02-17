@@ -13,7 +13,7 @@ classifiers = [
 ]
 description = "Devices for tickit, an event-based device simulation framework"
 dependencies = [
-    tickit @ git+https://github.com/dls-controls/tickit.git
+    "tickit @ git+https://github.com/dls-controls/tickit.git"
 ] 
 dynamic = ["version"]
 license.file = "LICENSE"
@@ -38,7 +38,7 @@ dev = [
 ]
 
 [project.scripts]
-tickit-devices = "tickit-devices.__main__:main"
+tickit-devices = "tickit_devices.__main__:main"
 
 [project.urls]
 GitHub = "https://github.com/dls-controls/tickit-devices"
@@ -49,7 +49,7 @@ name = "Abigail Emery"
 
 
 [tool.setuptools_scm]
-write_to = "src/tickit-devices/_version.py"
+write_to = "src/tickit_devices/_version.py"
 
 [tool.mypy]
 ignore_missing_imports = true # Ignore missing stubs in imported modules
