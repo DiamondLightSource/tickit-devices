@@ -1,5 +1,4 @@
 import subprocess
-import sys
 
 from tickit_devices import __version__
 
