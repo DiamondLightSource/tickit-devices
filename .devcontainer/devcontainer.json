@@ -12,6 +12,7 @@
 	"remoteEnv": {
 		"DISPLAY": "${localEnv:DISPLAY}"
 	},
+	"remoteUser": "root",
 	// Add the URLs of features you want added when the container is built.
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:1": {
@@ -27,11 +28,12 @@
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"ms-python.python",
-				"tamasfe.even-better-toml",
-				"redhat.vscode-yaml",
-				"ryanluker.vscode-coverage-gutters"
-			]
+                "ms-python.python",
+                "tamasfe.even-better-toml",
+                "redhat.vscode-yaml",
+                "ryanluker.vscode-coverage-gutters",
+                "ms-python.vscode-pylance"
+            ]
 		}
 	},
 	// Make sure the files we are mapping into the container exist on the host
@@ -43,12 +45,10 @@
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind",
 		"source=${localEnv:HOME}/.inputrc,target=/root/.inputrc,type=bind",
-		// map in home directory - not strictly necessary but useful
-		"source=${localEnv:HOME},target=${localEnv:HOME},type=bind,consistency=cached"
 	],
 	// make the workspace folder the same inside and outside of the container
-	"workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
-	"workspaceFolder": "${localWorkspaceFolder}",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace/tickit-devices,type=bind",
+	"workspaceFolder": "/workspace/tickit-devices",
 	// After the container is created, install the python project in editable form
-	"postCreateCommand": "pip install -e '.[dev]'"
+	"postCreateCommand": "pip install -e .[dev]"
 }
