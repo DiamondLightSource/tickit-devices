@@ -30,11 +30,19 @@ dev = [
     "pre-commit",
     "pydata-sphinx-theme>=0.12",
     "pytest-cov",
+    "pytest-mypy",
+    "pytest-flake8",
+    "pytest-black",
+    "pytest-asyncio",
+    "pytest-pydocstyle",
     "sphinx-autobuild",
     "sphinx-copybutton",
     "sphinx-design",
     "tox-direct",
+    "mock",
     "types-mock",
+    "types-PyYAML",
+    "aioca",
 ]
 
 [project.scripts]
