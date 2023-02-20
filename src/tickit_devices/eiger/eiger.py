@@ -2,8 +2,6 @@ import logging
 from dataclasses import fields
 
 from apischema import serialize
-from typing_extensions import TypedDict
-
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.data.dummy_image import Image
@@ -15,6 +13,7 @@ from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
 from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
 from tickit.devices.eiger.stream.stream_config import StreamConfig
 from tickit.devices.eiger.stream.stream_status import StreamStatus
+from typing_extensions import TypedDict
 
 from .eiger_status import EigerStatus, State
 

@@ -3,7 +3,6 @@ import logging
 
 from aiohttp import web
 from apischema import serialize
-
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter

@@ -1,5 +1,4 @@
 from softioc import builder
-
 from tickit.adapters.epicsadapter import EpicsAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime

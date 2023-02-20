@@ -2,13 +2,12 @@ import logging
 
 from aiohttp import web
 from apischema import serialize
-from typing_extensions import TypedDict
-
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
 from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
+from typing_extensions import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 

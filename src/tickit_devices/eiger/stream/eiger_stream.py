@@ -2,13 +2,12 @@ import logging
 
 from aiohttp import web
 from apischema import serialize
-from typing_extensions import TypedDict
-
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.stream.stream_config import StreamConfig
 from tickit.devices.eiger.stream.stream_status import StreamStatus
+from typing_extensions import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 STREAM_API = "stream/api/1.8.0"
