@@ -2,9 +2,5 @@
   {
     "version": "main",
     "url": "https://dls-controls.github.io/tickit-devices/main/"
-  },
-  {
-    "version": "fix-readme",
-    "url": "https://dls-controls.github.io/tickit-devices/fix-readme/"
   }
 ]
