@@ -34,7 +34,7 @@ to include it in S03.
     :alt: Test Coverage
 
 .. |pypi_version| image:: https://img.shields.io/pypi/v/python3-pip-skeleton.svg
-    :target: https://pypi.org/project/python3-pip-skeleton
+    :target: https://pypi.org/project/tickit-devices
     :alt: Latest PyPI version
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
