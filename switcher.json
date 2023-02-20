@@ -4,7 +4,7 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
-    "version": "fix-db-filepaths",
-    "url": "https://dls-controls.github.io/tickit-devices/fix-db-filepaths/"
+    "version": "add-devices",
+    "url": "https://dls-controls.github.io/tickit-devices/add-devices/"
   }
 ]
