@@ -166,7 +166,7 @@ jobs:
           #cache-to: type=gha,mode=max
 
       - name: Test cli works in runtime image
-        run: docker run ${{ env.IMAGE_REPOSITORY }} --version
+        run: docker run ${{ env.IMAGE_REPOSITORY }} tickit-devices --version
 
   release:
     # upload to PyPI and make a release on every tag
