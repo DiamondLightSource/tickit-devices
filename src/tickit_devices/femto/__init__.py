@@ -13,7 +13,7 @@ class Femto(ComponentConfig):
 
     initial_gain: float = 2.5
     initial_current: float = 0.0
-    db_file: str = "tickit/devices/femto/record.db"
+    db_file: str = "src/tickit_devices/femto/record.db"
     ioc_name: str = "FEMTO"
 
     def __call__(self) -> Component:  # noqa: D102
