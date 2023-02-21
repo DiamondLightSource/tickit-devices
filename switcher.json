@@ -4,6 +4,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
+    "version": "0.1.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
+  },
+  {
     "version": "add-devices",
     "url": "https://dls-controls.github.io/tickit-devices/add-devices/"
   }
