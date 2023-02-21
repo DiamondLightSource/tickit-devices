@@ -2,10 +2,10 @@ import asyncio
 
 import pytest
 from aioca import caget, caput
-
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.pneumatic.pneumatic import PneumaticDevice
+
+from tickit_devices.pneumatic.pneumatic import PneumaticDevice
 
 
 @pytest.fixture

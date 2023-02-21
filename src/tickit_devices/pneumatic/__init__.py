@@ -12,7 +12,7 @@ class Pneumatic(ComponentConfig):
 
     initial_speed: float = 2.5
     initial_state: bool = False
-    db_file: str = "tickit/devices/pneumatic/db_files/filter1.db"
+    db_file: str = "src/tickit_devices/pneumatic/db_files/filter1.db"
     ioc_name: str = "PNEUMATIC"
 
     def __call__(self) -> Component:  # noqa: D102
