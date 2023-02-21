@@ -1,7 +1,7 @@
 import pytest
 
-from tickit.devices.eiger.eiger import EigerDevice
-from tickit.devices.eiger.eiger_status import State
+from tickit_devices.eiger.eiger import EigerDevice
+from tickit_devices.eiger.eiger_status import State
 
 
 @pytest.fixture
