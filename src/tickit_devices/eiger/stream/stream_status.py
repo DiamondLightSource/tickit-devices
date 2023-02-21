@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field, fields
 from typing import Any, List
 
-from tickit.devices.eiger.eiger_schema import AccessMode, ro_int, ro_str
+from tickit_devices.eiger.eiger_schema import AccessMode, ro_int, ro_str
 
 
 @dataclass

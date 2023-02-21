@@ -6,12 +6,13 @@ from apischema import serialize
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter
-from tickit.devices.eiger.eiger import EigerDevice
-from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
-from tickit.devices.eiger.eiger_status import State
-from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
-from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
-from tickit.devices.eiger.stream.eiger_stream import EigerStreamAdapter
+
+from tickit_devices.eiger.eiger import EigerDevice
+from tickit_devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
+from tickit_devices.eiger.eiger_status import State
+from tickit_devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
+from tickit_devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
+from tickit_devices.eiger.stream.eiger_stream import EigerStreamAdapter
 
 DETECTOR_API = "detector/api/1.8.0"
 

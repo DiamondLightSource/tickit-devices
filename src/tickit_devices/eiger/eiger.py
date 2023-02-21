@@ -4,16 +4,17 @@ from dataclasses import fields
 from apischema import serialize
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.data.dummy_image import Image
-from tickit.devices.eiger.eiger_schema import AccessMode, Value
-from tickit.devices.eiger.eiger_settings import EigerSettings
-from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
-from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
-from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
-from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
-from tickit.devices.eiger.stream.stream_config import StreamConfig
-from tickit.devices.eiger.stream.stream_status import StreamStatus
 from typing_extensions import TypedDict
+
+from tickit_devices.eiger.data.dummy_image import Image
+from tickit_devices.eiger.eiger_schema import AccessMode, Value
+from tickit_devices.eiger.eiger_settings import EigerSettings
+from tickit_devices.eiger.filewriter.filewriter_config import FileWriterConfig
+from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus
+from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
+from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
+from tickit_devices.eiger.stream.stream_config import StreamConfig
+from tickit_devices.eiger.stream.stream_status import StreamStatus
 
 from .eiger_status import EigerStatus, State
 
