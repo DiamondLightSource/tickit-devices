@@ -2,7 +2,7 @@
     name: source
     inputs: {}
     value: 42.0
-- tickit.devices.eiger.Eiger:
+- tickit_devices.eiger.Eiger:
     inputs: 
       flux: source:value
     name: eiger
