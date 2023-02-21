@@ -4,8 +4,9 @@ import pytest
 from aioca import caget, caput
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.femto.current import CurrentDevice
-from tickit.devices.femto.femto import FemtoDevice
+
+from tickit_devices.femto.current import CurrentDevice
+from tickit_devices.femto.femto import FemtoDevice
 
 
 @pytest.fixture
