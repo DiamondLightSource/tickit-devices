@@ -7,10 +7,11 @@ from tickit.adapters.interpreters.command import CommandInterpreter, RegexComman
 from tickit.adapters.servers.tcp import TcpServer
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.cryostream.base import CryostreamBase
-from tickit.devices.cryostream.states import PhaseIds
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
+
+from tickit_devices.cryostream.base import CryostreamBase
+from tickit_devices.cryostream.states import PhaseIds
 
 _EXTENDED_STATUS = ">BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH"
 

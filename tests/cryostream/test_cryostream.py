@@ -7,9 +7,10 @@ import numpy as np
 import pytest
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.cryostream.cryostream import CryostreamDevice
-from tickit.devices.cryostream.states import PhaseIds
-from tickit.devices.cryostream.status import ExtendedStatus
+
+from tickit_devices.cryostream.cryostream import CryostreamDevice
+from tickit_devices.cryostream.states import PhaseIds
+from tickit_devices.cryostream.status import ExtendedStatus
 
 # # # # # Cryostream Tests # # # # #
 

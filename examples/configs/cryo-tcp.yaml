@@ -1,4 +1,4 @@
-- tickit.devices.cryostream.Cryostream:
+- tickit_devices.cryostream.Cryostream:
     name: cryo
     inputs: {}
 - tickit.devices.sink.Sink:

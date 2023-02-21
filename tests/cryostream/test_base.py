@@ -4,9 +4,10 @@ from typing import Any, Dict
 
 import pytest
 from mock import Mock
-from tickit.devices.cryostream.base import CryostreamBase
-from tickit.devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
-from tickit.devices.cryostream.status import ExtendedStatus, Status
+
+from tickit_devices.cryostream.base import CryostreamBase
+from tickit_devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
+from tickit_devices.cryostream.status import ExtendedStatus, Status
 
 
 def rand_bool() -> bool:
