@@ -56,7 +56,7 @@ def test_current_device_update(current_device: CurrentDevice):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "tickit_process", ["examples/configs/current-monitor.yaml"], indirect=True
+    "tickit_process", ["examples/configs/femto/current-monitor.yaml"], indirect=True
 )
 async def test_femto_system(tickit_process):
     assert (await caget("FEMTO:GAIN_RBV")) == 2.5

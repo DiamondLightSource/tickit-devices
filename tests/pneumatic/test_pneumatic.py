@@ -47,7 +47,7 @@ def test_pneumatic_update_no_state_change(pneumatic: PneumaticDevice):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "tickit_process", ["examples/configs/attns.yaml"], indirect=True
+    "tickit_process", ["examples/configs/pneumatic/attns.yaml"], indirect=True
 )
 async def test_pneumatic_system(tickit_process):
     async def toggle(expected: bool):

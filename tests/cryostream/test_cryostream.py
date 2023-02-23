@@ -107,7 +107,7 @@ async def test_cryostream_update_plat(cryostream: CryostreamDevice):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "tickit_task", ["examples/configs/cryo-tcp.yaml"], indirect=True
+    "tickit_task", ["examples/configs/cryostream/cryo-tcp.yaml"], indirect=True
 )
 async def test_cryostream_system(tickit_task):
     reader, writer = await asyncio.open_connection("localhost", 25565)
