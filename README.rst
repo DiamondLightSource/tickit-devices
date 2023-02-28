@@ -33,7 +33,7 @@ to include it in S03.
     :target: https://codecov.io/gh/dls-controls/tickit-devices
     :alt: Test Coverage
 
-.. |pypi_version| image:: https://img.shields.io/pypi/v/python3-pip-skeleton.svg
+.. |pypi_version| image:: https://img.shields.io/pypi/v/tickit-devices.svg
     :target: https://pypi.org/project/tickit-devices
     :alt: Latest PyPI version
 
