@@ -1,0 +1,12 @@
+- tickit_devices.femto.Current:
+    name: current_device
+    inputs: {}
+    callback_period: 1000000000
+- tickit_devices.femto.Femto:
+    name: femto
+    inputs:
+      input: current_device:output
+    initial_gain: 2.5
+    initial_current: 0.0
+    db_file: src/tickit_devices/femto/record.db
+    ioc_name: FEMTO
