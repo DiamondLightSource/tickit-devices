@@ -10,9 +10,5 @@
   {
     "version": "add-devices",
     "url": "https://dls-controls.github.io/tickit-devices/add-devices/"
-  },
-  {
-    "version": "fix-pypi-badge",
-    "url": "https://dls-controls.github.io/tickit-devices/fix-pypi-badge/"
   }
 ]
