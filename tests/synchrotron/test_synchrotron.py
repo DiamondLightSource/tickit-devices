@@ -9,4 +9,4 @@ USER_MODE = 4
     "tickit_process", ["examples/configs/synchrotron/synchrotron.yaml"], indirect=True
 )
 async def test_synchrotron_system(tickit_process):
-    assert (await caget("BL03S-CS-CS-MSTAT-01:MODE")) == USER_MODE
+    assert (await caget("CS-CS-MSTAT-01:MODE")) == USER_MODE

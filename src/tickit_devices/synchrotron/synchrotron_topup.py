@@ -216,7 +216,7 @@ class SynchrotronTopUp(ComponentConfig):
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = "src/tickit_devices/synchrotron/db_files/FILL.db"
-    ioc_name: str = "BL03S-SR-CS-FILL-01"
+    ioc_name: str = "SR-CS-FILL-01"
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(

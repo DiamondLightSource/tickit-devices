@@ -1,5 +1,5 @@
 #Real world PV= CS-CS-MSTAT-01:MODE
-record (mbbi, "BL03S-CS-CS-MSTAT-01:MODE")
+record (mbbi, "CS-CS-MSTAT-01:MODE")
 {
     field (SCAN, "Passive")
     field (DESC, "Mode")
