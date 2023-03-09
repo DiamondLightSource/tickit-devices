@@ -195,7 +195,7 @@ class SynchrotronMachineStatus(ComponentConfig):
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = pathlib.Path(__file__).parent.absolute() / "db_files/MSTAT.db"
+    db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/MSTAT.db")
     ioc_name: str = "CS-CS-MSTAT-01"
 
     def __call__(self) -> Component:  # noqa: D102
