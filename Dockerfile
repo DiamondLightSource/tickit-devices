@@ -13,6 +13,10 @@ ARG PIP_OPTIONS=.
 #     desired-packages \
 #     && rm -rf /var/lib/apt/lists/*
 
+# Useful for checking if port for PV service is correct
+# RUN apt-get update
+# RUN apt-get install -y --no-install-recommends lsof 
+
 # set up a virtual environment and put it in PATH
 RUN python -m venv /venv
 ENV PATH=/venv/bin:$PATH
@@ -26,12 +30,9 @@ RUN pip install ${PIP_OPTIONS}
 
 FROM python:3.10-slim as runtime
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends lsof 
-
 # copy the virtual environment from the build stage and put it in PATH
 COPY --from=build /venv/ /venv/
-
 # copy configs
-COPY --from=build /context/s03_configs/ s03_configs/
+COPY ./s03_configs/ s03_configs
+
 ENV PATH=/venv/bin:$PATH
