@@ -33,5 +33,5 @@ RUN apt-get install -y --no-install-recommends lsof
 COPY --from=build /venv/ /venv/
 
 # copy configs
-COPY --from=build /context/s03_configs s03_configs/
+COPY --from=build /context/s03_configs/ s03_configs/
 ENV PATH=/venv/bin:$PATH
