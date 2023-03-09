@@ -16,7 +16,6 @@ dependencies = [
     "tickit",
     "typing_extensions",
     "softioc",
-    
 ] 
 dynamic = ["version"]
 license.file = "LICENSE"
