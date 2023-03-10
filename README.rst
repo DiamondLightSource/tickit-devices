@@ -6,8 +6,8 @@ tickit-devices
 A collection of devices simulated using the `tickit <https://github.com/dls-controls/tickit>`_ framework.
 
 Note: These devices mimic real synchrotron devices and there is the potential for conflict with the real PVs if this is run on the same port as EPICS (5064).
-If using this simulation to test software, set your `EPICS_CA_SERVER_PORT` environment variable to something nonstandard, e.g. 5065 or greater, so that your 
-tests are not confused between these and the real PVs. The [S03](https://gitlab.diamond.ac.uk/controls/python3/s03_utils) startup scripts manage the setting of
+If using this simulation to test software, set your ``EPICS_CA_SERVER_PORT`` environment variable to something nonstandard, e.g. 5065 or greater, so that your 
+tests are not confused between these and the real PVs. The `S03<https://gitlab.diamond.ac.uk/controls/python3/s03_utils>`_ startup scripts manage the setting of
 these ports automatically, so if you are using this as part of S03 you won't need to change anything. Do not run this simulation on a beamline controls machine!
 
 ============== ==============================================================
