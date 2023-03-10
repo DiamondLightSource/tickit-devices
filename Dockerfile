@@ -13,10 +13,6 @@ ARG PIP_OPTIONS=.
 #     desired-packages \
 #     && rm -rf /var/lib/apt/lists/*
 
-# Useful for checking if port for PV service is correct
-# RUN apt-get update
-# RUN apt-get install -y --no-install-recommends lsof 
-
 # set up a virtual environment and put it in PATH
 RUN python -m venv /venv
 ENV PATH=/venv/bin:$PATH
