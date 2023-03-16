@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tickit-devices &#8212; tickit-devices 0.1.1.dev18+g4aacd78 documentation</title>
+    <title>tickit-devices &#8212; tickit-devices 0.1.1.dev19+g9a0ba3a documentation</title>
   
   
   
@@ -395,10 +395,6 @@ document.write(`
 <h1>tickit-devices<a class="headerlink" href="#tickit-devices" title="Permalink to this heading">#</a></h1>
 <p><a class="reference external" href="https://github.com/dls-controls/tickit-devices/actions?query=workflow%3A%22Code+CI%22"><img alt="Code CI" src="https://github.com/dls-controls/tickit-devices/workflows/Code%20CI/badge.svg?branch=main" /></a> <a class="reference external" href="https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml"><img alt="Docs CI" src="https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml/badge.svg?branch=main" /></a> <a class="reference external" href="https://codecov.io/gh/dls-controls/tickit-devices"><img alt="Test Coverage" src="https://codecov.io/gh/dls-controls/tickit-devices/branch/main/graph/badge.svg" /></a> <a class="reference external" href="https://pypi.org/project/tickit-devices"><img alt="Latest PyPI version" src="https://img.shields.io/pypi/v/tickit-devices.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="Apache License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
 <p>A collection of devices simulated using the <a class="reference external" href="https://github.com/dls-controls/tickit">tickit</a> framework.</p>
-<p>Note: These devices mimic real synchrotron devices and there is the potential for conflict with the real PVs if this is run on the same port as EPICS (5064).
-If using this simulation to test software, set your <code class="docutils literal notranslate"><span class="pre">EPICS_CA_SERVER_PORT</span></code> environment variable to something nonstandard, e.g. 5065 or greater, so that your
-tests are not confused between these and the real PVs. The <a class="reference external" href="https://gitlab.diamond.ac.uk/controls/python3/s03_utils">S03</a> startup scripts manage the setting of
-these ports automatically, so if you are using this as part of S03 you won’t need to change anything. Do not run this simulation on a beamline controls machine!</p>
 <table class="table">
 <tbody>
 <tr class="row-odd"><td><p>PyPI</p></td>
@@ -415,6 +411,13 @@ these ports automatically, so if you are using this as part of S03 you won’t n
 </tr>
 </tbody>
 </table>
+<section id="safety-note">
+<h2>Safety Note<a class="headerlink" href="#safety-note" title="Permalink to this heading">#</a></h2>
+<p>These devices mimic real synchrotron devices and there is the potential for conflict with the real PVs if this is run on the same port as EPICS (5064).
+If using this simulation to test software, set your <code class="docutils literal notranslate"><span class="pre">EPICS_CA_SERVER_PORT</span></code> environment variable to something nonstandard, e.g. 5065 or greater, so that your
+tests are not confused between these and the real PVs. The <a class="reference external" href="https://gitlab.diamond.ac.uk/controls/python3/s03_utils">S03</a> startup scripts manage the setting of
+these ports automatically, so if you are using this as part of S03 you won’t need to change anything. Do not run this simulation on a beamline controls machine!</p>
+</section>
 <section id="adding-devices-to-the-s03-simulation">
 <h2>Adding devices to the S03 simulation<a class="headerlink" href="#adding-devices-to-the-s03-simulation" title="Permalink to this heading">#</a></h2>
 <p>To add a device to s03, the config file required to run the tickit simulation should be present in <code class="docutils literal notranslate"><span class="pre">s03_configs</span></code>.
