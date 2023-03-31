@@ -93,6 +93,12 @@ jobs:
           name: dist
           path: dist
 
+      - name: Upload S03 configs as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: s03_configs
+          path: s03_configs
+
       - name: Check for packaging errors
         run: pipx run twine check --strict dist/*
 

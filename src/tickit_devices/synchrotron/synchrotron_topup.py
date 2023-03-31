@@ -1,3 +1,4 @@
+import pathlib
 from dataclasses import dataclass
 
 from softioc import builder
@@ -215,8 +216,8 @@ class SynchrotronTopUp(ComponentConfig):
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "src/tickit_devices/synchrotron/db_files/FILL.db"
-    ioc_name: str = "BL03S-SR-CS-FILL-01"
+    db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/FILL.db")
+    ioc_name: str = "SR-CS-FILL-01"
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(

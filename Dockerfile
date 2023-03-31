@@ -26,8 +26,9 @@ RUN pip install ${PIP_OPTIONS}
 
 FROM python:3.10-slim as runtime
 
-# Add apt-get system dependecies for runtime here if needed
-
 # copy the virtual environment from the build stage and put it in PATH
 COPY --from=build /venv/ /venv/
+# copy configs
+COPY ./s03_configs/ s03_configs
+
 ENV PATH=/venv/bin:$PATH

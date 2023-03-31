@@ -13,7 +13,9 @@ classifiers = [
 ]
 description = "Devices for tickit, an event-based device simulation framework"
 dependencies = [
-    "tickit"
+    "tickit",
+    "typing_extensions",
+    "softioc",
 ] 
 dynamic = ["version"]
 license.file = "LICENSE"

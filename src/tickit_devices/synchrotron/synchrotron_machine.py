@@ -1,3 +1,4 @@
+import pathlib
 from dataclasses import dataclass
 
 from softioc import builder
@@ -194,8 +195,8 @@ class SynchrotronMachineStatus(ComponentConfig):
     host: str = "localhost"
     port: int = 25565
     format: ByteFormat = ByteFormat(b"%b\r\n")
-    db_file: str = "src/tickit_devices/synchrotron/db_files/MSTAT.db"
-    ioc_name: str = "BL03S-CS-CS-MSTAT-01"
+    db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/MSTAT.db")
+    ioc_name: str = "CS-CS-MSTAT-01"
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
