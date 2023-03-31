@@ -6,5 +6,9 @@
   {
     "version": "0.1.0",
     "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
+  },
+  {
+    "version": "artemis516_458_remove_prefix_from_synchrotron_devices",
+    "url": "https://dls-controls.github.io/tickit-devices/artemis516_458_remove_prefix_from_synchrotron_devices/"
   }
 ]
