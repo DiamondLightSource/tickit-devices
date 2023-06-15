@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.monitor.eiger_monitor import EigerMonitor
+from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitor
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.filewriter.eiger_filewriter import EigerFileWriter
+from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriter
 
 
 @pytest.fixture

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from pathlib import Path
 from typing import List
 
 
@@ -43,9 +42,6 @@ def dummy_image_blob() -> bytes:
         A compressed image as a bytes object.
     """
     if not _DUMMY_IMAGE_BLOBS:
-        with open(
-            Path(Path(__file__).parent.parent, "resources", "frame_sample"),
-            "rb",
-        ) as frame_file:
+        with open("tickit/devices/eiger/resources/frame_sample", "rb") as frame_file:
             _DUMMY_IMAGE_BLOBS.append(frame_file.read())
     return _DUMMY_IMAGE_BLOBS[0]

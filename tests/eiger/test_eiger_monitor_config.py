@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
+from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
 
 # # # # # Eiger MonitorConfig Tests # # # # #
 

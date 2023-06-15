@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field, fields
 from typing import Any
 
-from tickit_devices.eiger.eiger_schema import rw_str
+from tickit.devices.eiger.eiger_schema import rw_str
 
 
 @dataclass
@@ -12,7 +12,7 @@ class StreamConfig:
         default="enabled", metadata=rw_str(allowed_values=["disabled", "enabled"])
     )
     header_detail: str = field(
-        default="basic", metadata=rw_str(allowed_values=["all", "basic", "none"])
+        default="basic", metadata=rw_str(allowed_values=["none", "basic", "all"])
     )
     header_appendix: str = field(default="", metadata=rw_str())
     image_appendix: str = field(default="", metadata=rw_str())
@@ -25,3 +25,6 @@ class StreamConfig:
                 "metadata": field_.metadata,
             }
         return f[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:  # noqa: D105
+        self.__dict__[key] = value

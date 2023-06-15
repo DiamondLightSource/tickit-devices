@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
+from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
 
 # # # # # Eiger MonitorStatus Tests # # # # #
 

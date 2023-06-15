@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field, fields
 from typing import Any
 
-from tickit_devices.eiger.eiger_schema import rw_bool, rw_int, rw_str
+from tickit.devices.eiger.eiger_schema import rw_bool, rw_int, rw_str
 
 
 @dataclass
@@ -24,3 +24,6 @@ class FileWriterConfig:
                 "metadata": field_.metadata,
             }
         return f[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:  # noqa: D105
+        self.__dict__[key] = value

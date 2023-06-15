@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus
+from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
 
 # # # # # Eiger FileWriterStatus Tests # # # # #
 
