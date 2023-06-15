@@ -41,6 +41,9 @@ class EigerDevice(Device):
     _num_frames_left: int
     _data_queue: Queue
 
+    _num_frames_left: int
+    _data_queue: Queue
+
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {"trigger": bool}, total=False)
     #: A typed mapping containing the 'value' output value

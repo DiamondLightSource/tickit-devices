@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.stream.stream_status import StreamStatus
+from tickit.devices.eiger.stream.stream_status import StreamStatus
 
 # # # # # Eiger StreamStatus Tests # # # # #
 
