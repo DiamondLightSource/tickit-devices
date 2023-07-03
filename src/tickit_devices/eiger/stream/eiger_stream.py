@@ -3,7 +3,7 @@ from typing import TypedDict
 
 from aiohttp import web
 from apischema import serialize
-from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import construct_value
 from tickit.devices.eiger.stream.stream_config import StreamConfig
@@ -38,7 +38,7 @@ class EigerStreamAdapter:
 
     device: EigerStream
 
-    @HTTPEndpoint.get(f"/{STREAM_API}" + "/status/{param}")
+    @HttpEndpoint.get(f"/{STREAM_API}" + "/status/{param}")
     async def get_stream_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting status values from the Stream.
 
@@ -55,7 +55,7 @@ class EigerStreamAdapter:
 
         return web.json_response(data)
 
-    @HTTPEndpoint.get(f"/{STREAM_API}" + "/config/{param}")
+    @HttpEndpoint.get(f"/{STREAM_API}" + "/config/{param}")
     async def get_stream_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting config values from the Stream.
 
@@ -72,7 +72,7 @@ class EigerStreamAdapter:
 
         return web.json_response(data)
 
-    @HTTPEndpoint.put(f"/{STREAM_API}" + "/config/{param}", include_json=True)
+    @HttpEndpoint.put(f"/{STREAM_API}" + "/config/{param}", include_json=True)
     async def put_stream_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting config values for the Stream.
 

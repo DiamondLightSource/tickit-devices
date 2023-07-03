@@ -3,7 +3,7 @@ from typing import TypedDict
 
 from aiohttp import web
 from apischema import serialize
-from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import construct_value
 from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
@@ -35,7 +35,7 @@ class EigerMonitorAdapter:
 
     device: EigerMonitor
 
-    @HTTPEndpoint.get(f"/{MONITOR_API}" + "/config/{param}")
+    @HttpEndpoint.get(f"/{MONITOR_API}" + "/config/{param}")
     async def get_monitor_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting config values from the Monitor.
 
@@ -52,7 +52,7 @@ class EigerMonitorAdapter:
 
         return web.json_response(data)
 
-    @HTTPEndpoint.put(f"/{MONITOR_API}" + "/config/{param}", include_json=True)
+    @HttpEndpoint.put(f"/{MONITOR_API}" + "/config/{param}", include_json=True)
     async def put_monitor_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting config values for the Monitor.
 
@@ -81,7 +81,7 @@ class EigerMonitorAdapter:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(serialize([]))
 
-    @HTTPEndpoint.get(f"/{MONITOR_API}" + "/status/{param}")
+    @HttpEndpoint.get(f"/{MONITOR_API}" + "/status/{param}")
     async def get_monitor_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting status values from the Monitor.
 

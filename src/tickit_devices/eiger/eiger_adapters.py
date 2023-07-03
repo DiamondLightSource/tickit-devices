@@ -2,9 +2,8 @@ import logging
 
 from aiohttp import web
 from apischema import serialize
-
-from tickit.adapters.httpadapter import HTTPAdapter
-from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.httpadapter import HttpAdapter
+from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.devices.eiger.eiger import EigerDevice
 from tickit.devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
@@ -19,13 +18,13 @@ LOGGER = logging.getLogger("EigerAdapter")
 
 
 class EigerRESTAdapter(
-    HTTPAdapter, EigerStreamAdapter, EigerMonitorAdapter, EigerFileWriterAdapter
+    HttpAdapter, EigerStreamAdapter, EigerMonitorAdapter, EigerFileWriterAdapter
 ):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
     device: EigerDevice
 
-    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
+    @HttpEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def get_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting configuration variables from the Eiger.
 
@@ -39,7 +38,6 @@ class EigerRESTAdapter(
         param = request.match_info["parameter_name"]
 
         if hasattr(self.device.settings, param):
-
             data = construct_value(self.device.settings, param)
 
         else:
@@ -47,7 +45,7 @@ class EigerRESTAdapter(
 
         return web.json_response(data)
 
-    @HTTPEndpoint.put(
+    @HttpEndpoint.put(
         f"/{DETECTOR_API}" + "/config/{parameter_name}", include_json=True
     )
     async def put_config(self, request: web.Request) -> web.Response:
@@ -84,7 +82,7 @@ class EigerRESTAdapter(
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(serialize([]))
 
-    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
+    @HttpEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
     async def get_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting the status of the Eiger.
 
@@ -98,7 +96,6 @@ class EigerRESTAdapter(
         param = request.match_info["status_param"]
 
         if hasattr(self.device.status, param):
-
             data = construct_value(self.device.status, param)
 
         else:
@@ -106,7 +103,7 @@ class EigerRESTAdapter(
 
         return web.json_response(data)
 
-    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/board_000/{status_param}")
+    @HttpEndpoint.get(f"/{DETECTOR_API}" + "/status/board_000/{status_param}")
     async def get_board_000_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting the status of the Eiger.
 
@@ -119,7 +116,7 @@ class EigerRESTAdapter(
         """
         return await self.get_status(request)
 
-    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/builder/{status_param}")
+    @HttpEndpoint.get(f"/{DETECTOR_API}" + "/status/builder/{status_param}")
     async def get_builder_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting the status of the Eiger.
 
@@ -132,7 +129,7 @@ class EigerRESTAdapter(
         """
         return await self.get_status(request)
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/initialize", interrupt=True)
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/initialize", interrupt=True)
     async def initialize_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'initialize' command of the Eiger.
 
@@ -148,7 +145,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Initializing Eiger...")
         return web.json_response(serialize(SequenceComplete(1)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/arm", interrupt=True)
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/arm", interrupt=True)
     async def arm_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'arm' command of the Eiger.
 
@@ -164,7 +161,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Arming Eiger...")
         return web.json_response(serialize(SequenceComplete(2)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm", interrupt=True)
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm", interrupt=True)
     async def disarm_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'disarm' command of the Eiger.
 
@@ -180,7 +177,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Disarming Eiger...")
         return web.json_response(serialize(SequenceComplete(3)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=False)
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=False)
     async def trigger_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'trigger' command of the Eiger.
 
@@ -200,7 +197,7 @@ class EigerRESTAdapter(
 
         return web.json_response(serialize(SequenceComplete(4)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel", interrupt=True)
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel", interrupt=True)
     async def cancel_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'cancel' command of the Eiger.
 
@@ -216,7 +213,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Cancelling Eiger...")
         return web.json_response(serialize(SequenceComplete(5)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/abort", interrupt=True)
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/abort", interrupt=True)
     async def abort_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'abort' command of the Eiger.
 

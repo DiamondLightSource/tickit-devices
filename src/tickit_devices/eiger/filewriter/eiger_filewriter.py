@@ -3,7 +3,7 @@ from typing import TypedDict
 
 from aiohttp import web
 from apischema import serialize
-from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import construct_value
 from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
@@ -35,7 +35,7 @@ class EigerFileWriterAdapter:
 
     device: EigerFileWriter
 
-    @HTTPEndpoint.get(f"/{FILEWRITER_API}" + "/config/{param}")
+    @HttpEndpoint.get(f"/{FILEWRITER_API}" + "/config/{param}")
     async def get_filewriter_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting config values from the Filewriter.
 
@@ -52,7 +52,7 @@ class EigerFileWriterAdapter:
 
         return web.json_response(data)
 
-    @HTTPEndpoint.put(f"/{FILEWRITER_API}" + "/config/{param}", include_json=True)
+    @HttpEndpoint.put(f"/{FILEWRITER_API}" + "/config/{param}", include_json=True)
     async def put_filewriter_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting config values for the Filewriter.
 
@@ -81,7 +81,7 @@ class EigerFileWriterAdapter:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(serialize([]))
 
-    @HTTPEndpoint.get(f"/{FILEWRITER_API}" + "/status/{param}")
+    @HttpEndpoint.get(f"/{FILEWRITER_API}" + "/status/{param}")
     async def get_filewriter_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting status values from the Filewriter.
 
