@@ -1,6 +1,6 @@
 import pytest
 
-from tickit.devices.eiger.eiger_settings import EigerSettings, KA_Energy
+from tickit_devices.eiger.eiger_settings import EigerSettings, KA_Energy
 
 # # # # # EigerStatus Tests # # # # #
 

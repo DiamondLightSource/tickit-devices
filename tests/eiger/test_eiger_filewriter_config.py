@@ -1,6 +1,6 @@
 import pytest
 
-from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
+from tickit_devices.eiger.filewriter.filewriter_config import FileWriterConfig
 
 # # # # # Eiger FileWriterConfig Tests # # # # #
 

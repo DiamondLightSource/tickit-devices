@@ -1,6 +1,6 @@
 import pytest
 
-from tickit.devices.eiger.stream.eiger_stream import EigerStream
+from tickit_devices.eiger.stream.eiger_stream import EigerStream
 
 
 @pytest.fixture

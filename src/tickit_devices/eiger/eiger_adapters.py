@@ -5,12 +5,13 @@ from apischema import serialize
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter
-from tickit.devices.eiger.eiger import EigerDevice
-from tickit.devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
-from tickit.devices.eiger.eiger_status import State
-from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
-from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
-from tickit.devices.eiger.stream.eiger_stream import EigerStreamAdapter
+
+from tickit_devices.eiger.eiger import EigerDevice
+from tickit_devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
+from tickit_devices.eiger.eiger_status import State
+from tickit_devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
+from tickit_devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
+from tickit_devices.eiger.stream.eiger_stream import EigerStreamAdapter
 
 DETECTOR_API = "detector/api/1.8.0"
 
@@ -45,9 +46,7 @@ class EigerRESTAdapter(
 
         return web.json_response(data)
 
-    @HttpEndpoint.put(
-        f"/{DETECTOR_API}" + "/config/{parameter_name}", include_json=True
-    )
+    @HttpEndpoint.put(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def put_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting configuration variables for the Eiger.
 

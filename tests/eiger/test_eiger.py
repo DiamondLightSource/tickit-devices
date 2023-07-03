@@ -1,9 +1,9 @@
 import pytest
-
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger import EigerDevice
-from tickit.devices.eiger.eiger_status import State
+
+from tickit_devices.eiger.eiger import EigerDevice
+from tickit_devices.eiger.eiger_status import State
 
 
 @pytest.fixture
@@ -40,7 +40,6 @@ async def test_eiger_disarm(eiger: EigerDevice):
 
 @pytest.mark.asyncio
 async def test_eiger_trigger_ints_and_ready(eiger: EigerDevice):
-
     eiger._set_state(State.READY)
     eiger.settings.trigger_mode = "ints"
 
@@ -52,7 +51,6 @@ async def test_eiger_trigger_ints_and_ready(eiger: EigerDevice):
 
 @pytest.mark.asyncio
 async def test_eiger_trigger_not_ints_and_ready(eiger: EigerDevice):
-
     eiger._set_state(State.READY)
 
     message = await eiger.trigger()
@@ -66,7 +64,6 @@ async def test_eiger_trigger_not_ints_and_ready(eiger: EigerDevice):
 
 @pytest.mark.asyncio
 async def test_eiger_trigger_not_ints_and_not_ready(eiger: EigerDevice):
-
     eiger._set_state(State.IDLE)
 
     message = await eiger.trigger()
@@ -97,14 +94,12 @@ def test_eiger_get_state(eiger: EigerDevice):
 
 
 def test_eiger_set_state(eiger: EigerDevice):
-
     eiger._set_state(State.IDLE)
 
     assert State.IDLE.value == eiger.get_state()["value"]
 
 
-def test_eiger_update_not_aquiring(eiger: EigerDevice):
-
+def test_eiger_update_not_acquiring(eiger: EigerDevice):
     eiger._set_state(State.IDLE)
 
     time = None
@@ -114,8 +109,7 @@ def test_eiger_update_not_aquiring(eiger: EigerDevice):
     assert update.outputs == {}
 
 
-def test_eiger_update_aquiring(eiger: EigerDevice):
-
+def test_eiger_update_acquiring(eiger: EigerDevice):
     eiger._set_state(State.ACQUIRE)
 
     eiger._num_frames_left = 1
@@ -127,10 +121,9 @@ def test_eiger_update_aquiring(eiger: EigerDevice):
     assert update.outputs == {}
 
 
-def test_eiger_update_aquiring_no_frames_left(eiger: EigerDevice):
-
+def test_eiger_update_acquiring_no_frames_left(eiger: EigerDevice):
     eiger._set_state(State.ACQUIRE)
-
+    eiger._triggered = True
     eiger._num_frames_left = 0
 
     time = None

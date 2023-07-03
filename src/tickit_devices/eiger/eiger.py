@@ -2,21 +2,22 @@ import asyncio
 import logging
 from dataclasses import fields
 from queue import Queue
-from typing import Any, Iterable, Optional, TypedDict
+from typing import Any, Iterable, Optional
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.data.dummy_image import Image
-from tickit.devices.eiger.data.schema import fmt_json
-from tickit.devices.eiger.eiger_schema import Value, construct_value
-from tickit.devices.eiger.eiger_settings import EigerSettings
-from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
-from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
-from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
-from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
-from tickit.devices.eiger.stream.stream_config import StreamConfig
-from tickit.devices.eiger.stream.stream_status import StreamStatus
 from typing_extensions import TypedDict
+
+from tickit_devices.eiger.data.dummy_image import Image
+from tickit_devices.eiger.data.schema import fmt_json
+from tickit_devices.eiger.eiger_schema import Value, construct_value
+from tickit_devices.eiger.eiger_settings import EigerSettings
+from tickit_devices.eiger.filewriter.filewriter_config import FileWriterConfig
+from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus
+from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
+from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
+from tickit_devices.eiger.stream.stream_config import StreamConfig
+from tickit_devices.eiger.stream.stream_status import StreamStatus
 
 from .eiger_status import EigerStatus, State
 
@@ -142,7 +143,7 @@ class EigerDevice(Device):
 
         self._num_frames_left = self.settings.nimages
 
-        self._set_state(State.ACQUIRE)
+        # self._set_state(State.ACQUIRE)
 
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
@@ -161,7 +162,8 @@ class EigerDevice(Device):
         trigger_mode = self.settings.trigger_mode
         state = self.status.state
 
-        if state == State.ACQUIRE and trigger_mode == "ints":
+        if state == State.READY and trigger_mode == "ints":
+            self._set_state(State.ACQUIRE)
             self._triggered = True
 
             self.finished_aquisition.clear()

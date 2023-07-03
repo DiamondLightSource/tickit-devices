@@ -5,10 +5,11 @@ from aiohttp import web
 from apischema import serialize
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import construct_value
-from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
-from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
 from typing_extensions import TypedDict
+
+from tickit_devices.eiger.eiger_schema import construct_value
+from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
+from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
 
 LOGGER = logging.getLogger(__name__)
 
@@ -52,7 +53,7 @@ class EigerMonitorAdapter:
 
         return web.json_response(data)
 
-    @HttpEndpoint.put(f"/{MONITOR_API}" + "/config/{param}", include_json=True)
+    @HttpEndpoint.put(f"/{MONITOR_API}" + "/config/{param}")
     async def put_monitor_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting config values for the Monitor.
 

@@ -1,6 +1,6 @@
 import pytest
 
-from tickit.devices.eiger.stream.stream_config import StreamConfig
+from tickit_devices.eiger.stream.stream_config import StreamConfig
 
 # # # # # Eiger StreamConfig Tests # # # # #
 
