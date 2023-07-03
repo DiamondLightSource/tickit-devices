@@ -42,6 +42,8 @@ def dummy_image_blob() -> bytes:
         A compressed image as a bytes object.
     """
     if not _DUMMY_IMAGE_BLOBS:
-        with open("tickit/devices/eiger/resources/frame_sample", "rb") as frame_file:
+        with open(
+            "src/tickit_devices/eiger/resources/frame_sample", "rb"
+        ) as frame_file:
             _DUMMY_IMAGE_BLOBS.append(frame_file.read())
     return _DUMMY_IMAGE_BLOBS[0]

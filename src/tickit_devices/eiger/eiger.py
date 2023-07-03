@@ -2,7 +2,7 @@ import asyncio
 import logging
 from dataclasses import fields
 from queue import Queue
-from typing import Any, Iterable, Optional
+from typing import Any, Iterable, Optional, Sequence
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
@@ -34,7 +34,7 @@ class EigerDevice(Device):
     _data_queue: Queue
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
+    Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
 
@@ -66,7 +66,6 @@ class EigerDevice(Device):
         self._data_queue: Queue = Queue()
         self._series_id: int = 0
 
-        self._triggered: bool = False
         self._finished_aquisition: Optional[asyncio.Event] = None
 
     @property
@@ -153,25 +152,21 @@ class EigerDevice(Device):
 
         self._data_queue.put([fmt_json(end_json)])
 
-    async def trigger(self) -> str:
+    async def trigger(self) -> None:
         """Function to trigger the Eiger.
 
         If the detector is in an external trigger mode, this is disabled as
         this software command interface only works for internal triggers.
         """
         trigger_mode = self.settings.trigger_mode
-        state = self.status.state
 
-        if state == State.READY and trigger_mode == "ints":
+        if self._is_in_state(State.READY) and trigger_mode == "ints":
             self._set_state(State.ACQUIRE)
-            self._triggered = True
 
             self.finished_aquisition.clear()
-
-            return "Aquiring Data from Eiger..."
         else:
-            return (
-                f"Ignoring trigger, state={self.status.state},"
+            LOGGER.info(
+                f"Ignoring trigger, state={self._get_state()},"
                 f"trigger_mode={trigger_mode}"
             )
 
@@ -207,17 +202,14 @@ class EigerDevice(Device):
                 The produced update event which contains the value of the device
                 variables.
         """
-        if self._triggered:
+        if self._is_in_state(State.ACQUIRE):
             if self._num_frames_left > 0:
                 self._acquire_frame()
 
                 return DeviceUpdate(
                     self.Outputs(), SimTime(time + int(self.settings.frame_time * 1e9))
                 )
-
             else:
-                self._triggered = False
-
                 self.finished_aquisition.set()
 
                 LOGGER.debug("Ending Series...")
@@ -269,7 +261,7 @@ class EigerDevice(Device):
         self._num_frames_left -= 1
         LOGGER.debug(f"Frames left: {self._num_frames_left}")
 
-    def consume_data(self) -> Iterable[Any]:
+    def consume_data(self) -> Iterable[Sequence[bytes]]:
         """Function to work through the data queue, yielding anything queued."""
         while not self._data_queue.empty():
             yield self._data_queue.get()
@@ -284,5 +276,11 @@ class EigerDevice(Device):
 
         return state
 
-    def _set_state(self, state: State):
+    def _set_state(self, state: State) -> None:
         self.status.state = state
+
+    def _is_in_state(self, state: State) -> bool:
+        return self._get_state() is state
+
+    def _get_state(self) -> State:
+        return self.status.state
