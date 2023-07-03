@@ -45,13 +45,7 @@ class EigerRESTAdapter(HttpAdapter):
 
         return web.json_response(data)
 
-<<<<<<< HEAD
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/config/{parameter_name}")
-=======
-    @HttpEndpoint.put(
-        f"/{DETECTOR_API}" + "/config/{parameter_name}", include_json=True
-    )
->>>>>>> 5fe979d (Adapt to WIP Http Adapter PR)
     async def put_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting configuration variables for the Eiger.
 
