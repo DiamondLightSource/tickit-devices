@@ -26,12 +26,6 @@ async def test_initialize(eiger: EigerDevice):
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip
-async def test_rejects_command_before_initialize(eiger: EigerDevice):
-    await eiger.arm
-
-
-@pytest.mark.asyncio
 async def test_arm(eiger: EigerDevice):
     await eiger.initialize()
     await eiger.arm()
