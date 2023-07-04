@@ -158,11 +158,12 @@ class EigerDevice(Device):
         If the detector is in an external trigger mode, this is disabled as
         this software command interface only works for internal triggers.
         """
+        LOGGER.info("Trigger requested")
         trigger_mode = self.settings.trigger_mode
 
         if self._is_in_state(State.READY) and trigger_mode == "ints":
             self._set_state(State.ACQUIRE)
-
+            LOGGER.info("Now in acquiring mode")
             self.finished_aquisition.clear()
         else:
             LOGGER.info(
