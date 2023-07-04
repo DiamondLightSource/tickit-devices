@@ -10,5 +10,9 @@
   {
     "version": "eiger-exts-logic",
     "url": "https://dls-controls.github.io/tickit-devices/eiger-exts-logic/"
+  },
+  {
+    "version": "typed_dict_type",
+    "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   }
 ]
