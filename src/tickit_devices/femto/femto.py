@@ -10,9 +10,9 @@ class FemtoDevice(Device):
     """Electronic signal amplifier."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {"input": float})
+    Inputs: type = TypedDict("Inputs", {"input": float})
     #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict("Outputs", {"current": float})
+    Outputs: type = TypedDict("Outputs", {"current": float})
 
     def __init__(
         self,

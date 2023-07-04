@@ -35,9 +35,9 @@ class EigerStream:
     _message_buffer: Queue[_Message]
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
-    Outputs: TypedDict = TypedDict("Outputs", {})
+    Outputs: type = TypedDict("Outputs", {})
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """An Eiger Stream constructor."""

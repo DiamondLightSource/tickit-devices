@@ -22,9 +22,9 @@ class SynchrotronMachineStatusDevice(Device):
     """
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict(
+    Outputs: type = TypedDict(
         "Outputs",
         {
             "mode": int,

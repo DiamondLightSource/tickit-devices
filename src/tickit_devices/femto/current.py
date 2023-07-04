@@ -9,7 +9,7 @@ class CurrentDevice(Device):
     """The current configured device."""
 
     #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict("Outputs", {"output": float})
+    Outputs: type = TypedDict("Outputs", {"output": float})
 
     def __init__(self, callback_period: int) -> None:
         """Initialise the current device.

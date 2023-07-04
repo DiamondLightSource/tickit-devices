@@ -22,9 +22,9 @@ class SynchrotronTopUpDevice(Device):
     """
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {"current": float})
+    Inputs: type = TypedDict("Inputs", {"current": float})
     #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict(
+    Outputs: type = TypedDict(
         "Outputs",
         {
             "countdown": float,

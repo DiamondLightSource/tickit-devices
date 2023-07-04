@@ -25,9 +25,9 @@ class SynchrotronCurrentDevice(Device):
     """
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict("Outputs", {"current": float})
+    Outputs: type = TypedDict("Outputs", {"current": float})
 
     def __init__(
         self,
