@@ -8,6 +8,7 @@ from tickit.core.typedefs import SimTime
 class CurrentDevice(Device):
     """The current configured device."""
 
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the current output value
     Outputs: type = TypedDict("Outputs", {"output": float})
 

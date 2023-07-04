@@ -9,6 +9,7 @@ from tickit.core.typedefs import SimTime
 class PneumaticDevice(Device):
     """Pneumatic Device with movement controls."""
 
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the current output value
     Outputs: type = TypedDict("Outputs", {"output": float})
 
