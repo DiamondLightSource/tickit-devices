@@ -44,7 +44,7 @@
           "type": "command",
           "command": "extension.commandvariable.file.pickFile",
           "args": {
-            "include": "examples/**/*.{yaml,yml}",
+            "include": "{examples,s03_configs}/**/*.{yaml,yml}",
           }
         }
       ]
