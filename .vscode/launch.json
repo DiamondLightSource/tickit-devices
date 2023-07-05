@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Eiger",
+            "type": "python",
+            "request": "launch",
+            "module": "tickit",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "args": [
+                "all",
+                "examples/configs/eiger/eiger.yaml"
+            ]
+        },
+        {
             "name": "Debug Unit Test",
             "type": "python",
             "request": "launch",
