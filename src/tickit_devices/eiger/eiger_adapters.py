@@ -235,5 +235,4 @@ class EigerZMQAdapter(ZeroMQAdapter):
 
     def after_update(self) -> None:
         """Updates IOC values immediately following a device update."""
-        for message in self.device.consume_data():
-            self.send_message(message)
+        self.send_message_sequence_soon(self.device.consume_data())
