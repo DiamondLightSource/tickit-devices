@@ -187,9 +187,8 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        trigger_message = await self.device.trigger()
-
-        LOGGER.debug(trigger_message)
+        LOGGER.debug("Triggering Eiger")
+        await self.device.trigger()
 
         await self.raise_interrupt()
         await self.device.finished_aquisition.wait()
