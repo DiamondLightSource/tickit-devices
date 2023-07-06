@@ -1,3 +1,4 @@
+import json
 import logging
 from queue import Queue
 from typing import Any, Iterable, Mapping, TypedDict, Union
@@ -5,6 +6,7 @@ from typing import Any, Iterable, Mapping, TypedDict, Union
 from pydantic.v1 import BaseModel
 from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
+from zmq import Frame
 
 from tickit_devices.eiger.data.dummy_image import Image
 from tickit_devices.eiger.data.schema import (
@@ -24,6 +26,9 @@ LOGGER = logging.getLogger(__name__)
 
 _Message = Union[BaseModel, Mapping[str, Any], bytes]
 
+_Sendable = Union[bytes, Frame, memoryview]
+_Message = Union[_Sendable, str, Mapping[str, Any], BaseModel]
+
 
 class EigerStream:
     """Simulation of an Eiger stream."""
@@ -33,6 +38,8 @@ class EigerStream:
     callback_period: SimTime
 
     _message_buffer: Queue[_Message]
+
+    _message_buffer: Queue[_Sendable]
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
