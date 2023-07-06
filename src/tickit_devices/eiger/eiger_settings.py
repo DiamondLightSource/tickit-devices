@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass, field, fields
 from enum import Enum
-from typing import Any, List
+from typing import Any, List, Mapping
 
 from .eiger_schema import (
     ro_float,
@@ -135,7 +135,6 @@ class EigerSettings:
         self._check_dependencies(key, value)
 
     def _check_dependencies(self, key, value):
-
         if key == "element":
             self.photon_energy = getattr(KA_Energy, value).value
             self.wavelength = (1240 / self.photon_energy) / 10  # to convert to Angstrom
@@ -161,7 +160,13 @@ class EigerSettings:
             self.frame_time = self.count_time + self.detector_readout_time
 
     def _calc_threshold_energy(self):
-
         self.threshold_energy = 0.5 * self.photon_energy
 
         LOGGER.warning("Flatfield not recalculated.")
+
+    def filtered(self, exclude_fields: List[str]) -> Mapping[str, Any]:
+        return {
+            fld.name: vars(self)[fld.name]
+            for fld in fields(self)
+            if fld not in exclude_fields
+        }

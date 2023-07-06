@@ -16,6 +16,7 @@ from tickit_devices.eiger.filewriter.filewriter_config import FileWriterConfig
 from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus
 from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
 from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
+from tickit_devices.eiger.stream.eiger_stream import EigerStream
 from tickit_devices.eiger.stream.stream_config import StreamConfig
 from tickit_devices.eiger.stream.stream_status import StreamStatus
 
@@ -29,6 +30,7 @@ class EigerDevice(Device):
 
     settings: EigerSettings
     status: EigerStatus
+    stream: EigerStream
 
     _num_frames_left: int
     _data_queue: Queue
@@ -49,9 +51,10 @@ class EigerDevice(Device):
         self.settings = EigerSettings()
         self.status = EigerStatus()
 
-        self.stream_status = StreamStatus()
-        self.stream_config = StreamConfig()
-        self.stream_callback_period = SimTime(int(1e9))
+        # self.stream_status = StreamStatus()
+        # self.stream_config = StreamConfig()
+        # self.stream_callback_period = SimTime(int(1e9))
+        self.stream = EigerStream(callback_period=SimTime(int(1e9)))
 
         self.filewriter_status: FileWriterStatus = FileWriterStatus()
         self.filewriter_config: FileWriterConfig = FileWriterConfig()
@@ -82,75 +85,15 @@ class EigerDevice(Device):
 
     async def arm(self) -> None:
         """Function to arm the Eiger."""
-        self._set_state(State.READY)
-
         self._series_id += 1
-
-        jsons = []
-
-        header_detail = self.stream_config["header_detail"]["value"]
-
-        header_json = {
-            "header_detail": header_detail,
-            "htype": "dheader-1.0",
-            "series": self._series_id,
-        }
-        jsons.append(header_json)
-
-        if header_detail != "none":
-            config_json = {}
-            disallowed_configs = ["flatfield", "pixelmask" "countrate_correction_table"]
-            for field_ in fields(self.settings):
-                if field_.name not in disallowed_configs:
-                    config_json[field_.name] = vars(self.settings)[field_.name]
-
-            jsons.append(config_json)
-
-            if header_detail == "all":
-                x = self.settings.x_pixels_in_detector
-                y = self.settings.y_pixels_in_detector
-
-                flatfield_header = {
-                    "htype": "flatfield-1.0",
-                    "shape": [x, y],
-                    "type": "float32",
-                }
-                jsons.append(flatfield_header)
-                flatfield_data_blob = {"blob": "blob"}
-                jsons.append(flatfield_data_blob)
-
-                pixel_mask_header = {
-                    "htype": "dpixelmask-1.0",
-                    "shape": [x, y],
-                    "type": "uint32",
-                }
-                jsons.append(pixel_mask_header)
-                pixel_mask_data_blob = {"blob": "blob"}
-                jsons.append(pixel_mask_data_blob)
-
-                countrate_table_header = {
-                    "htype": "dcountrate_table-1.0",
-                    "shape": [x, y],
-                    "type": "float32",
-                }
-                jsons.append(countrate_table_header)
-                countrate_table_data_blob = {"blob": "blob"}
-                jsons.append(countrate_table_data_blob)
-
-        # for json_ in jsons:
-        self._data_queue.put([fmt_json(json_) for json_ in jsons])
-
+        self.stream.begin_series(self.settings, self._series_id)
         self._num_frames_left = self.settings.nimages
-
-        # self._set_state(State.ACQUIRE)
+        self._set_state(State.READY)
 
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
         self._set_state(State.IDLE)
-
-        end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
-
-        self._data_queue.put([fmt_json(end_json)])
+        self.stream.end_series(self._series_id)
 
     async def trigger(self) -> None:
         """Function to trigger the Eiger.
@@ -178,18 +121,12 @@ class EigerDevice(Device):
         image is finished.
         """
         self._set_state(State.READY)
-
-        end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
-
-        self._data_queue.put([fmt_json(end_json)])
+        self.stream.end_series(self._series_id)
 
     async def abort(self) -> None:
         """Function to abort the current task on the Eiger."""
         self._set_state(State.IDLE)
-
-        end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
-
-        self._data_queue.put([fmt_json(end_json)])
+        self.stream.end_series(self._series_id)
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update function to update the Eiger.
@@ -214,10 +151,8 @@ class EigerDevice(Device):
                 self.finished_aquisition.set()
 
                 LOGGER.debug("Ending Series...")
-                end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
-                self._data_queue.put([fmt_json(end_json)])
-
                 self._set_state(State.IDLE)
+                self.stream.end_series(self._series_id)
 
         return DeviceUpdate(self.Outputs(), None)
 
@@ -225,40 +160,12 @@ class EigerDevice(Device):
         frame_id = self.settings.nimages - self._num_frames_left
         LOGGER.debug(f"Frame id {frame_id}")
 
-        aquired = Image.create_dummy_image(frame_id)
-
-        header_json = fmt_json(
-            {
-                "frame": aquired.index,
-                "hash": aquired.hash,
-                "htype": "dimage-1.0",
-                "series": self._series_id,
-            }
+        shape = (
+            self.settings.x_pixels_in_detector,
+            self.settings.y_pixels_in_detector,
         )
-
-        x = self.settings.x_pixels_in_detector
-        y = self.settings.y_pixels_in_detector
-
-        json2 = fmt_json(
-            {
-                "encoding": aquired.encoding,
-                "htype": "dimage_d-1.0",
-                "shape": [x, y],
-                "size": len(aquired.data),
-                "type": aquired.dtype,
-            }
-        )
-
-        json3 = fmt_json(
-            {
-                "htype": "dconfig-1.0",
-                "real_time": 0,
-                "start_time": 0,
-                "stop_time": 0,
-            }
-        )
-
-        self._data_queue.put([header_json, json2, aquired.data, json3])
+        image = Image.create_dummy_image(frame_id, shape)
+        self.stream.insert_image(image, self._series_id)
         self._num_frames_left -= 1
         LOGGER.debug(f"Frames left: {self._num_frames_left}")
 
