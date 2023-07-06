@@ -21,17 +21,13 @@ class SynchrotronMachineStatusDevice(Device):
     The signal is read via an epics adapter, and set using a tcp adapter.
     """
 
-    #: An empty typed mapping of device inputs
-    Inputs: type = TypedDict("Inputs", {})
-    #: A typed mapping containing the current output value
-    Outputs: type = TypedDict(
-        "Outputs",
-        {
-            "mode": int,
-            "user_countdown": float,
-            "beam_energy": float,
-        },
-    )
+    class Inputs(TypedDict):
+        ...
+
+    class Outputs(TypedDict):
+        mode: int
+        user_countdown: float
+        beam_energy: float
 
     def __init__(
         self,
