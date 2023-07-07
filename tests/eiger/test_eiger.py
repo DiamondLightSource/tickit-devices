@@ -1,8 +1,8 @@
+import itertools
 from unittest.mock import ANY
 
 import pytest
 from mock import MagicMock
-from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
 
 from tickit_devices.eiger.eiger import EigerDevice
@@ -134,29 +134,60 @@ async def test_cancelled_eiger_starts_and_ends_series(
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("num_frames", [0, 1, 2, 10])
-async def test_eiger_acquire_frames_in_ints_mode(
+@pytest.mark.parametrize(
+    "num_frames,num_series", list(itertools.product([0, 1, 2, 10], [1, 2, 3]))
+)
+async def test_acquire_frames_in_ints_mode(
     eiger: EigerDevice,
     mock_stream: EigerStream,
     num_frames: int,
+    num_series: int,
 ):
-    await eiger.initialize()
-    eiger.settings.trigger_mode = "ints"
-    eiger.settings.nimages = num_frames
-    await eiger.arm()
-    await eiger.trigger()
+    for series in range(1, num_series + 1):
+        await eiger.initialize()
+        eiger.settings.trigger_mode = "ints"
+        eiger.settings.nimages = num_frames
+        await eiger.arm()
+        await eiger.trigger()
 
-    # Extra update cleans up state
-    for _ in range(num_frames + 1):
+        # Extra update cleans up state
+        for _ in range(num_frames + 1):
+            eiger.update(SimTime(0.0), {})
+
+        mock_stream.begin_series.assert_called_with(eiger.settings, series)
+        assert mock_stream.begin_series.call_count == series
+        if num_frames > 0:
+            mock_stream.insert_image.assert_called_with(ANY, series)
+        assert mock_stream.insert_image.call_count == series * num_frames
+        mock_stream.end_series.assert_called_with(series)
+        assert mock_stream.end_series.call_count == series
+
+        assert_in_state(eiger, State.IDLE)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("num_series", [1, 2, 3])
+async def test_abort_mid_acquisition(
+    eiger: EigerDevice,
+    mock_stream: EigerStream,
+    num_series: int,
+):
+    for series in range(1, num_series + 1):
+        await eiger.initialize()
+        eiger.settings.trigger_mode = "ints"
+        eiger.settings.nimages = 3
+        await eiger.arm()
+        await eiger.trigger()
+
+        eiger.update(SimTime(0.0), {})
         eiger.update(SimTime(0.0), {})
 
-    mock_stream.begin_series.assert_called_once_with(eiger.settings, 1)
-    if num_frames > 0:
-        mock_stream.insert_image.assert_called_with(ANY, 1)
-    assert mock_stream.insert_image.call_count == num_frames
-    mock_stream.end_series.assert_called_once_with(1)
+        await eiger.abort()
 
-    assert_in_state(eiger, State.IDLE)
+        eiger.update(SimTime(0.0), {})
+
+        mock_stream.end_series.assert_called_with(series)
+        assert_in_state(eiger, State.IDLE)
 
 
 def assert_in_state(eiger: EigerDevice, state: State) -> None:
