@@ -1,10 +1,10 @@
 import logging
 from dataclasses import fields
+from typing import TypedDict
 
 from apischema import serialize
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from typing_extensions import TypedDict
 
 from tickit_devices.eiger.data.dummy_image import Image
 from tickit_devices.eiger.eiger_schema import AccessMode, Value

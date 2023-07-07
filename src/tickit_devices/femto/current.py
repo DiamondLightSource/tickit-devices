@@ -1,8 +1,8 @@
 from random import uniform
+from typing import TypedDict
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
 
 
 class CurrentDevice(Device):

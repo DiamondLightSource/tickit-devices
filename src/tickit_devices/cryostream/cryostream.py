@@ -1,6 +1,6 @@
 import asyncio
 import struct
-from typing import AsyncIterable
+from typing import AsyncIterable, TypedDict
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
@@ -8,7 +8,6 @@ from tickit.adapters.servers.tcp import TcpServer
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import TypedDict
 
 from tickit_devices.cryostream.base import CryostreamBase
 from tickit_devices.cryostream.states import PhaseIds
