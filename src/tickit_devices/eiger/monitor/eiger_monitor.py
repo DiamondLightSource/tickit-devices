@@ -1,10 +1,10 @@
 import logging
+from typing import TypedDict
 
 from aiohttp import web
 from apischema import serialize
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from typing_extensions import TypedDict
 
 from tickit_devices.eiger.eiger_schema import Value
 from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
