@@ -5,7 +5,7 @@ from typing import Any, Iterable, Mapping, TypedDict, Union
 
 from aiohttp import web
 from apischema import serialize
-from pydantic import BaseModel, parse_obj_as
+from pydantic.v1 import BaseModel, parse_obj_as
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
@@ -28,8 +28,10 @@ from tickit_devices.eiger.stream.stream_status import StreamStatus
 LOGGER = logging.getLogger(__name__)
 STREAM_API = "stream/api/1.8.0"
 
-_Sendable = Union[bytes, Frame, memoryview]
-_Message = Union[_Sendable, str, Mapping[str, Any], BaseModel]
+# _Sendable = Union[bytes, Frame, memoryview]
+# _Message = Union[_Sendable, str, Mapping[str, Any], BaseModel]
+
+_Message = Union[BaseModel, Mapping[str, Any], bytes]
 
 
 class EigerStream:
@@ -39,7 +41,7 @@ class EigerStream:
     stream_config: StreamConfig
     stream_callback_period: SimTime
 
-    _message_buffer: Queue[_Sendable]
+    _message_buffer: Queue[_Message]
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
@@ -126,23 +128,12 @@ class EigerStream:
         footer = AcquisitionSeriesFooter(series=series_id)
         self._buffer(footer)
 
-    def consume_data(self) -> Iterable[_Sendable]:
+    def consume_data(self) -> Iterable[_Message]:
         while not self._message_buffer.empty():
             yield self._message_buffer.get()
 
     def _buffer(self, message: _Message) -> None:
-        serialized = self._serialize(message)
-        self._message_buffer.put_nowait(serialized)
-
-    def _serialize(self, message: _Message) -> _Sendable:
-        if isinstance(message, BaseModel):
-            return self._serialize(message.dict())
-        elif isinstance(message, dict) or isinstance(message, str):
-            return self._serialize(json.dumps(message).encode("utf_8"))
-        elif isinstance(message, bytes):
-            return message
-        else:
-            raise TypeError(f"Message: {message} is not serializable")
+        self._message_buffer.put_nowait(message)
 
 
 class EigerStreamAdapter:

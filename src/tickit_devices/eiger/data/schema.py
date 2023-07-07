@@ -2,7 +2,7 @@ import json
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
-from pydantic import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 from zmq import Frame
 
 Json = Dict[str, Any]

@@ -4,7 +4,7 @@ from aiohttp import web
 from apischema import serialize
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
-from tickit.adapters.zmqadapter import ZeroMQAdapter
+from tickit.adapters.zeromq.push_adapter import ZeroMqPushAdapter
 
 from tickit_devices.eiger.eiger import EigerDevice
 from tickit_devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
@@ -228,7 +228,7 @@ class EigerRESTAdapter(
         return web.json_response(serialize(SequenceComplete(6)))
 
 
-class EigerZMQAdapter(ZeroMQAdapter):
+class EigerZMQAdapter(ZeroMqPushAdapter):
     """An Eiger adapter which parses the data to send along a ZeroMQStream."""
 
     device: EigerDevice
