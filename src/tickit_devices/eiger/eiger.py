@@ -33,7 +33,7 @@ class EigerDevice(Device):
     _data_queue: Queue
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {"trigger": bool})
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
 
@@ -105,9 +105,7 @@ class EigerDevice(Device):
         trigger_mode = self.settings.trigger_mode
 
         if self._is_in_state(State.READY) and trigger_mode == "ints":
-            self._set_state(State.ACQUIRE)
-            LOGGER.info("Now in acquiring mode")
-            self.finished_aquisition.clear()
+            self._begin_acqusition_mode()
         else:
             LOGGER.info(
                 f"Ignoring trigger, state={self._get_state()},"
@@ -153,8 +151,17 @@ class EigerDevice(Device):
                 LOGGER.debug("Ending Series...")
                 self._set_state(State.IDLE)
                 self.stream.end_series(self._series_id)
+        if inputs.get("trigger", False):
+            self._begin_acqusition_mode()
+            # Should have another update immediately to begin acquisition
+            return DeviceUpdate(self.Outputs(), SimTime(time))
 
         return DeviceUpdate(self.Outputs(), None)
+
+    def _begin_acqusition_mode(self) -> None:
+        self._set_state(State.ACQUIRE)
+        LOGGER.info("Now in acquiring mode")
+        self.finished_aquisition.clear()
 
     def _acquire_frame(self) -> None:
         frame_id = self.settings.nimages - self._num_frames_left
