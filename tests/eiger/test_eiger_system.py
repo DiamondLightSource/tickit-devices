@@ -2,69 +2,13 @@ import json
 
 import aiohttp
 import pytest
-from aiohttp import web
-from mock import MagicMock, Mock
-from mock.mock import create_autospec
-
-from tickit_devices.eiger.eiger import EigerDevice
-from tickit_devices.eiger.eiger_adapters import EigerRESTAdapter
-from tickit_devices.eiger.eiger_settings import EigerSettings
-from tickit_devices.eiger.eiger_status import EigerStatus, State
-
-
-@pytest.fixture
-def mock_status() -> MagicMock:
-    status = create_autospec(EigerStatus, instance=True)
-    status.state = State.NA
-    return status
-
-
-@pytest.fixture
-def mock_settings() -> MagicMock:
-    settings = create_autospec(EigerSettings, instance=True)
-    settings.count_time = {
-        "value": 0.1,
-        "metadata": {"value_type": Mock(value="int"), "access_mode": Mock(value="rw")},
-    }
-    return settings
-
-
-@pytest.fixture
-def mock_eiger(mock_status: MagicMock, mock_settings: MagicMock) -> MagicMock:
-    mock_eiger = create_autospec(EigerDevice, instance=True)
-    mock_eiger.status = mock_status
-    mock_eiger.settings = mock_settings
-    return mock_eiger
-
-
-@pytest.fixture
-def raise_interrupt():
-    async def raise_interrupt():
-        return False
-
-    return Mock(raise_interrupt)
-
-
-@pytest.fixture
-def eiger_adapter(mock_eiger: MagicMock) -> EigerRESTAdapter:
-    return EigerRESTAdapter(mock_eiger, raise_interrupt)
-
-
-def test_eiger_adapter_contructor():
-    EigerRESTAdapter(mock_eiger, raise_interrupt)
-
-
-@pytest.fixture()
-def mock_request():
-    mock_request = MagicMock(web.Request)
-    return mock_request
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "tickit_task", ["examples/configs/eiger/eiger.yaml"], indirect=True
 )
-@pytest.mark.skip("do not merge while skipped!")
+# @pytest.mark.skip("do not merge while skipped!")
 async def test_eiger_system(tickit_task):
     commands = {
         "initialize": {"sequence id": 1},
