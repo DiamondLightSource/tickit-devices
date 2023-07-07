@@ -26,7 +26,6 @@ from tickit_devices.eiger.stream.stream_config import StreamConfig
 from tickit_devices.eiger.stream.stream_status import StreamStatus
 
 LOGGER = logging.getLogger(__name__)
-STREAM_API = "stream/api/1.8.0"
 
 # _Sendable = Union[bytes, Frame, memoryview]
 # _Message = Union[_Sendable, str, Mapping[str, Any], BaseModel]
@@ -134,72 +133,3 @@ class EigerStream:
 
     def _buffer(self, message: _Message) -> None:
         self._message_buffer.put_nowait(message)
-
-
-class EigerStreamAdapter:
-    """An adapter for the Stream."""
-
-    device: EigerStream
-
-    @HttpEndpoint.get(f"/{STREAM_API}" + "/status/{param}")
-    async def get_stream_status(self, request: web.Request) -> web.Response:
-        """A HTTP Endpoint for requesting status values from the Stream.
-
-        Args:
-            request (web.Request): The request object that takes the given parameter.
-
-        Returns:
-            web.Response: The response object returned given the result of the HTTP
-                request.
-        """
-        param = request.match_info["param"]
-
-        data = construct_value(self.device.stream.stream_status, param)
-
-        return web.json_response(data)
-
-    @HttpEndpoint.get(f"/{STREAM_API}" + "/config/{param}")
-    async def get_stream_config(self, request: web.Request) -> web.Response:
-        """A HTTP Endpoint for requesting config values from the Stream.
-
-        Args:
-            request (web.Request): The request object that takes the given parameter.
-
-        Returns:
-            web.Response: The response object returned given the result of the HTTP
-                request.
-        """
-        param = request.match_info["param"]
-
-        data = construct_value(self.device.stream.stream_config, param)
-
-        return web.json_response(data)
-
-    @HttpEndpoint.put(f"/{STREAM_API}" + "/config/{param}")
-    async def put_stream_config(self, request: web.Request) -> web.Response:
-        """A HTTP Endpoint for setting config values for the Stream.
-
-        Args:
-            request (web.Request): The request object that takes the given parameter
-            and value.
-
-        Returns:
-            web.Response: The response object returned given the result of the HTTP
-                request.
-        """
-        param = request.match_info["param"]
-
-        response = await request.json()
-
-        if hasattr(self.device.stream.stream_config, param):
-            attr = response["value"]
-
-            LOGGER.debug(f"Changing to {attr} for {param}")
-
-            self.device.stream.stream_config[param] = attr
-
-            LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
-        else:
-            LOGGER.debug("Eiger has no config variable: " + str(param))
-            return web.json_response(serialize([]))
