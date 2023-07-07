@@ -1,14 +1,23 @@
+from unittest.mock import ANY
+
 import pytest
+from mock import MagicMock
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
 
 from tickit_devices.eiger.eiger import EigerDevice
 from tickit_devices.eiger.eiger_status import State
+from tickit_devices.eiger.stream.eiger_stream import EigerStream
 
 
 @pytest.fixture
-def eiger() -> EigerDevice:
-    return EigerDevice()
+def mock_stream() -> EigerStream:
+    return MagicMock(EigerStream)
+
+
+@pytest.fixture
+def eiger(mock_stream: EigerStream) -> EigerDevice:
+    return EigerDevice(stream=mock_stream)
 
 
 def test_eiger_constructor():
@@ -93,44 +102,61 @@ async def test_abort(eiger: EigerDevice):
 
 
 @pytest.mark.asyncio
-async def test_eiger_acquire_frame_in_ints_mode(eiger: EigerDevice):
+async def test_armed_eiger_starts_series(eiger: EigerDevice, mock_stream: EigerStream):
     await eiger.initialize()
     eiger.settings.trigger_mode = "ints"
     await eiger.arm()
+    mock_stream.begin_series.assert_called_once_with(eiger.settings, 1)
+
+
+@pytest.mark.asyncio
+async def test_disarmed_eiger_starts_and_ends_series(
+    eiger: EigerDevice, mock_stream: EigerStream
+):
+    await eiger.initialize()
+    eiger.settings.trigger_mode = "ints"
+    await eiger.arm()
+    await eiger.disarm()
+    mock_stream.begin_series.assert_called_once_with(eiger.settings, 1)
+    mock_stream.end_series.assert_called_once_with(1)
+
+
+@pytest.mark.asyncio
+async def test_cancelled_eiger_starts_and_ends_series(
+    eiger: EigerDevice, mock_stream: EigerStream
+):
+    await eiger.initialize()
+    eiger.settings.trigger_mode = "ints"
+    await eiger.arm()
+    await eiger.cancel()
+    mock_stream.begin_series.assert_called_once_with(eiger.settings, 1)
+    mock_stream.end_series.assert_called_once_with(1)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("num_frames", [0, 1, 2, 10])
+async def test_eiger_acquire_frames_in_ints_mode(
+    eiger: EigerDevice,
+    mock_stream: EigerStream,
+    num_frames: int,
+):
+    await eiger.initialize()
+    eiger.settings.trigger_mode = "ints"
+    eiger.settings.nimages = num_frames
+    await eiger.arm()
     await eiger.trigger()
 
-    eiger.update(SimTime(0.0), {})
-    eiger.update(SimTime(0.0), {})
+    # Extra update cleans up state
+    for _ in range(num_frames + 1):
+        eiger.update(SimTime(0.0), {})
 
-    armed, data, end = eiger.consume_data()
-    assert len(armed) == 2
-    assert len(data) == 4
-    assert len(end) == 1
-
-
-def test_eiger_update_acquiring(eiger: EigerDevice):
-    eiger._set_state(State.ACQUIRE)
-
-    eiger._num_frames_left = 1
-
-    time = SimTime(int(1e8))
-    device_input = {"bleep", "bloop"}
-
-    update: DeviceUpdate = eiger.update(time, device_input)
-    assert update.outputs == {}
-
-
-def test_eiger_update_acquiring_no_frames_left(eiger: EigerDevice):
-    eiger._set_state(State.ACQUIRE)
-    eiger._num_frames_left = 0
-
-    time = None
-    device_input = {"bleep", "bloop"}
-
-    update: DeviceUpdate = eiger.update(time, device_input)
+    mock_stream.begin_series.assert_called_once_with(eiger.settings, 1)
+    if num_frames > 0:
+        mock_stream.insert_image.assert_called_with(ANY, 1)
+    assert mock_stream.insert_image.call_count == num_frames
+    mock_stream.end_series.assert_called_once_with(1)
 
     assert_in_state(eiger, State.IDLE)
-    assert update.outputs == {}
 
 
 def assert_in_state(eiger: EigerDevice, state: State) -> None:

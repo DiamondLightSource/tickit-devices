@@ -37,9 +37,9 @@ _Message = Union[BaseModel, Mapping[str, Any], bytes]
 class EigerStream:
     """Simulation of an Eiger stream."""
 
-    stream_status: StreamStatus
-    stream_config: StreamConfig
-    stream_callback_period: SimTime
+    status: StreamStatus
+    config: StreamConfig
+    callback_period: SimTime
 
     _message_buffer: Queue[_Message]
 
@@ -50,14 +50,14 @@ class EigerStream:
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """An Eiger Stream constructor."""
-        self.stream_status = StreamStatus()
-        self.stream_config = StreamConfig()
-        self.stream_callback_period = SimTime(callback_period)
+        self.status = StreamStatus()
+        self.config = StreamConfig()
+        self.callback_period = SimTime(callback_period)
 
         self._message_buffer = Queue()
 
     def begin_series(self, settings: EigerSettings, series_id: int) -> None:
-        header_detail = self.stream_config.header_detail
+        header_detail = self.config.header_detail
         header = AcquisitionSeriesHeader(
             header_detail=header_detail,
             series=series_id,

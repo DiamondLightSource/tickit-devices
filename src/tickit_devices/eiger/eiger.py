@@ -42,19 +42,22 @@ class EigerDevice(Device):
 
     def __init__(
         self,
+        settings: Optional[EigerSettings] = None,
+        status: Optional[EigerStatus] = None,
+        stream: Optional[EigerStream] = None,
     ) -> None:
         """An Eiger device constructor.
 
         An Eiger device constructor which configures the default settings and various
         states of the device.
         """
-        self.settings = EigerSettings()
-        self.status = EigerStatus()
+        self.settings = settings or EigerSettings()
+        self.status = status or EigerStatus()
 
         # self.stream_status = StreamStatus()
         # self.stream_config = StreamConfig()
         # self.stream_callback_period = SimTime(int(1e9))
-        self.stream = EigerStream(callback_period=SimTime(int(1e9)))
+        self.stream = stream or EigerStream(callback_period=SimTime(int(1e9)))
 
         self.filewriter_status: FileWriterStatus = FileWriterStatus()
         self.filewriter_config: FileWriterConfig = FileWriterConfig()
