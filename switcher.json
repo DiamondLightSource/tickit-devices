@@ -22,5 +22,9 @@
   {
     "version": "typing_compat_removal",
     "url": "https://dls-controls.github.io/tickit-devices/typing_compat_removal/"
+  },
+  {
+    "version": "zebra-device",
+    "url": "https://dls-controls.github.io/tickit-devices/zebra-device/"
   }
 ]
