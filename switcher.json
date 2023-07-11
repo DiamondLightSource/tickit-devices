@@ -16,6 +16,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/eiger-exts-logic/"
   },
   {
+    "version": "restore_main",
+    "url": "https://dls-controls.github.io/tickit-devices/restore_main/"
+  },
+  {
     "version": "typed_dict_type",
     "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   },
