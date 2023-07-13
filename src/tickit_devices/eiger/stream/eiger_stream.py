@@ -1,4 +1,3 @@
-import json
 import logging
 from queue import Queue
 from typing import Any, Iterable, Mapping, TypedDict, Union
@@ -6,7 +5,6 @@ from typing import Any, Iterable, Mapping, TypedDict, Union
 from pydantic.v1 import BaseModel
 from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
-from zmq import Frame
 
 from tickit_devices.eiger.data.dummy_image import Image
 from tickit_devices.eiger.data.schema import (
