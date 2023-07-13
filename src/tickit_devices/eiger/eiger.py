@@ -42,7 +42,7 @@ class EigerDevice(Device):
     _data_queue: Queue
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {"trigger": bool})
+    Inputs: TypedDict = TypedDict("Inputs", {"trigger": bool}, total=False)
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
 

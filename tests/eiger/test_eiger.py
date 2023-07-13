@@ -2,7 +2,7 @@ import itertools
 from unittest.mock import ANY
 
 import pytest
-from mock import MagicMock
+from mock import MagicMock, Mock
 from tickit.core.typedefs import SimTime
 
 from tickit_devices.eiger.eiger import EigerDevice
@@ -109,7 +109,7 @@ async def test_abort(eiger: EigerDevice):
 
 
 @pytest.mark.asyncio
-async def test_armed_eiger_starts_series(eiger: EigerDevice, mock_stream: EigerStream):
+async def test_armed_eiger_starts_series(eiger: EigerDevice, mock_stream: Mock):
     await eiger.initialize()
     eiger.settings.trigger_mode = "ints"
     await eiger.arm()
@@ -118,7 +118,7 @@ async def test_armed_eiger_starts_series(eiger: EigerDevice, mock_stream: EigerS
 
 @pytest.mark.asyncio
 async def test_disarmed_eiger_starts_and_ends_series(
-    eiger: EigerDevice, mock_stream: EigerStream
+    eiger: EigerDevice, mock_stream: Mock
 ):
     await eiger.initialize()
     eiger.settings.trigger_mode = "ints"
@@ -130,7 +130,7 @@ async def test_disarmed_eiger_starts_and_ends_series(
 
 @pytest.mark.asyncio
 async def test_cancelled_eiger_starts_and_ends_series(
-    eiger: EigerDevice, mock_stream: EigerStream
+    eiger: EigerDevice, mock_stream: Mock
 ):
     await eiger.initialize()
     eiger.settings.trigger_mode = "ints"
@@ -146,7 +146,7 @@ async def test_cancelled_eiger_starts_and_ends_series(
 )
 async def test_acquire_frames_in_ints_mode(
     eiger: EigerDevice,
-    mock_stream: EigerStream,
+    mock_stream: Mock,
     num_frames: int,
     num_series: int,
 ):
@@ -182,7 +182,7 @@ async def test_acquire_frames_in_ints_mode(
 )
 async def test_acquire_frames_in_exts_mode(
     eiger: EigerDevice,
-    mock_stream: EigerStream,
+    mock_stream: Mock,
     num_frames: int,
     num_series: int,
 ):
@@ -219,7 +219,7 @@ async def test_acquire_frames_in_exts_mode(
 @pytest.mark.parametrize("num_series", [1, 2, 3])
 async def test_abort_mid_acquisition(
     eiger: EigerDevice,
-    mock_stream: EigerStream,
+    mock_stream: Mock,
     num_series: int,
 ):
     for series in range(1, num_series + 1):
