@@ -21,7 +21,7 @@ class Femto(ComponentConfig):
             device=FemtoDevice(
                 initial_gain=self.initial_gain, initial_current=self.initial_current
             ),
-            adapters=[FemtoAdapter(db_file=self.db_file, ioc_name=self.ioc_name)],
+            adapters=[FemtoAdapter(ioc_name=self.ioc_name, db_file=self.db_file)],
         )
 
 

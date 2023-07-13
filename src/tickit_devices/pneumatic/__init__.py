@@ -20,5 +20,5 @@ class Pneumatic(ComponentConfig):
             device=PneumaticDevice(
                 initial_speed=self.initial_speed, initial_state=self.initial_state
             ),
-            adapters=[PneumaticAdapter(db_file=self.db_file, ioc_name=self.ioc_name)],
+            adapters=[PneumaticAdapter(ioc_name=self.ioc_name, db_file=self.db_file)],
         )
