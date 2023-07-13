@@ -16,6 +16,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/eiger-exts-logic/"
   },
   {
+    "version": "epics-adapter-constructor-args",
+    "url": "https://dls-controls.github.io/tickit-devices/epics-adapter-constructor-args/"
+  },
+  {
     "version": "typed_dict_type",
     "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   },
