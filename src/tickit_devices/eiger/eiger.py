@@ -6,7 +6,7 @@ from typing import Any, Iterable, Optional, Sequence
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from typing_extensions import TypedDict
+from typing_extensions import TypedDict, override
 
 from tickit_devices.eiger.data.dummy_image import Image
 from tickit_devices.eiger.eiger_schema import Value, construct_value
@@ -23,7 +23,18 @@ LOGGER = logging.getLogger("Eiger")
 
 
 class EigerDevice(Device):
-    """A device class for the Eiger detector."""
+    """Simulation logic for the Eiger detector.
+
+    The simulation acquires frames based on the commands called. It supports
+    the following state transitions:
+
+    NA -> IDLE
+    IDLE -> READY
+    READY -> IDLE
+    READY -> ACQUIRING
+    ACQUIRING -> READY
+    ACQUIRING -> IDLE
+    """
 
     settings: EigerSettings
     status: EigerStatus
@@ -43,17 +54,16 @@ class EigerDevice(Device):
         status: Optional[EigerStatus] = None,
         stream: Optional[EigerStream] = None,
     ) -> None:
-        """An Eiger device constructor.
+        """Construct a new eiger.
 
-        An Eiger device constructor which configures the default settings and various
-        states of the device.
+        Args:
+            settings: Eiger settings. Defaults to None.
+            status: Starting status. Defaults to None.
+            stream: Data stream handler. Defaults to None.
         """
         self.settings = settings or EigerSettings()
         self.status = status or EigerStatus()
 
-        # self.stream_status = StreamStatus()
-        # self.stream_config = StreamConfig()
-        # self.stream_callback_period = SimTime(int(1e9))
         self.stream = stream or EigerStream(callback_period=SimTime(int(1e9)))
 
         self.filewriter_status: FileWriterStatus = FileWriterStatus()
@@ -73,33 +83,48 @@ class EigerDevice(Device):
 
     @property
     def finished_aquisition(self) -> asyncio.Event:
-        """Property to instanciate an asyncio Event if it hasn't aready been."""
+        """Event that is set when an acqusition series is complete.
+
+        Property ensures the event is created.
+        """
         if self._finished_aquisition is None:
             self._finished_aquisition = asyncio.Event()
 
         return self._finished_aquisition
 
     async def initialize(self) -> None:
-        """Function to initialise the Eiger."""
+        """Initialize the detector.
+
+        Required for all subsequent operations.
+        """
         self._set_state(State.IDLE)
 
     async def arm(self) -> None:
-        """Function to arm the Eiger."""
+        """Arm the detector.
+
+        Required for triggering.
+        """
         self._series_id += 1
         self.stream.begin_series(self.settings, self._series_id)
         self._num_frames_left = self.settings.nimages
         self._set_state(State.READY)
 
     async def disarm(self) -> None:
-        """Function to disarm the Eiger."""
+        """Disarm the detector.
+
+        Intended for use when armed. See state diagram in class docstring.
+        """
         self._set_state(State.IDLE)
         self.stream.end_series(self._series_id)
 
     async def trigger(self) -> None:
-        """Function to trigger the Eiger.
+        """Trigger the detector.
 
-        If the detector is in an external trigger mode, this is disabled as
-        this software command interface only works for internal triggers.
+        If the detector is in INTS mode, it will begin acquiring frames the
+        next time update() is called. If it is in EXTS mode, this call will
+        be ignored and acquisition will start based on the parameter to
+        update().
+        INTE and EXTE mode are currently not supported.
         """
         LOGGER.info("Trigger requested")
         trigger_mode = self.settings.trigger_mode
@@ -113,30 +138,31 @@ class EigerDevice(Device):
             )
 
     async def cancel(self) -> None:
-        """Function to stop the data acquisition.
+        """Cancel acquisition.
 
-        Function to stop the data acquisition, but only after the next
-        image is finished.
+        The detector will stop acquiring frames after the next full frame is taken,
+        it will then return to a READY state as though it has just been armed.
         """
         self._set_state(State.READY)
         self.stream.end_series(self._series_id)
 
     async def abort(self) -> None:
-        """Function to abort the current task on the Eiger."""
+        """Abort acquisition.
+
+        The detector will immediately stop acquiring frames and disarm itself.
+        """
         self._set_state(State.IDLE)
         self.stream.end_series(self._series_id)
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """Update function to update the Eiger.
+        """Update the detector.
+
+        Depending on the detector's current state, will begin, continue or
+        clean up an acquisition series.
 
         Args:
-            time (SimTime): The simulation time in nanoseconds.
-            inputs (Inputs): A TypedDict of the inputs to the Eiger device.
-
-        Returns:
-            DeviceUpdate[Outputs]:
-                The produced update event which contains the value of the device
-                variables.
+            time: The current simulation time (in nanoseconds).
+            inputs: A mapping of device inputs and their values.
         """
         if self._is_in_state(State.ACQUIRE):
             if self._num_frames_left > 0:
@@ -175,11 +201,6 @@ class EigerDevice(Device):
         self.stream.insert_image(image, self._series_id)
         self._num_frames_left -= 1
         LOGGER.debug(f"Frames left: {self._num_frames_left}")
-
-    def consume_data(self) -> Iterable[Sequence[bytes]]:
-        """Function to work through the data queue, yielding anything queued."""
-        while not self._data_queue.empty():
-            yield self._data_queue.get()
 
     def get_state(self) -> Value:
         """Returns the current state of the Eiger.
