@@ -241,4 +241,4 @@ async def test_abort_mid_acquisition(
 
 
 def assert_in_state(eiger: EigerDevice, state: State) -> None:
-    assert state.value == eiger.get_state()["value"]
+    assert state is eiger.get_state()

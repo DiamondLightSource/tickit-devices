@@ -133,7 +133,7 @@ class EigerDevice(Device):
             self._begin_acqusition_mode()
         else:
             LOGGER.info(
-                f"Ignoring trigger, state={self._get_state()},"
+                f"Ignoring trigger, state={self.get_state()},"
                 f"trigger_mode={trigger_mode}"
             )
 
@@ -202,21 +202,17 @@ class EigerDevice(Device):
         self._num_frames_left -= 1
         LOGGER.debug(f"Frames left: {self._num_frames_left}")
 
-    def get_state(self) -> Value:
-        """Returns the current state of the Eiger.
+    def get_state(self) -> State:
+        """Get the eiger's current state
 
         Returns:
-            State: The state of the Eiger.
+            State: The state the detector is in.
+                See state diagram in class docstring.
         """
-        state = construct_value(self.status, "state")
-
-        return state
+        return self.status.state
 
     def _set_state(self, state: State) -> None:
         self.status.state = state
 
     def _is_in_state(self, state: State) -> bool:
-        return self._get_state() is state
-
-    def _get_state(self) -> State:
-        return self.status.state
+        return self.get_state() is state

@@ -61,12 +61,12 @@ class EigerRESTAdapter(HttpAdapter):
 
         response = await request.json()
 
-        if self.device.get_state()["value"] != State.IDLE.value:
+        if self.device.get_state() is not State.IDLE:
             LOGGER.warning("Eiger not initialized or is currently running.")
             return web.json_response(serialize([]))
         elif (
             hasattr(self.device.settings, param)
-            and self.device.get_state()["value"] == State.IDLE.value
+            and self.device.get_state() is State.IDLE
         ):
             attr = response["value"]
 
