@@ -1,15 +1,13 @@
 import asyncio
 import logging
-from dataclasses import fields
 from queue import Queue
-from typing import Any, Iterable, Optional, Sequence
+from typing import Optional
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from typing_extensions import TypedDict, override
+from typing_extensions import TypedDict
 
 from tickit_devices.eiger.data.dummy_image import Image
-from tickit_devices.eiger.eiger_schema import Value, construct_value
 from tickit_devices.eiger.eiger_settings import EigerSettings
 from tickit_devices.eiger.filewriter.filewriter_config import FileWriterConfig
 from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus

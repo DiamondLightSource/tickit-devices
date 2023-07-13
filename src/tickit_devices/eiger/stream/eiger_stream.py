@@ -1,15 +1,10 @@
-import json
 import logging
 from queue import Queue
 from typing import Any, Iterable, Mapping, TypedDict, Union
 
-from aiohttp import web
-from apischema import serialize
-from pydantic.v1 import BaseModel, parse_obj_as
-from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
+from pydantic.v1 import BaseModel
 from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
-from zmq import Frame
 
 from tickit_devices.eiger.data.dummy_image import Image
 from tickit_devices.eiger.data.schema import (
@@ -20,7 +15,6 @@ from tickit_devices.eiger.data.schema import (
     ImageConfigHeader,
     ImageHeader,
 )
-from tickit_devices.eiger.eiger_schema import construct_value
 from tickit_devices.eiger.eiger_settings import EigerSettings
 from tickit_devices.eiger.stream.stream_config import StreamConfig
 from tickit_devices.eiger.stream.stream_status import StreamStatus

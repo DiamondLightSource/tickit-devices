@@ -120,7 +120,6 @@ class Value(Generic[T]):
 
 
 def construct_value(obj, param):  # noqa: D103
-
     value = obj[param]["value"]
     meta = obj[param]["metadata"]
 
