@@ -12,6 +12,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
   {
+    "version": "drop-3.8",
+    "url": "https://dls-controls.github.io/tickit-devices/drop-3.8/"
+  },
+  {
     "version": "eiger-exts-logic",
     "url": "https://dls-controls.github.io/tickit-devices/eiger-exts-logic/"
   },
