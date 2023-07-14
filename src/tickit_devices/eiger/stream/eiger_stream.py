@@ -50,6 +50,13 @@ class EigerStream:
         self._message_buffer = Queue()
 
     def begin_series(self, settings: EigerSettings, series_id: int) -> None:
+        """Send the headers marking the beginning of the acquisition series.
+
+        Args:
+            settings: Current detector configuration, a snapshot may be sent with the
+                headers.
+            series_id: ID for the acquisition series.
+        """
         header_detail = self.config.header_detail
         header = AcquisitionSeriesHeader(
             header_detail=header_detail,
@@ -95,6 +102,12 @@ class EigerStream:
                 self._buffer(countrate_table_data_blob)
 
     def insert_image(self, image: Image, series_id: int) -> None:
+        """Send headers and an data blob for a single image.
+
+        Args:
+            image: The image with associated metadata
+            series_id: ID for the acquisition series.
+        """
         header = ImageHeader(
             frame=image.index,
             hash=image.hash,
@@ -118,10 +131,20 @@ class EigerStream:
         self._buffer(config_header)
 
     def end_series(self, series_id: int) -> None:
+        """Send footer marking the end of an acquisition series.
+
+        Args:
+            series_id: ID of the series to end.
+        """
         footer = AcquisitionSeriesFooter(series=series_id)
         self._buffer(footer)
 
     def consume_data(self) -> Iterable[_Message]:
+        """Consume all headers and data buffered by other methods.
+
+        Returns:
+            Iterable[_Message]: Iterable of headers and data
+        """
         while not self._message_buffer.empty():
             yield self._message_buffer.get()
 
