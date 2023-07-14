@@ -7,20 +7,19 @@ name = "tickit-devices"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
 ]
 description = "Devices for tickit, an event-based device simulation framework"
 dependencies = [
-    "tickit",
+    "tickit<0.2.3",
     "typing_extensions",
     "softioc",
 ] 
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
 dev = [
