@@ -180,6 +180,6 @@ class SynchrotronCurrent(ComponentConfig):
                 SynchrotronCurrentTCPAdapter(
                     TcpServer(self.host, self.port, self.format)
                 ),
-                SynchrotronCurrentEpicsAdapter(self.db_file, self.ioc_name),
+                SynchrotronCurrentEpicsAdapter(self.ioc_name, self.db_file),
             ],
         )
