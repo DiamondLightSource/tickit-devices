@@ -1,8 +1,8 @@
-- tickit.devices.source.Source:
-    name: source
-    inputs: {}
-    value: 42.0
-- tickit_devices.eiger.Eiger:
-    inputs: 
-      flux: source:value
-    name: eiger
+- type: tickit.devices.source.Source
+  name: source
+  inputs: {}
+  value: 42.0
+- type: tickit_devices.eiger.Eiger
+  inputs:
+    flux: source:value
+  name: eiger
