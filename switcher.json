@@ -8,6 +8,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
   },
   {
+    "version": "apischema",
+    "url": "https://dls-controls.github.io/tickit-devices/apischema/"
+  },
+  {
     "version": "debug-configurations",
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
