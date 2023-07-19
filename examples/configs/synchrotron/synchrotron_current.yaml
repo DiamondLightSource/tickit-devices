@@ -5,7 +5,3 @@
   name: sync_current
   inputs: {}
   initial_current: 300
-- type: tickit.devices.sink.Sink
-  name: current_sink
-  inputs:
-    input: sync_current:current

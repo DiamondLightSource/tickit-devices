@@ -13,6 +13,8 @@
 - type: tickit_devices.synchrotron.synchrotron_topup.SynchrotronTopUp
   name: sync_topup
   inputs:
-   current: sync_current:current
+   current:
+     component: sync_current
+     port: current
   port: 25563
   callback_period: 100000000

@@ -5,7 +5,9 @@
 - type: tickit_devices.femto.Femto
   name: femto
   inputs:
-    input: current_device:output
+    input:
+      component: current_device
+      port: output
   initial_gain: 2.5
   initial_current: 0.0
   db_file: src/tickit_devices/femto/record.db

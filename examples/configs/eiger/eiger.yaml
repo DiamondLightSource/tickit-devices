@@ -4,5 +4,7 @@
   value: 42.0
 - type: tickit_devices.eiger.Eiger
   inputs:
-    flux: source:value
+    flux:
+      component: source
+      port: value
   name: eiger
