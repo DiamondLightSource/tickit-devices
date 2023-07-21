@@ -1,13 +1,19 @@
 import logging
+from typing import Any, Dict, List, Union
 
 from aiohttp import web
-from apischema import serialize
+from pydantic import BaseModel
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.adapters.zeromq.push_adapter import ZeroMqPushAdapter
 
 from tickit_devices.eiger.eiger import EigerDevice
-from tickit_devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
+from tickit_devices.eiger.eiger_schema import (
+    AccessMode,
+    SequenceComplete,
+    Value,
+    construct_value,
+)
 from tickit_devices.eiger.eiger_status import State
 
 API_VERSION = "1.8.0"
@@ -45,7 +51,7 @@ class EigerRESTAdapter(HttpAdapter):
                 Value(
                     value="None",
                     value_type="string",
-                    access_mode="None",
+                    access_mode=AccessMode.NONE,
                 )
             )
 
@@ -107,7 +113,7 @@ class EigerRESTAdapter(HttpAdapter):
                 Value(
                     value="None",
                     value_type="string",
-                    access_mode="None",
+                    access_mode=AccessMode.NONE,
                 )
             )
 
@@ -153,7 +159,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.initialize()
 
         LOGGER.debug("Initializing Eiger...")
-        return web.json_response(serialize(SequenceComplete(sequence_id=1)))
+        return web.json_response(serialize(SequenceComplete.number(1)))
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/arm", interrupt=True)
     async def arm_eiger(self, request: web.Request) -> web.Response:
@@ -169,7 +175,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.arm()
 
         LOGGER.debug("Arming Eiger...")
-        return web.json_response(serialize(SequenceComplete(sequence_id=2)))
+        return web.json_response(serialize(SequenceComplete.number(2)))
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm", interrupt=True)
     async def disarm_eiger(self, request: web.Request) -> web.Response:
@@ -185,7 +191,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.disarm()
 
         LOGGER.debug("Disarming Eiger...")
-        return web.json_response(serialize(SequenceComplete(sequence_id=3)))
+        return web.json_response(serialize(SequenceComplete.number(3)))
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=False)
     async def trigger_eiger(self, request: web.Request) -> web.Response:
@@ -204,7 +210,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.raise_interrupt()
         await self.device.finished_aquisition.wait()
 
-        return web.json_response(serialize(SequenceComplete(sequence_id=4)))
+        return web.json_response(serialize(SequenceComplete.number(4)))
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel", interrupt=True)
     async def cancel_eiger(self, request: web.Request) -> web.Response:
@@ -220,7 +226,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.cancel()
 
         LOGGER.debug("Cancelling Eiger...")
-        return web.json_response(serialize(SequenceComplete(sequence_id=5)))
+        return web.json_response(serialize(SequenceComplete.number(5)))
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/abort", interrupt=True)
     async def abort_eiger(self, request: web.Request) -> web.Response:
@@ -236,7 +242,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.abort()
 
         LOGGER.debug("Aborting Eiger...")
-        return web.json_response(serialize(SequenceComplete(sequence_id=6)))
+        return web.json_response(serialize(SequenceComplete.number(6)))
 
     @HttpEndpoint.get(f"/{STREAM_API}" + "/status/{param}")
     async def get_stream_status(self, request: web.Request) -> web.Response:
@@ -437,3 +443,20 @@ class EigerZMQAdapter(ZeroMqPushAdapter):
         """Updates IOC values immediately following a device update."""
         buffered_data = self.device.stream.consume_data()
         self.send_message_sequence_soon([list(buffered_data)])
+
+
+def serialize(
+    obj: Union[str, float, bool, List, Dict, BaseModel]
+) -> Union[str, float, bool, List, Dict]:
+    """Shortcut to serialize pydantic base models to dictionaries.
+
+    Args:
+        obj: Serializable object
+
+    Returns:
+        Union[str, float, bool, List, Dict]: Serialized object
+    """
+    if isinstance(obj, BaseModel):
+        return obj.model_dump()
+    else:
+        return obj

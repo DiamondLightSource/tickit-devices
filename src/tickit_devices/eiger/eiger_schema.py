@@ -1,15 +1,9 @@
 import logging
-from dataclasses import dataclass, field
 from enum import Enum
 from functools import partial
 from typing import Any, Generic, List, Mapping, Optional, TypeVar
 
 from pydantic.v1 import BaseModel, Field
-
-# from apischema import serialized
-# from apischema.fields import with_fields_set
-# from apischema.metadata import skip
-# from apischema.serialization import serialize
 
 T = TypeVar("T")
 
@@ -37,6 +31,7 @@ class AccessMode(Enum):
     READ_ONLY: str = "r"
     WRITE_ONLY: str = "w"
     READ_WRITE: str = "rw"
+    NONE: str = "None"
 
 
 class ValueType(Enum):
@@ -145,6 +140,21 @@ class SequenceComplete(BaseModel):
     """Schema for confirmation returned by operations that do not return values."""
 
     sequence_id: int = Field(default=1, alias="sequence id")
+
+    @classmethod
+    def number(cls, number: int) -> "SequenceComplete":
+        """Create a new completion document with the given ID.
+
+        This function exists as a workaround for mypy ignoring aliases.
+        See https://github.com/pydantic/pydantic/discussions/2889
+
+        Args:
+            number: The sequence ID
+
+        Returns:
+            SequenceComplete: Document describing a completed sequence of operations
+        """
+        return SequenceComplete(sequence_id=number)  # type: ignore
 
     class Config:
         allow_population_by_field_name = True
