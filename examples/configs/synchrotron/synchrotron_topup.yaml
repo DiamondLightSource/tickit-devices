@@ -7,4 +7,4 @@
   port: 25563
   initial_countdown: 30
   initial_end_countdown: 40
-  callback_period: 1e9
+  callback_period: 1000000000
