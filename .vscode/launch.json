@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name":"Device Simulation",
+            "type":"python",
+            "request":"launch",
+            "module":"tickit",
+            "justMyCode":false,
+            "console": "integratedTerminal",
+            "args": ["all", "${input:deviceConfig}"]
+        },
+        {
             "name": "Debug Unit Test",
             "type": "python",
             "request": "launch",
@@ -21,5 +30,22 @@
                 "PYTEST_ADDOPTS": "--no-cov"
             },
         }
-    ]
+    ],
+    // Requires the following extension:
+    // Name: Command Variable
+    // Id: rioj7.command-variable
+    // Description: Calculate command variables for launch.json and tasks.json
+    // Version: 1.54.1
+    // Publisher: rioj7
+    // VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=rioj7.command-variable
+    "inputs": [
+        {
+          "id": "deviceConfig",
+          "type": "command",
+          "command": "extension.commandvariable.file.pickFile",
+          "args": {
+            "include": "{examples,s03_configs}/**/*.{yaml,yml}",
+          }
+        }
+      ]
 }
