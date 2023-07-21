@@ -28,6 +28,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/epics-adapter-constructor-args/"
   },
   {
+    "version": "httpenpoints",
+    "url": "https://dls-controls.github.io/tickit-devices/httpenpoints/"
+  },
+  {
     "version": "typed_dict_type",
     "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   },
