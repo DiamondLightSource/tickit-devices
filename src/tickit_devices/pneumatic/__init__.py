@@ -1,12 +1,11 @@
-from dataclasses import dataclass
-
+import pydantic.v1.dataclasses
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
 from .pneumatic import PneumaticAdapter, PneumaticDevice
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class Pneumatic(ComponentConfig):
     """Pneumatic simulation with EPICS IOC adapter."""
 

@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-
+import pydantic.v1.dataclasses
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
@@ -7,7 +6,7 @@ from .current import CurrentDevice
 from .femto import FemtoAdapter, FemtoDevice
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class Femto(ComponentConfig):
     """Femto simulation with EPICS IOC."""
 
@@ -26,7 +25,7 @@ class Femto(ComponentConfig):
         )
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class Current(ComponentConfig):
     """Simulated current source."""
 
