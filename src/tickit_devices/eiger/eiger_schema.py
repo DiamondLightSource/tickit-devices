@@ -5,6 +5,8 @@ from typing import Any, Generic, List, Mapping, Optional, TypeVar
 
 from pydantic.v1 import BaseModel, Field
 
+from tickit_devices.utils import serialize
+
 T = TypeVar("T")
 
 LOGGER = logging.getLogger(__name__)
@@ -25,7 +27,7 @@ def field_config(**kwargs) -> Mapping[str, Any]:
     return dict(**kwargs)
 
 
-class AccessMode(Enum):
+class AccessMode(str, Enum):
     """Possible access modes for field metadata."""
 
     READ_ONLY: str = "r"
@@ -34,7 +36,7 @@ class AccessMode(Enum):
     NONE: str = "None"
 
 
-class ValueType(Enum):
+class ValueType(str, Enum):
     """Possible value types for field metadata."""
 
     FLOAT: str = "float"
@@ -119,19 +121,23 @@ def construct_value(obj, param):  # noqa: D103
     meta = obj[param]["metadata"]
 
     if "allowed_values" in meta:
-        data = Value(
-            value=value,
-            value_type=meta["value_type"].value,
-            access_mode=meta["access_mode"].value,
-            allowed_values=meta["allowed_values"],
-        ).dict()
+        data = serialize(
+            Value(
+                value=value,
+                value_type=meta["value_type"].value,
+                access_mode=meta["access_mode"].value,
+                allowed_values=meta["allowed_values"],
+            )
+        )
 
     else:
-        data = Value(
-            value=value,
-            value_type=meta["value_type"].value,
-            access_mode=meta["access_mode"].value,
-        ).dict()
+        data = serialize(
+            Value(
+                value=value,
+                value_type=meta["value_type"].value,
+                access_mode=meta["access_mode"].value,
+            )
+        )
 
     return data
 
@@ -158,3 +164,4 @@ class SequenceComplete(BaseModel):
 
     class Config:
         allow_population_by_field_name = True
+        fields = {"sequence_id": "sequence id"}

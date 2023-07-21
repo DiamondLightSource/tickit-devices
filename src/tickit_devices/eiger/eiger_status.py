@@ -6,7 +6,7 @@ from typing import Any, List
 from .eiger_schema import ro_str_list, rw_datetime, rw_float, rw_state
 
 
-class State(Enum):
+class State(str, Enum):
     """Possible states of the Eiger detector."""
 
     NA = "na"

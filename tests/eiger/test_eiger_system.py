@@ -47,7 +47,7 @@ async def test_eiger_system(tickit_task):
                 DETECTOR_URL + f"command/{key}",
                 timeout=REQUEST_TIMEOUT,
             ) as response:
-                assert value == (await response.json())
+                assert value == (await response.json()), key
 
         # Check status
         await get_status(status="doesnt_exist", expected="None")
