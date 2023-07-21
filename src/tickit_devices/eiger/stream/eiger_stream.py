@@ -21,8 +21,6 @@ from tickit_devices.eiger.stream.stream_status import StreamStatus
 
 LOGGER = logging.getLogger(__name__)
 
-# _Sendable = Union[bytes, Frame, memoryview]
-# _Message = Union[_Sendable, str, Mapping[str, Any], BaseModel]
 
 _Message = Union[BaseModel, Mapping[str, Any], bytes]
 
