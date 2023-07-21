@@ -1,13 +1,9 @@
 import logging
-from dataclasses import dataclass, field
 from enum import Enum
 from functools import partial
 from typing import Any, Generic, List, Mapping, Optional, TypeVar
 
-from apischema import serialized
-from apischema.fields import with_fields_set
-from apischema.metadata import skip
-from apischema.serialization import serialize
+from pydantic.v1 import BaseModel, Field
 
 T = TypeVar("T")
 
@@ -105,9 +101,7 @@ ro_str_list: partial = partial(
 )
 
 
-@with_fields_set
-@dataclass
-class Value(Generic[T]):
+class Value(BaseModel, Generic[T]):
     """Schema for a value to be returned by the API. Most fields are optional."""
 
     value: T
@@ -124,34 +118,24 @@ def construct_value(obj, param):  # noqa: D103
     meta = obj[param]["metadata"]
 
     if "allowed_values" in meta:
-        data = serialize(
-            Value(
-                value,
-                meta["value_type"].value,
-                access_mode=meta["access_mode"].value,
-                allowed_values=meta["allowed_values"],
-            )
-        )
+        data = Value(
+            value=value,
+            value_type=meta["value_type"].value,
+            access_mode=meta["access_mode"].value,
+            allowed_values=meta["allowed_values"],
+        ).dict()
 
     else:
-        data = serialize(
-            Value(
-                value,
-                meta["value_type"].value,
-                access_mode=meta["access_mode"].value,
-            )
-        )
+        data = Value(
+            value=value,
+            value_type=meta["value_type"].value,
+            access_mode=meta["access_mode"].value,
+        ).dict()
 
     return data
 
 
-@dataclass
-class SequenceComplete:
+class SequenceComplete(BaseModel):
     """Schema for confirmation returned by operations that do not return values."""
 
-    _sequence_id: int = field(default=1, metadata=skip, init=True, repr=False)
-
-    @serialized("sequence id")  # type: ignore
-    @property
-    def sequence_id(self) -> int:  # noqa: D102
-        return self._sequence_id
+    sequence_id: int = Field(default=1)
