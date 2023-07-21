@@ -1,8 +1,6 @@
 import logging
-from typing import Any, Dict, List, Union
 
 from aiohttp import web
-from pydantic.v1 import BaseModel
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.adapters.zeromq.push_adapter import ZeroMqPushAdapter
