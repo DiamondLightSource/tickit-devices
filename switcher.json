@@ -12,10 +12,6 @@
     "url": "https://dls-controls.github.io/tickit-devices/DiamondJoseph-patch-1/"
   },
   {
-    "version": "apischema",
-    "url": "https://dls-controls.github.io/tickit-devices/apischema/"
-  },
-  {
     "version": "debug-configurations",
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
