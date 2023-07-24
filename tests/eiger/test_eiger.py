@@ -24,6 +24,10 @@ def test_starting_state_is_na(eiger: EigerDevice):
     assert_in_state(eiger, State.NA)
 
 
+def test_starting_state_is_na(eiger: EigerDevice):
+    assert_in_state(eiger, State.NA)
+
+
 @pytest.mark.asyncio
 async def test_initialize(eiger: EigerDevice):
     await eiger.initialize()
@@ -114,6 +118,9 @@ async def test_armed_eiger_starts_series(eiger: EigerDevice, mock_stream: Mock):
     eiger.settings.trigger_mode = "ints"
     await eiger.arm()
     mock_stream.begin_series.assert_called_once_with(eiger.settings, 1)
+
+    eiger.update(SimTime(0.0), {})
+    eiger.update(SimTime(0.0), {})
 
 
 @pytest.mark.asyncio

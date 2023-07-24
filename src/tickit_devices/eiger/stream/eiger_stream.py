@@ -24,6 +24,9 @@ LOGGER = logging.getLogger(__name__)
 
 _Message = Union[BaseModel, Mapping[str, Any], bytes]
 
+_Sendable = Union[bytes, Frame, memoryview]
+_Message = Union[_Sendable, str, Mapping[str, Any], BaseModel]
+
 
 class EigerStream:
     """Simulation of an Eiger stream."""
@@ -33,6 +36,8 @@ class EigerStream:
     callback_period: SimTime
 
     _message_buffer: Queue[_Message]
+
+    _message_buffer: Queue[_Sendable]
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})

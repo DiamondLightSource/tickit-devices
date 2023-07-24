@@ -1,5 +1,8 @@
+from datetime import datetime
+
 import aiohttp
 import pytest
+from pydantic.v1 import parse_obj_as
 
 DETECTOR_URL = "http://localhost:8081/detector/api/1.8.0/"
 FILE_WRITER_URL = "http://localhost:8081/filewriter/api/1.8.0/"
@@ -47,7 +50,7 @@ async def test_eiger_system(tickit_task):
                 DETECTOR_URL + f"command/{key}",
                 timeout=REQUEST_TIMEOUT,
             ) as response:
-                assert value == (await response.json())
+                assert value == (await response.json()), key
 
         # Check status
         await get_status(status="doesnt_exist", expected="None")
@@ -55,6 +58,14 @@ async def test_eiger_system(tickit_task):
         await get_status(status="board_000/doesnt_exist", expected="None")
         await get_status(status="builder/dcu_buffer_free", expected=0.5)
         await get_status(status="builder/doesnt_exist", expected="None")
+        async with session.get(
+            DETECTOR_URL + "status/time",
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert response.status == 200
+            value = (await response.json())["value"]
+            eiger_time = parse_obj_as(datetime, value)
+            assert isinstance(eiger_time, datetime)
 
         # Test Eiger in IDLE state
         await get_status(status="state", expected="idle")
@@ -89,6 +100,24 @@ async def test_eiger_system(tickit_task):
             assert (await response.json()) == ["element"]
 
         async with session.get(
+            DETECTOR_URL + "config/frame_time",
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert response.status == 200
+            data = await response.json()
+            assert data["value"] == 0.12
+            assert data["access_mode"] == "rw"
+
+        async with session.put(
+            DETECTOR_URL + "config/frame_time",
+            headers=headers,
+            json={"value": 0.1},
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert response.status == 200
+            assert (await response.json()) == ["frame_time"]
+
+        async with session.get(
             DETECTOR_URL + "config/photon_energy",
             timeout=REQUEST_TIMEOUT,
         ) as response:
@@ -115,6 +144,24 @@ async def test_eiger_system(tickit_task):
             timeout=REQUEST_TIMEOUT,
         ) as response:
             assert [] == (await response.json())
+
+        async with session.get(
+            DETECTOR_URL + "config/trigger_start_delay",
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert response.status == 200
+            data = await response.json()
+            assert data["value"] == 0.0
+            assert data["access_mode"] == "rw"
+
+        async with session.put(
+            DETECTOR_URL + "config/trigger_start_delay",
+            headers=headers,
+            json={"value": 0.1},
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert response.status == 200
+            assert (await response.json()) == ["trigger_start_delay"]
 
         # Test filewriter, monitor and stream endpoints
         async with session.get(
