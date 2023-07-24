@@ -2,10 +2,7 @@ import logging
 from typing import Any, Dict, List, Union
 
 from aiohttp import web
-<<<<<<< HEAD
 from pydantic.v1 import BaseModel
-=======
->>>>>>> e21fdaa (Update eiger_adapters.py)
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.adapters.zeromq.push_adapter import ZeroMqPushAdapter
@@ -51,13 +48,9 @@ class EigerRESTAdapter(HttpAdapter):
             data = construct_value(self.device.settings, param)
 
         else:
-<<<<<<< HEAD
             data = serialize(
                 Value(value="None", value_type="string", access_mode=AccessMode.NONE)
             )
-=======
-            data = Value(value="None", value_type="string", access_mode="None")
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
         return web.json_response(data.dict())
 
@@ -113,13 +106,9 @@ class EigerRESTAdapter(HttpAdapter):
             data = construct_value(self.device.status, param)
 
         else:
-<<<<<<< HEAD
             data = serialize(
                 Value(value="None", value_type="string", access_mode=AccessMode.NONE)
             )
-=======
-            data = Value(value="None", value_type="string", access_mode="None")
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
         return web.json_response(data.dict())
 
@@ -163,11 +152,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.initialize()
 
         LOGGER.debug("Initializing Eiger...")
-<<<<<<< HEAD
         return web.json_response(serialize(SequenceComplete.number(1)))
-=======
-        return web.json_response(SequenceComplete(sequence_id=1).dict())
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/arm", interrupt=True)
     async def arm_eiger(self, request: web.Request) -> web.Response:
@@ -183,11 +168,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.arm()
 
         LOGGER.debug("Arming Eiger...")
-<<<<<<< HEAD
         return web.json_response(serialize(SequenceComplete.number(2)))
-=======
-        return web.json_response(SequenceComplete(sequence_id=2).dict())
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm", interrupt=True)
     async def disarm_eiger(self, request: web.Request) -> web.Response:
@@ -203,11 +184,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.disarm()
 
         LOGGER.debug("Disarming Eiger...")
-<<<<<<< HEAD
         return web.json_response(serialize(SequenceComplete.number(3)))
-=======
-        return web.json_response(SequenceComplete(sequence_id=3).dict())
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=False)
     async def trigger_eiger(self, request: web.Request) -> web.Response:
@@ -226,11 +203,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.raise_interrupt()
         await self.device.finished_aquisition.wait()
 
-<<<<<<< HEAD
         return web.json_response(serialize(SequenceComplete.number(4)))
-=======
-        return web.json_response(SequenceComplete(sequence_id=4).dict())
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel", interrupt=True)
     async def cancel_eiger(self, request: web.Request) -> web.Response:
@@ -246,11 +219,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.cancel()
 
         LOGGER.debug("Cancelling Eiger...")
-<<<<<<< HEAD
         return web.json_response(serialize(SequenceComplete.number(5)))
-=======
-        return web.json_response(SequenceComplete(sequence_id=5).dict())
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
     @HttpEndpoint.put(f"/{DETECTOR_API}" + "/command/abort", interrupt=True)
     async def abort_eiger(self, request: web.Request) -> web.Response:
@@ -266,11 +235,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.abort()
 
         LOGGER.debug("Aborting Eiger...")
-<<<<<<< HEAD
         return web.json_response(serialize(SequenceComplete.number(6)))
-=======
-        return web.json_response(SequenceComplete(sequence_id=6).dict())
->>>>>>> e21fdaa (Update eiger_adapters.py)
 
     @HttpEndpoint.get(f"/{STREAM_API}" + "/status/{param}")
     async def get_stream_status(self, request: web.Request) -> web.Response:
