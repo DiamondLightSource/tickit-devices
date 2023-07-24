@@ -116,27 +116,23 @@ class Value(BaseModel, Generic[T]):
     allowed_values: Optional[List[str]] = None
 
 
-def construct_value(obj, param):  # noqa: D103
+def construct_value(obj, param) -> Value:  # noqa: D103
     value = obj[param]["value"]
     meta = obj[param]["metadata"]
 
     if "allowed_values" in meta:
-        data = serialize(
-            Value(
-                value=value,
-                value_type=meta["value_type"].value,
-                access_mode=meta["access_mode"].value,
-                allowed_values=meta["allowed_values"],
-            )
+        data = Value(
+            value=value,
+            value_type=meta["value_type"].value,
+            access_mode=meta["access_mode"].value,
+            allowed_values=meta["allowed_values"],
         )
 
     else:
-        data = serialize(
-            Value(
-                value=value,
-                value_type=meta["value_type"].value,
-                access_mode=meta["access_mode"].value,
-            )
+        data = Value(
+            value=value,
+            value_type=meta["value_type"].value,
+            access_mode=meta["access_mode"].value,
         )
 
     return data
