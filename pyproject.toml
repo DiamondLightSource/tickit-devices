@@ -15,7 +15,8 @@ dependencies = [
     "tickit",
     "typing_extensions",
     "softioc",
-    "pydantic>1"
+    "pydantic>1",
+    "apischema"
 ] 
 dynamic = ["version"]
 license.file = "LICENSE"
