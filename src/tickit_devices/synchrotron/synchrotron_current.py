@@ -1,7 +1,7 @@
 import pathlib
-from dataclasses import dataclass
 from typing import Optional, TypedDict
 
+import pydantic.v1.dataclasses
 from softioc import builder
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.epicsadapter import EpicsAdapter
@@ -157,7 +157,7 @@ class SynchrotronCurrentEpicsAdapter(EpicsAdapter):
         self.link_input_on_interrupt(builder.aIn("SIGNAL"), self.device.get_current)
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class SynchrotronCurrent(ComponentConfig):
     """Synchrotron current component."""
 

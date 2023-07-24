@@ -1,11 +1,7 @@
 # This is the individual part of the synchrotron - useful for tests but not much else
 # For running the full synchrotron use examples/configs/synchrotron.yaml
 
-- tickit_devices.synchrotron.synchrotron_current.SynchrotronCurrent:
-    name: sync_current
-    inputs: {}
-    initial_current: 300
-- tickit.devices.sink.Sink:
-    name: current_sink
-    inputs:
-      input: sync_current:current
+- type: tickit_devices.synchrotron.synchrotron_current.SynchrotronCurrent
+  name: sync_current
+  inputs: {}
+  initial_current: 300

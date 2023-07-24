@@ -1,12 +1,11 @@
-from dataclasses import dataclass
-
+import pydantic.v1.dataclasses
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
 from .cryostream import CryostreamAdapter, CryostreamDevice
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class Cryostream(ComponentConfig):
     """Cryostream simulation with TCP server."""
 

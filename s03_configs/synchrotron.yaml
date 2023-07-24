@@ -1,30 +1,20 @@
-- tickit_devices.synchrotron.synchrotron_current.SynchrotronCurrent:
-    name: sync_current
-    inputs: {}
-    callback_period: 100000000
-    initial_current: 300
-    port: 25565
-- tickit.devices.sink.Sink:
-    name: current_sink
-    inputs:
-      input: sync_current:current
+- type: tickit_devices.synchrotron.synchrotron_current.SynchrotronCurrent
+  name: sync_current
+  inputs: {}
+  callback_period: 100000000
+  initial_current: 300
+  port: 25565
 
-- tickit_devices.synchrotron.synchrotron_machine.SynchrotronMachineStatus:
-    name: sync_machine
-    inputs: {}
-    port: 25564
-- tickit.devices.sink.Sink:
-    name: machine_sink
-    inputs:
-      input: sync_machine:mode
+- type: tickit_devices.synchrotron.synchrotron_machine.SynchrotronMachineStatus
+  name: sync_machine
+  inputs: {}
+  port: 25564
 
-- tickit_devices.synchrotron.synchrotron_topup.SynchrotronTopUp:
-    name: sync_topup
-    inputs:
-     current: sync_current:current
-    port: 25563
-    callback_period: 100000000
-- tickit.devices.sink.Sink:
-    name: topup_sink
-    inputs:
-      input: sync_topup:countdown
+- type: tickit_devices.synchrotron.synchrotron_topup.SynchrotronTopUp
+  name: sync_topup
+  inputs:
+   current:
+     component: sync_current
+     port: current
+  port: 25563
+  callback_period: 100000000

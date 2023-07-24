@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-
+import pydantic.v1.dataclasses
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
@@ -7,7 +6,7 @@ from tickit_devices.eiger.eiger import EigerDevice
 from tickit_devices.eiger.eiger_adapters import EigerRESTAdapter, EigerZMQAdapter
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class Eiger(ComponentConfig):
     """Eiger simulation with HTTP adapter."""
 

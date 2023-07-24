@@ -1,7 +1,7 @@
 import pathlib
-from dataclasses import dataclass
 from typing import TypedDict
 
+import pydantic.v1.dataclasses
 from softioc import builder
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.epicsadapter import EpicsAdapter
@@ -206,7 +206,7 @@ class SynchrotronTopUpEpicsAdapter(EpicsAdapter):
         )
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class SynchrotronTopUp(ComponentConfig):
     """Synchrotron top up status component."""
 
