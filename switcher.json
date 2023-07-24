@@ -32,6 +32,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
   },
   {
+    "version": "pydantic-eiger2",
+    "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger2/"
+  },
+  {
     "version": "typed_dict_type",
     "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   },
