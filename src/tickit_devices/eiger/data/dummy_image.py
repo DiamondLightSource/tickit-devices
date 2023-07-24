@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 
 @dataclass
@@ -12,9 +11,10 @@ class Image:
     dtype: str
     data: bytes
     encoding: str
+    shape: Tuple[int, int]
 
     @classmethod
-    def create_dummy_image(cls, index: int) -> "Image":
+    def create_dummy_image(cls, index: int, shape: Tuple[int, int]) -> "Image":
         """Returns an Image object wrapping the dummy blob using the metadata provided.
 
         Args:
@@ -27,7 +27,7 @@ class Image:
         hsh = str(hash(data))
         dtype = "uint16"
         encoding = "bs16-lz4<"
-        return Image(index, hsh, dtype, data, encoding)
+        return Image(index, hsh, dtype, data, encoding, shape)
 
 
 _DUMMY_IMAGE_BLOBS: List[bytes] = []
@@ -44,8 +44,7 @@ def dummy_image_blob() -> bytes:
     """
     if not _DUMMY_IMAGE_BLOBS:
         with open(
-            Path(Path(__file__).parent.parent, "resources", "frame_sample"),
-            "rb",
+            "src/tickit_devices/eiger/resources/frame_sample", "rb"
         ) as frame_file:
             _DUMMY_IMAGE_BLOBS.append(frame_file.read())
     return _DUMMY_IMAGE_BLOBS[0]

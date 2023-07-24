@@ -231,6 +231,6 @@ class SynchrotronTopUp(ComponentConfig):
                 SynchrotronTopUpTCPAdapter(
                     TcpServer(self.host, self.port, self.format)
                 ),
-                SynchrotronTopUpEpicsAdapter(self.db_file, self.ioc_name),
+                SynchrotronTopUpEpicsAdapter(self.ioc_name, self.db_file),
             ],
         )

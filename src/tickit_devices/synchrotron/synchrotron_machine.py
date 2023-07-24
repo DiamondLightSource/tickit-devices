@@ -210,6 +210,6 @@ class SynchrotronMachineStatus(ComponentConfig):
                 SynchrotronMachineStatusTCPAdapter(
                     TcpServer(self.host, self.port, self.format)
                 ),
-                SynchrotronMachineStatusEpicsAdapter(self.db_file, self.ioc_name),
+                SynchrotronMachineStatusEpicsAdapter(self.ioc_name, self.db_file),
             ],
         )

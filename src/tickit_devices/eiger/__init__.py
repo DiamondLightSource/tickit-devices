@@ -22,6 +22,6 @@ class Eiger(ComponentConfig):
             device=EigerDevice(),
             adapters=[
                 EigerRESTAdapter(host=self.host, port=self.port),
-                EigerZMQAdapter(zmq_host=self.zmq_host, zmq_port=self.zmq_port),
+                EigerZMQAdapter(host=self.zmq_host, port=self.zmq_port),
             ],
         )

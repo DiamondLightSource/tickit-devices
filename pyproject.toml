@@ -12,9 +12,11 @@ classifiers = [
 ]
 description = "Devices for tickit, an event-based device simulation framework"
 dependencies = [
-    "tickit<0.2.3",
+    "tickit==0.2.3",
     "typing_extensions",
     "softioc",
+    "pydantic>1",
+    "apischema"
 ] 
 dynamic = ["version"]
 license.file = "LICENSE"
