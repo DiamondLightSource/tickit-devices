@@ -32,6 +32,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/httpenpoints/"
   },
   {
+    "version": "pydantic-eiger",
+    "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
+  },
+  {
     "version": "typed_dict_type",
     "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   },
