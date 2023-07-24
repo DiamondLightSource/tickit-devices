@@ -14,11 +14,6 @@ from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus
 from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
 from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
 from tickit_devices.eiger.stream.eiger_stream import EigerStream
-<<<<<<< HEAD
-=======
-from tickit_devices.eiger.stream.stream_config import StreamConfig
-from tickit_devices.eiger.stream.stream_status import StreamStatus
->>>>>>> b9b2e0b (Rationalise stream messages into a schema)
 
 from .eiger_status import EigerStatus, State
 
