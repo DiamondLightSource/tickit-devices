@@ -21,16 +21,12 @@ class SynchrotronTopUpDevice(Device):
     The signal is read via an epics adapter, and set using a tcp adapter.
     """
 
-    #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {"current": float})
-    #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict(
-        "Outputs",
-        {
-            "countdown": float,
-            "end_countdown": float,
-        },
-    )
+    class Inputs(TypedDict):
+        current: float
+
+    class Outputs(TypedDict):
+        countdown: float
+        end_countdown: float
 
     def __init__(
         self,

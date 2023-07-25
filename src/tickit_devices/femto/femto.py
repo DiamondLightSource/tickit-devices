@@ -9,10 +9,11 @@ from tickit.core.typedefs import SimTime
 class FemtoDevice(Device):
     """Electronic signal amplifier."""
 
-    #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {"input": float})
-    #: A typed mapping containing the current output value
-    Outputs: TypedDict = TypedDict("Outputs", {"current": float})
+    class Inputs(TypedDict):
+        input: float
+
+    class Outputs(TypedDict):
+        current: float
 
     def __init__(
         self,

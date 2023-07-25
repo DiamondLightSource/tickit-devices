@@ -19,9 +19,12 @@ class CryostreamDevice(Device, CryostreamBase):
     """A Cryostream device, used for cooling of samples using cold gas."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    class Inputs(TypedDict):
+        ...
+
     #: A typed mapping containing the 'temperature' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"temperature": float})
+    class Outputs(TypedDict):
+        temperature: float
 
     def __init__(self) -> None:
         """A Cryostream constructor sets up initial internal values."""
