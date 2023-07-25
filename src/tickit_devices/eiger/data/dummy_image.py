@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import List, Tuple
+from functools import lru_cache
+from pathlib import Path
+from typing import Tuple
 
 
 @dataclass
@@ -30,21 +32,20 @@ class Image:
         return Image(index, hsh, dtype, data, encoding, shape)
 
 
-_DUMMY_IMAGE_BLOBS: List[bytes] = []
+DUMMY_IMAGE_BLOB_PATH: Path = Path(__file__).parent / "frame_sample"
 
 
+@lru_cache(maxsize=1)
 def dummy_image_blob() -> bytes:
-    """Returns the current dummy data blob.
+    """Load and cache the dummy image blob.
 
-    Return the raw bytes of a compressed image
+    Load the raw bytes of a compressed image
     taken from the stream of a real Eiger detector.
+    This function is cached so there should be few
+    (ideally one) loads per runtime.
 
     Returns:
         A compressed image as a bytes object.
     """
-    if not _DUMMY_IMAGE_BLOBS:
-        with open(
-            "src/tickit_devices/eiger/resources/frame_sample", "rb"
-        ) as frame_file:
-            _DUMMY_IMAGE_BLOBS.append(frame_file.read())
-    return _DUMMY_IMAGE_BLOBS[0]
+    with DUMMY_IMAGE_BLOB_PATH.open("rb") as frame_file:
+        return frame_file.read()

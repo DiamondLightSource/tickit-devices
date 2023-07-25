@@ -58,6 +58,8 @@ GitHub = "https://github.com/dls-controls/tickit-devices"
 email = "abigail.emery@diamond.ac.uk"
 name = "Abigail Emery"
 
+[tool.setuptools.package-data]
+tickit_devices = ["**/frame_sample"]
 
 [tool.setuptools_scm]
 write_to = "src/tickit_devices/_version.py"
