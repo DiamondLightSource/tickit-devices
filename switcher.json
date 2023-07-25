@@ -16,6 +16,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
   {
+    "version": "eiger-data-fix",
+    "url": "https://dls-controls.github.io/tickit-devices/eiger-data-fix/"
+  },
+  {
     "version": "epics-adapter-constructor-args",
     "url": "https://dls-controls.github.io/tickit-devices/epics-adapter-constructor-args/"
   },
