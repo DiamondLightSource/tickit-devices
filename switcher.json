@@ -20,6 +20,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
   {
+    "version": "enum_type_annotations",
+    "url": "https://dls-controls.github.io/tickit-devices/enum_type_annotations/"
+  },
+  {
     "version": "epics-adapter-constructor-args",
     "url": "https://dls-controls.github.io/tickit-devices/epics-adapter-constructor-args/"
   },
