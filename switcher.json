@@ -4,12 +4,12 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
-    "version": "0.2.0",
-    "url": "https://dls-controls.github.io/tickit-devices/0.2.0/"
-  },
-  {
     "version": "0.1.0",
     "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
+  },
+  {
+    "version": "0.2.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.2.0/"
   },
   {
     "version": "DiamondJoseph-patch-1",
@@ -22,10 +22,6 @@
   {
     "version": "enum_type_annotations",
     "url": "https://dls-controls.github.io/tickit-devices/enum_type_annotations/"
-  },
-  {
-    "version": "httpenpoints",
-    "url": "https://dls-controls.github.io/tickit-devices/httpenpoints/"
   },
   {
     "version": "pydantic-eiger",
