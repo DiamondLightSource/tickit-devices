@@ -12,7 +12,7 @@ classifiers = [
 ]
 description = "Devices for tickit, an event-based device simulation framework"
 dependencies = [
-    "tickit>=0.3,<0.4",
+    "tickit==0.3",
     "typing_extensions",
     "softioc",
     "pydantic>1",
