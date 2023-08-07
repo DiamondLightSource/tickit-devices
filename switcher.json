@@ -24,16 +24,16 @@
     "url": "https://dls-controls.github.io/tickit-devices/enum_type_annotations/"
   },
   {
+    "version": "pin-tickit",
+    "url": "https://dls-controls.github.io/tickit-devices/pin-tickit/"
+  },
+  {
     "version": "pydantic-eiger",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
   },
   {
     "version": "pydantic-eiger2",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger2/"
-  },
-  {
-    "version": "typed_dict_type",
-    "url": "https://dls-controls.github.io/tickit-devices/typed_dict_type/"
   },
   {
     "version": "zebra-device",
