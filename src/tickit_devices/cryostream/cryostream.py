@@ -2,12 +2,10 @@ import asyncio
 import struct
 from typing import AsyncIterable, TypedDict
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
+from tickit.adapters.specifications import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.byte_format import ByteFormat
 
 from tickit_devices.cryostream.base import CryostreamBase
 from tickit_devices.cryostream.states import PhaseIds
@@ -57,31 +55,14 @@ class CryostreamDevice(Device, CryostreamBase):
         return DeviceUpdate(self.Outputs(temperature=self.gas_temp), None)
 
 
-class CryostreamAdapter(ComposedAdapter[bytes]):
+class CryostreamAdapter(CommandAdapter):
     """A Cryostream TCP adapter which sends regular status packets and can set modes."""
 
     device: CryostreamDevice
 
-    def __init__(
-        self,
-        host: str = "localhost",
-        port: int = 25565,
-    ) -> None:
-        """A CryostreamAdapter constructor which instantiates a TcpServer with host and
-        port.
-
-        Args:
-            device (Device): The device which this adapter is attached to
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-            host (Optional[str]): The host address of the TcpServer. Defaults to
-                "localhost".
-            port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
-        """
-        super().__init__(
-            TcpServer(format=ByteFormat(b"%b"), host=host, port=port),
-            CommandInterpreter(),
-        )
+    def __init__(self, device: CryostreamDevice) -> None:
+        super().__init__()
+        self.device = device
 
     async def on_connect(self) -> AsyncIterable[bytes]:
         """A method which continiously yields status packets.

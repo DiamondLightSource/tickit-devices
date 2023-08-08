@@ -2,9 +2,9 @@ import logging
 
 from aiohttp import web
 from apischema import serialize
-from tickit.adapters.httpadapter import HttpAdapter
-from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
-from tickit.adapters.zeromq.push_adapter import ZeroMqPushAdapter
+from tickit.adapters.http import HttpAdapter
+from tickit.adapters.specifications import HttpEndpoint
+from tickit.adapters.zmq import ZeroMqPushAdapter
 
 from tickit_devices.eiger.eiger import EigerDevice
 from tickit_devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
@@ -23,6 +23,9 @@ class EigerRESTAdapter(HttpAdapter):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
     device: EigerDevice
+
+    def __init__(self, device: EigerDevice) -> None:
+        self.device = device
 
     @HttpEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def get_config(self, request: web.Request) -> web.Response:
@@ -189,7 +192,7 @@ class EigerRESTAdapter(HttpAdapter):
         LOGGER.debug("Triggering Eiger")
         await self.device.trigger()
 
-        await self.raise_interrupt()
+        await self.interrupt()
         await self.device.finished_aquisition.wait()
 
         return web.json_response(serialize(SequenceComplete(4)))
@@ -421,7 +424,11 @@ class EigerZMQAdapter(ZeroMqPushAdapter):
 
     device: EigerDevice
 
+    def __init__(self, device: EigerDevice) -> None:
+        super().__init__()
+        self.device = device
+
     def after_update(self) -> None:
         """Updates IOC values immediately following a device update."""
         buffered_data = self.device.stream.consume_data()
-        self.send_message_sequence_soon([list(buffered_data)])
+        self.add_message_to_stream([list(buffered_data)])

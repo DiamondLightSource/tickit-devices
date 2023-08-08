@@ -1,7 +1,7 @@
 from typing import TypedDict
 
 from softioc import builder
-from tickit.adapters.epicsadapter import EpicsAdapter
+from tickit.adapters.epics import EpicsAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 
@@ -82,6 +82,10 @@ class PneumaticAdapter(EpicsAdapter):
 
     device: PneumaticDevice
 
+    def __init__(self, device: PneumaticDevice) -> None:
+        super().__init__()
+        self.device = device
+
     async def callback(self, value) -> None:
         """Set the state of the device and await a response.
 
@@ -89,7 +93,7 @@ class PneumaticAdapter(EpicsAdapter):
             value (bool): The value to set the state to.
         """
         self.device.set_state()
-        await self.raise_interrupt()
+        await self.interrupt()
 
     def on_db_load(self):
         """Adds a record of the current state to the mapping of interrupting records."""

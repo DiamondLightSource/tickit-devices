@@ -1,4 +1,6 @@
 import pydantic.v1.dataclasses
+from tickit.adapters.io import HttpIo, ZeroMqPushIo
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
@@ -16,11 +18,25 @@ class Eiger(ComponentConfig):
     zmq_port: int = 9999
 
     def __call__(self) -> Component:  # noqa: D102
+        device = EigerDevice()
+        adapters = [
+            AdapterContainer(
+                EigerRESTAdapter(device),
+                HttpIo(
+                    self.host,
+                    self.port,
+                ),
+            ),
+            AdapterContainer(
+                EigerZMQAdapter(device),
+                ZeroMqPushIo(
+                    self.zmq_host,
+                    self.zmq_port,
+                ),
+            ),
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=EigerDevice(),
-            adapters=[
-                EigerRESTAdapter(host=self.host, port=self.port),
-                EigerZMQAdapter(host=self.zmq_host, port=self.zmq_port),
-            ],
+            device=device,
+            adapters=adapters,
         )

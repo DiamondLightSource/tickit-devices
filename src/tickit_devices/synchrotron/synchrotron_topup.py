@@ -3,11 +3,11 @@ from typing import TypedDict
 
 import pydantic.v1.dataclasses
 from softioc import builder
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.epicsadapter import EpicsAdapter
-from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.adapter import Server
+from tickit.adapters.epics import EpicsAdapter
+from tickit.adapters.io import EpicsIo, TcpIo
+from tickit.adapters.specifications import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -129,25 +129,15 @@ class SynchrotronTopUpDevice(Device):
         return self.end_countdown
 
 
-class SynchrotronTopUpTCPAdapter(ComposedAdapter):
+class SynchrotronTopUpTCPAdapter(CommandAdapter):
     """A TCP adapter to set a SynchrotronTopUpDevice PV values."""
 
     device: SynchrotronTopUpDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
-    def __init__(
-        self,
-        server: Server,
-    ) -> None:
-        """Synchrotron adapter, instantiates TcpServer with configured host and port.
-
-        Args:
-            server (Server): The immutable data container used to configure a
-                server.
-        """
-        super().__init__(
-            server,
-            CommandInterpreter(),
-        )
+    def __init__(self, device: SynchrotronTopUpDevice) -> None:
+        super().__init__()
+        self.device = device
 
     @RegexCommand(r"CD=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_countdown(self, value: float) -> None:
@@ -191,6 +181,10 @@ class SynchrotronTopUpEpicsAdapter(EpicsAdapter):
 
     device: SynchrotronTopUpDevice
 
+    def __init__(self, device: SynchrotronTopUpDevice) -> None:
+        super().__init__()
+        self.device = device
+
     def on_db_load(self) -> None:
         """Link epics records with getters for device."""
         self.link_input_on_interrupt(
@@ -211,22 +205,33 @@ class SynchrotronTopUp(ComponentConfig):
     callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
-    format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/FILL.db")
     ioc_name: str = "SR-CS-FILL-01"
 
     def __call__(self) -> Component:  # noqa: D102
+        device = SynchrotronTopUpDevice(
+            self.initial_countdown,
+            self.initial_end_countdown,
+            callback_period=self.callback_period,
+        )
+        adapters = [
+            AdapterContainer(
+                SynchrotronTopUpTCPAdapter(device),
+                TcpIo(
+                    self.host,
+                    self.port,
+                ),
+            ),
+            AdapterContainer(
+                SynchrotronTopUpEpicsAdapter(device),
+                EpicsIo(
+                    self.ioc_name,
+                    self.db_file,
+                ),
+            ),
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=SynchrotronTopUpDevice(
-                self.initial_countdown,
-                self.initial_end_countdown,
-                callback_period=self.callback_period,
-            ),
-            adapters=[
-                SynchrotronTopUpTCPAdapter(
-                    TcpServer(self.host, self.port, self.format)
-                ),
-                SynchrotronTopUpEpicsAdapter(self.ioc_name, self.db_file),
-            ],
+            device=device,
+            adapters=adapters,
         )

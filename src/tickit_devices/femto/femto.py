@@ -1,7 +1,7 @@
 from typing import TypedDict
 
 from softioc import builder
-from tickit.adapters.epicsadapter import EpicsAdapter
+from tickit.adapters.epics import EpicsAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 
@@ -28,8 +28,9 @@ class FemtoDevice(Device):
             initial_current (Optional[float]): The input signal current. \
                 Defaults to 0.0.
         """
-        self.gain: float = initial_gain
-        self._current: float = initial_current
+        self.gain = initial_gain
+        self._current = initial_current
+        self._output_current = initial_current * initial_gain
 
     def set_gain(self, gain: float) -> None:
         """Sets a new amplified difference between the input and output signals.
@@ -89,6 +90,10 @@ class FemtoAdapter(EpicsAdapter):
 
     device: FemtoDevice
 
+    def __init__(self, device: FemtoDevice) -> None:
+        super().__init__()
+        self.device = device
+
     async def callback(self, value) -> None:
         """Device callback function.
 
@@ -96,7 +101,7 @@ class FemtoAdapter(EpicsAdapter):
             value (float): The value to set the gain to.
         """
         self.device.set_gain(value)
-        await self.raise_interrupt()
+        await self.interrupt()
 
     def on_db_load(self) -> None:
         """Customises records that have been loaded in to suit the simulation."""

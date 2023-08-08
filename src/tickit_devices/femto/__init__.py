@@ -1,4 +1,6 @@
 import pydantic.v1.dataclasses
+from tickit.adapters.io import EpicsIo
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
@@ -16,12 +18,22 @@ class Femto(ComponentConfig):
     ioc_name: str = "FEMTO"
 
     def __call__(self) -> Component:  # noqa: D102
+        device = FemtoDevice(
+            initial_gain=self.initial_gain, initial_current=self.initial_current
+        )
+        adapters = [
+            AdapterContainer(
+                FemtoAdapter(device),
+                EpicsIo(
+                    self.ioc_name,
+                    self.db_file,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=FemtoDevice(
-                initial_gain=self.initial_gain, initial_current=self.initial_current
-            ),
-            adapters=[FemtoAdapter(ioc_name=self.ioc_name, db_file=self.db_file)],
+            device=device,
+            adapters=adapters,
         )
 
 

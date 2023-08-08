@@ -1,4 +1,6 @@
 import pydantic.v1.dataclasses
+from tickit.adapters.io import EpicsIo
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
@@ -15,10 +17,20 @@ class Pneumatic(ComponentConfig):
     ioc_name: str = "PNEUMATIC"
 
     def __call__(self) -> Component:  # noqa: D102
+        device = PneumaticDevice(
+            initial_speed=self.initial_speed, initial_state=self.initial_state
+        )
+        adapters = [
+            AdapterContainer(
+                PneumaticAdapter(device),
+                EpicsIo(
+                    self.ioc_name,
+                    self.db_file,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=PneumaticDevice(
-                initial_speed=self.initial_speed, initial_state=self.initial_state
-            ),
-            adapters=[PneumaticAdapter(ioc_name=self.ioc_name, db_file=self.db_file)],
+            device=device,
+            adapters=adapters,
         )
