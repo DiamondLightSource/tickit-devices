@@ -192,7 +192,7 @@ class EigerRESTAdapter(HttpAdapter):
         LOGGER.debug("Triggering Eiger")
         await self.device.trigger()
 
-        await self.raise_interrupt()
+        await self.interrupt()
         await self.device.finished_aquisition.wait()
 
         return web.json_response(serialize(SequenceComplete(4)))
