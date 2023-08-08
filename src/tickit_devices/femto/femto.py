@@ -28,8 +28,9 @@ class FemtoDevice(Device):
             initial_current (Optional[float]): The input signal current. \
                 Defaults to 0.0.
         """
-        self.gain: float = initial_gain
-        self._current: float = initial_current
+        self.gain = initial_gain
+        self._current = initial_current
+        self._output_current = initial_current * initial_gain
 
     def set_gain(self, gain: float) -> None:
         """Sets a new amplified difference between the input and output signals.
