@@ -7,7 +7,6 @@ import pytest
 import pytest_asyncio
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
-from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
 from tickit.utils.configuration.loading import read_configs
 
@@ -41,9 +40,12 @@ async def tickit_task(request):
     inverse_wiring = InverseWiring.from_component_configs(configs)
     scheduler = MasterScheduler(inverse_wiring, *get_interface("internal"))
     t = asyncio.Task(
-        run_all_forever(
-            [c().run_forever(*get_interface("internal")) for c in configs]
-            + [scheduler.run_forever()]
+        asyncio.wait(
+            [
+                asyncio.create_task(c().run_forever(*get_interface("internal")))
+                for c in configs
+            ]
+            + [asyncio.create_task(scheduler.run_forever())]
         )
     )
     # TODO: would like to await all_servers_running() here
