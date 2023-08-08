@@ -88,6 +88,7 @@ class SynchrotronMachineStatusTCPAdapter(CommandAdapter):
     """A TCP adapter to set a SynchrotronMachineStatusDevice PV values."""
 
     device: SynchrotronMachineStatusDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
     def __init__(self, device: SynchrotronMachineStatusDevice) -> None:
         super().__init__()
@@ -183,7 +184,6 @@ class SynchrotronMachineStatus(ComponentConfig):
     initial_energy: float = 3.0
     host: str = "localhost"
     port: int = 25565
-    format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/MSTAT.db")
     ioc_name: str = "CS-CS-MSTAT-01"
 

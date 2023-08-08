@@ -115,6 +115,7 @@ class SynchrotronCurrentTCPAdapter(CommandAdapter):
     """A TCP adapter to set a SynchrotronCurrentDevice PV values."""
 
     device: SynchrotronCurrentDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
     def __init__(self, device: SynchrotronCurrentDevice) -> None:
         super().__init__()
@@ -161,7 +162,6 @@ class SynchrotronCurrent(ComponentConfig):
     callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
-    format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/DCCT.db")
     ioc_name: str = "SR-DI-DCCT-01"
 

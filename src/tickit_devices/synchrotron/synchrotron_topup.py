@@ -133,6 +133,7 @@ class SynchrotronTopUpTCPAdapter(CommandAdapter):
     """A TCP adapter to set a SynchrotronTopUpDevice PV values."""
 
     device: SynchrotronTopUpDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
     def __init__(self, device: SynchrotronTopUpDevice) -> None:
         super().__init__()
@@ -204,7 +205,6 @@ class SynchrotronTopUp(ComponentConfig):
     callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565
-    format: ByteFormat = ByteFormat(b"%b\r\n")
     db_file: str = str(pathlib.Path(__file__).parent.absolute() / "db_files/FILL.db")
     ioc_name: str = "SR-CS-FILL-01"
 
