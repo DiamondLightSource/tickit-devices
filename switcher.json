@@ -4,6 +4,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
+    "version": "0.3.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.3.0/"
+  },
+  {
     "version": "0.2.0",
     "url": "https://dls-controls.github.io/tickit-devices/0.2.0/"
   },
@@ -30,10 +34,6 @@
   {
     "version": "pydantic-eiger2",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger2/"
-  },
-  {
-    "version": "tickit-0.4.0",
-    "url": "https://dls-controls.github.io/tickit-devices/tickit-0.4.0/"
   },
   {
     "version": "zebra-device",
