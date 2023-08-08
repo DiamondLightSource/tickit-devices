@@ -3,8 +3,8 @@ from typing import Optional, TypedDict
 
 import pydantic.v1.dataclasses
 from softioc import builder
-from tickit.adapters.epicsadapter import EpicsAdapter
-from tickit.adapters.io import TcpIo
+from tickit.adapters.epics import EpicsAdapter
+from tickit.adapters.io import EpicsIo, TcpIo
 from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterContainer
@@ -144,6 +144,10 @@ class SynchrotronCurrentEpicsAdapter(EpicsAdapter):
 
     device: SynchrotronCurrentDevice
 
+    def __init__(self, device: SynchrotronCurrentDevice) -> None:
+        super().__init__()
+        self.device = device
+
     def on_db_load(self) -> None:
         """Link loaded in record with getter for device."""
         self.link_input_on_interrupt(builder.aIn("SIGNAL"), self.device.get_current)
@@ -173,7 +177,14 @@ class SynchrotronCurrent(ComponentConfig):
                     self.host,
                     self.port,
                 ),
-            )
+            ),
+            AdapterContainer(
+                SynchrotronCurrentEpicsAdapter(device),
+                EpicsIo(
+                    self.ioc_name,
+                    self.db_file,
+                ),
+            ),
         ]
         return DeviceSimulation(
             name=self.name,
