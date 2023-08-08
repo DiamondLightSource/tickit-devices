@@ -3,11 +3,11 @@ from typing import Optional, TypedDict
 
 import pydantic.v1.dataclasses
 from softioc import builder
-from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.epicsadapter import EpicsAdapter
-from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.adapter import Server
+from tickit.adapters.io import TcpIo
+from tickit.adapters.specifications import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -111,25 +111,14 @@ class SynchrotronCurrentDevice(Device):
         return self.beam_current
 
 
-class SynchrotronCurrentTCPAdapter(ComposedAdapter):
+class SynchrotronCurrentTCPAdapter(CommandAdapter):
     """A TCP adapter to set a SynchrotronCurrentDevice PV values."""
 
     device: SynchrotronCurrentDevice
 
-    def __init__(
-        self,
-        server: Server,
-    ) -> None:
-        """Instantiates current adapter TcpServer with configured host and port.
-
-        Args:
-            server (Server): The immutable data container used to configure a
-                server.
-        """
-        super().__init__(
-            server,
-            CommandInterpreter(),
-        )
+    def __init__(self, device: SynchrotronCurrentDevice) -> None:
+        super().__init__()
+        self.device = device
 
     @RegexCommand(r"C=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_beam_current(self, value: float) -> None:
@@ -173,16 +162,21 @@ class SynchrotronCurrent(ComponentConfig):
     ioc_name: str = "SR-DI-DCCT-01"
 
     def __call__(self) -> Component:  # noqa: D102
+        device = SynchrotronCurrentDevice(
+            self.initial_current,
+            callback_period=self.callback_period,
+        )
+        adapters = [
+            AdapterContainer(
+                SynchrotronCurrentTCPAdapter(device),
+                TcpIo(
+                    self.host,
+                    self.port,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=SynchrotronCurrentDevice(
-                self.initial_current,
-                callback_period=self.callback_period,
-            ),
-            adapters=[
-                SynchrotronCurrentTCPAdapter(
-                    TcpServer(self.host, self.port, self.format)
-                ),
-                SynchrotronCurrentEpicsAdapter(self.ioc_name, self.db_file),
-            ],
+            device=device,
+            adapters=adapters,
         )
