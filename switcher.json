@@ -40,6 +40,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/zebra/"
   },
   {
+    "version": "zebra-broken",
+    "url": "https://dls-controls.github.io/tickit-devices/zebra-broken/"
+  },
+  {
     "version": "zebra-device",
     "url": "https://dls-controls.github.io/tickit-devices/zebra-device/"
   }
