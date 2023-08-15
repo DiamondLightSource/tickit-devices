@@ -1,2 +1,46 @@
-- type: tickit_devices.zebra.zebra
+- type: tickit.devices.source.Source
+  name: source
+  inputs: { }
+  value: true
+
+
+- type: tickit_devices.zebra.Zebra
   name: zebra
+  params:
+    AND1_ENA: 154
+  inputs:
+    initial_signal:
+      component: external
+      port: input_1
+  muxes: { }
+  components:
+    - type: AndOrBlockConfig
+      name: AND1
+      inputs:
+        INP1:
+          component: external
+          port: input_1
+
+        INP2:
+          component: external
+          port: input_1
+        INP3:
+          component: external
+          port: input_1
+        INP4:
+          component: external
+          port: input_1
+  #    - type: AndOrBlockConfig
+  #      name: AND2
+  #      inputs: { }
+  expose:
+    output_1:
+      component: AND1
+      port: OUT
+
+- type: tickit.devices.sink.Sink
+  name: external_sink
+  inputs:
+    sink_1:
+      component: zebra
+      port: output_1

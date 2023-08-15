@@ -1,19 +1,22 @@
 import asyncio
-import dataclasses
 from typing import Dict
 
 from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
+from tickit.core.typedefs import ComponentID
 
-from tickit_devices.zebra._common import Block, param_types, register_names
+from tickit_devices.zebra._common import param_types, register_names, Block
 
 
-@dataclasses.dataclass
 class ZebraAdapter(BaseSystemSimulationAdapter):
-    _components: Dict[str, Block]
+    _components: Dict[ComponentID, Block]
     params: dict[str, int]
     muxes: dict[str, int]
     """network adapter for zebra system simulation"""
+
+    def __init__(self, params: dict[str, int], muxes: dict[str, int]):
+        self.params = params
+        self.muxes = muxes
 
     @RegexCommand(rb"W([0-9A-F]{2})([0-9A-F]{4})\n", interrupt=True)
     async def set_reg(self, reg: str, value: str) -> bytes:
