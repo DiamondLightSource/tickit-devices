@@ -1,46 +1,68 @@
-- type: tickit.devices.source.Source
-  name: source
-  inputs: { }
-  value: true
+- type: tests.zebra.devices.Counter
+  name: count
+  inputs: {}
 
+- type: tests.zebra.devices.DividingConfig
+  name: fizz
+  denominator: 3
+  inputs:
+    input:
+      component: count
+      port: value
+
+- type: tests.zebra.devices.DividingConfig
+  name: bang
+  denominator: 5
+  inputs:
+    input:
+      component: count
+      port: value
+  value: true
 
 - type: tickit_devices.zebra.Zebra
   name: zebra
   params:
-    AND1_ENA: 154
+    AND1_ENA: 15 # Enable all inputs
+    AND1_INV: 12 # Invert INP3, INP4 as they will be false
   inputs:
-    initial_signal:
-      component: external
-      port: input_1
+    fizz:
+      component: fizz
+      port: output
+    bang:
+      component: bang
+      port: output
   muxes: { }
   components:
-    - type: AndOrBlockConfig
+    - type: tickit_devices.zebra.and_or_block.AndOrBlockConfig
       name: AND1
       inputs:
         INP1:
           component: external
-          port: input_1
-
+          port: fizz
         INP2:
           component: external
-          port: input_1
-        INP3:
-          component: external
-          port: input_1
-        INP4:
-          component: external
-          port: input_1
-  #    - type: AndOrBlockConfig
-  #      name: AND2
-  #      inputs: { }
+          port: bang
   expose:
-    output_1:
+    fizzbang:
       component: AND1
       port: OUT
+
+- type: tests.zebra.devices.FizzBang
+  name: fizzbang
+  inputs:
+    fizz:
+      component: fizz
+      port: output
+    bang:
+      component: bang
+      port: output
+    fizzbang:
+      component: zebra
+      port: fizzbang
 
 - type: tickit.devices.sink.Sink
   name: external_sink
   inputs:
     sink_1:
-      component: zebra
-      port: output_1
+      component: fizzbang
+      port: output

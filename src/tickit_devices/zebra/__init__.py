@@ -10,8 +10,8 @@ from tickit.core.components.system_simulation import (
 )
 from tickit.core.typedefs import ComponentID, PortID, ComponentPort
 
-from tickit_devices.zebra._common import default_filler, mux_types, param_types
-from tickit_devices.zebra.and_or_block import AndOrBlockConfig, BlockConfig
+from tickit_devices.zebra._common import default_filler, mux_types, param_types, BlockConfig
+from tickit_devices.zebra.and_or_block import AndOrBlockConfig
 from tickit_devices.zebra.zebra import ZebraAdapter
 
 
@@ -21,7 +21,7 @@ class Zebra(ComponentConfig):
 
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
-    components: List[BlockConfig]
+    components: List[AndOrBlockConfig]
     expose: Dict[PortID, ComponentPort]
     host: str = "localhost"
     port: int = 7012

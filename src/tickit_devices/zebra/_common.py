@@ -3,7 +3,9 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from tickit.core.components.component import BaseComponent
+import pydantic
+from tickit.core.components.component import BaseComponent, ComponentConfig
+from tickit.core.device import Device
 from tickit.core.typedefs import SimTime
 from typing_extensions import get_type_hints
 
@@ -197,14 +199,23 @@ mux_types = {name: t for name, t in register_types.items() if isinstance(t, Mux)
 
 
 @dataclass
-class Block(BaseComponent, ABC):
-    params: Dict[str, int]
+class Block(Device, ABC):
+    name: str
+    params: Dict[str, int] = None
 
     @property
     def num(self):
         match = re.search(r"\d*$", self.name)
         assert match, f"No trailing number in {self.name}"
         return int(match.group())
+
+
+@pydantic.v1.dataclasses.dataclass
+class BlockConfig(ComponentConfig, ABC):
+
+    def __call__(self) -> Block:
+        """Create a block"""
+        ...
 
 
 def default_filler(typed_dict_type) -> Callable[[], Any]:
