@@ -5,12 +5,10 @@ from pydantic import Field
 from tickit.adapters.io import TcpIo
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import ComponentConfig
-from tickit.core.components.system_simulation import (
-    SystemSimulationComponent,
-)
-from tickit.core.typedefs import ComponentID, PortID, ComponentPort
+from tickit.core.components.system_simulation import SystemSimulationComponent
+from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
-from tickit_devices.zebra._common import default_filler, mux_types, param_types, BlockConfig
+from tickit_devices.zebra._common import default_filler, mux_types, param_types
 from tickit_devices.zebra.and_or_block import AndOrBlockConfig
 from tickit_devices.zebra.zebra import ZebraAdapter
 

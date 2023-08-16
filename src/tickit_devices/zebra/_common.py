@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import pydantic
-from tickit.core.components.component import BaseComponent, ComponentConfig
+from tickit.core.components.component import ComponentConfig
 from tickit.core.device import Device
 from tickit.core.typedefs import SimTime
 from typing_extensions import get_type_hints
@@ -212,7 +212,6 @@ class Block(Device, ABC):
 
 @pydantic.v1.dataclasses.dataclass
 class BlockConfig(ComponentConfig, ABC):
-
     def __call__(self) -> Block:
         """Create a block"""
         ...

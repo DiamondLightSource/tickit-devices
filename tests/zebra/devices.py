@@ -1,15 +1,7 @@
-from typing import TypedDict
-
-import pydantic.v1.dataclasses
-from tickit.core.components.component import ComponentConfig
-from tickit.core.device import Device, DeviceUpdate
-from tickit.core.typedefs import SimTime
-
 import logging
 from typing import TypedDict
 
 import pydantic.v1.dataclasses
-
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -71,7 +63,8 @@ class CounterDevice(Device):
 
 class DividingDevice(Device):
     """
-    A toy device which turns an input number into a boolean of whether it divides into a set number.
+    A toy device which turns an input number into a boolean of whether it
+    divides exactly into a given denominator.
     """
 
     class Inputs(TypedDict):
@@ -94,7 +87,9 @@ class DividingConfig(ComponentConfig):
 
     def __call__(self) -> DeviceSimulation:
         """Create the component from the given config."""
-        return DeviceSimulation(name=self.name, device=DividingDevice(denominator=self.denominator))
+        return DeviceSimulation(
+            name=self.name, device=DividingDevice(denominator=self.denominator)
+        )
 
 
 class FizzBangDevice(Device):
@@ -113,7 +108,6 @@ class FizzBangDevice(Device):
 
 @pydantic.v1.dataclasses.dataclass
 class FizzBang(ComponentConfig):
-
     def __call__(self) -> DeviceSimulation:
         """Create the component from the given config."""
         return DeviceSimulation(name=self.name, device=FizzBangDevice())

@@ -7,7 +7,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.typedefs import ComponentID
 
-from tickit_devices.zebra._common import param_types, register_names, Block
+from tickit_devices.zebra._common import param_types, register_names
 
 
 class ZebraAdapter(BaseSystemSimulationAdapter):

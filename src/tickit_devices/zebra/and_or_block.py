@@ -7,7 +7,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
 
-from tickit_devices.zebra._common import Block, extract_bit, BlockConfig
+from tickit_devices.zebra._common import Block, BlockConfig, extract_bit
 
 
 class AndOrBlock(Block):
@@ -36,6 +36,5 @@ class AndOrBlock(Block):
 
 @pydantic.v1.dataclasses.dataclass
 class AndOrBlockConfig(BlockConfig):
-
     def __call__(self) -> DeviceSimulation:
         return DeviceSimulation(name=self.name, device=AndOrBlock(name=self.name))

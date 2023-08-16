@@ -12,6 +12,7 @@ varying_values_of_true = {all_false, one_true, one_false, all_true}
 
 # # # # # AndOrBlock Tests # # # # #
 
+
 @pytest.mark.parametrize("enabled", varying_values_of_true)
 @pytest.mark.parametrize("inverted", varying_values_of_true)
 def test_and_block_enabled_or_inverted(enabled: int, inverted: int):
@@ -21,7 +22,7 @@ def test_and_block_enabled_or_inverted(enabled: int, inverted: int):
     block = AndOrBlockConfig(name, params)()
     out = block.on_tick(SimTime(0), mux)
     assert out.outputs == {
-        'OUT': enabled + inverted == all_true
+        "OUT": enabled + inverted == all_true
     }  # All devices either enabled or inverted
 
 
@@ -34,7 +35,7 @@ def test_or_block_enabled_or_inverted(enabled: int, inverted: int):
     block = AndOrBlockConfig(name, params)()
     out = block.on_tick(SimTime(0), mux)
     assert out.outputs == {
-        'OUT': enabled != inverted
+        "OUT": enabled != inverted
     }  # At least one device exclusively enabled or inverted
 
 
@@ -45,9 +46,7 @@ def test_all_enabled_and_block_for_inputs(high: int):
     mux = {f"INP{i + 1}": bool(high & (1 << i)) for i in range(4)}
     block = AndOrBlockConfig(name, params)()
     out = block.on_tick(SimTime(0), mux)
-    assert out.outputs == {
-        'OUT': high == all_true
-    }  # All inputs high
+    assert out.outputs == {"OUT": high == all_true}  # All inputs high
 
 
 @pytest.mark.parametrize("high", varying_values_of_true)
@@ -57,6 +56,4 @@ def test_all_enabled_or_block_for_inputs(high: int):
     mux = {f"INP{i + 1}": bool(high & (1 << i)) for i in range(4)}
     block = AndOrBlockConfig(name, params)()
     out = block.on_tick(SimTime(0), mux)
-    assert out.outputs == {
-        'OUT': high != all_false
-    }  # At least one input high
+    assert out.outputs == {"OUT": high != all_false}  # At least one input high
