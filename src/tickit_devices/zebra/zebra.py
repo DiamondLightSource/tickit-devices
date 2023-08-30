@@ -38,9 +38,10 @@ class ZebraAdapter(BaseSystemSimulationAdapter):
         if reg_name in self.params:
             self.params[reg_name] = value_int
 
-            async with asyncio.TaskGroup() as tg:
-                for block_name in param_types[reg_name].blocks:
-                    tg.create_task(self._components[block_name].raise_interrupt())
+            for block_name in param_types[reg_name].blocks:
+                await asyncio.create_task(
+                    self._components[block_name].raise_interrupt()
+                )
 
         else:
             self.muxes[reg_name] = value_int

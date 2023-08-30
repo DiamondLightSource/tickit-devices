@@ -1,5 +1,5 @@
 import re
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
 
@@ -201,7 +201,7 @@ mux_types = {name: t for name, t in register_types.items() if isinstance(t, Mux)
 @dataclass
 class Block(Device, ABC):
     name: str
-    params: Dict[str, int] = None
+    params: Dict[str, int]
 
     @property
     def num(self):
@@ -212,6 +212,7 @@ class Block(Device, ABC):
 
 @pydantic.v1.dataclasses.dataclass
 class BlockConfig(ComponentConfig, ABC):
+    @abstractmethod
     def __call__(self) -> Block:
         """Create a block"""
         ...

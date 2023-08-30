@@ -102,8 +102,11 @@ class FizzBangDevice(Device):
         output: str
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        out = ["fizzbang"] if inputs["fizzbang"] else\
-            [k for k, v in inputs.items() if v] or ["Not Fizzbang"]
+        out = (
+            ["fizzbang"]
+            if inputs["fizzbang"]
+            else [k for k, v in inputs.items() if v] or ["Not Fizzbang"]
+        )
         return DeviceUpdate(self.Outputs(output=out[0]), None)
 
 
