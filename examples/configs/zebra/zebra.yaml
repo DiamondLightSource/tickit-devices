@@ -31,7 +31,6 @@
     bang:
       component: bang
       port: output
-  muxes: { }
   components:
     - type: tickit_devices.zebra.and_or_block.AndOrBlockConfig
       name: AND1

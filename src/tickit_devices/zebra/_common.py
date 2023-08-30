@@ -201,13 +201,21 @@ mux_types = {name: t for name, t in register_types.items() if isinstance(t, Mux)
 @dataclass
 class Block(Device, ABC):
     name: str
-    params: Dict[str, int]
+    params: Optional[Dict[str, int]] = None
 
     @property
     def num(self):
         match = re.search(r"\d*$", self.name)
         assert match, f"No trailing number in {self.name}"
         return int(match.group())
+
+    @abstractmethod
+    def read_mux(self, register: str) -> int:
+        ...
+
+    @abstractmethod
+    def set_mux(self, register: str, value: int) -> int:
+        ...
 
 
 @pydantic.v1.dataclasses.dataclass
