@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tickit-devices &#8212; tickit-devices 0.3.1.dev6+ge7e9a62 documentation</title>
+    <title>tickit-devices &#8212; tickit-devices 0.3.1.dev8+gbb836cc documentation</title>
   
   
   
@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ad2b51dc"></script>
+    <script src="_static/documentation_options.js?v=dee74d83"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=30646c52"></script>
     <script src="_static/design-tabs.js?v=36754332"></script>
@@ -388,7 +388,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="tickit-devices">
-<h1>tickit-devices<a class="headerlink" href="#tickit-devices" title="Permalink to this heading">#</a></h1>
+<h1>tickit-devices<a class="headerlink" href="#tickit-devices" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://github.com/dls-controls/tickit-devices/actions?query=workflow%3A%22Code+CI%22"><img alt="Code CI" src="https://github.com/dls-controls/tickit-devices/workflows/Code%20CI/badge.svg?branch=main" /></a> <a class="reference external" href="https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml"><img alt="Docs CI" src="https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml/badge.svg?branch=main" /></a> <a class="reference external" href="https://codecov.io/gh/dls-controls/tickit-devices"><img alt="Test Coverage" src="https://codecov.io/gh/dls-controls/tickit-devices/branch/main/graph/badge.svg" /></a> <a class="reference external" href="https://pypi.org/project/tickit-devices"><img alt="Latest PyPI version" src="https://img.shields.io/pypi/v/tickit-devices.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="Apache License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
 <p>A collection of devices simulated using the <a class="reference external" href="https://github.com/dls-controls/tickit">tickit</a> framework.</p>
 <table class="table">
@@ -408,21 +408,21 @@ document.write(`
 </tbody>
 </table>
 <section id="safety-note">
-<h2>Safety Note<a class="headerlink" href="#safety-note" title="Permalink to this heading">#</a></h2>
+<h2>Safety Note<a class="headerlink" href="#safety-note" title="Link to this heading">#</a></h2>
 <p>These devices mimic real synchrotron devices and there is the potential for conflict with the real PVs if this is run on the same port as EPICS (5064).
 If using this simulation to test software, set your <code class="docutils literal notranslate"><span class="pre">EPICS_CA_SERVER_PORT</span></code> environment variable to something nonstandard, e.g. 5065 or greater, so that your
 tests are not confused between these and the real PVs. The <a class="reference external" href="https://gitlab.diamond.ac.uk/controls/python3/s03_utils">S03</a> startup scripts manage the setting of
 these ports automatically, so if you are using this as part of S03 you won’t need to change anything. Do not run this simulation on a beamline controls machine!</p>
 </section>
 <section id="adding-devices-to-the-s03-simulation">
-<h2>Adding devices to the S03 simulation<a class="headerlink" href="#adding-devices-to-the-s03-simulation" title="Permalink to this heading">#</a></h2>
+<h2>Adding devices to the S03 simulation<a class="headerlink" href="#adding-devices-to-the-s03-simulation" title="Link to this heading">#</a></h2>
 <p>To add a device to s03, the config file required to run the tickit simulation should be present in <code class="docutils literal notranslate"><span class="pre">s03_configs</span></code>.
 Only changes pushed to main will be built into the <code class="docutils literal notranslate"><span class="pre">tickit-devices</span></code> image that s03 pulls from. Once the
 image has been built with the new device and config, follow the instructions <a class="reference external" href="https://gitlab.diamond.ac.uk/controls/python3/s03_utils">here</a>
 to include it in S03.</p>
 </section>
 <section id="how-the-documentation-is-structured">
-<h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Permalink to this heading">#</a></h2>
+<h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Link to this heading">#</a></h2>
 <p>The documentation is split into 2 sections:</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-2 sd-row-cols-xs-2 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 docutils">
