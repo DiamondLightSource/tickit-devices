@@ -23,12 +23,8 @@ class Zebra(ComponentConfig):
     """
     Simulation of a Zebra device with a TCP server for reading/setting params/muxes
     (see `ZebraAdapter` for what read/set is available); Block wiring is currently
-    invariant while Tickit is running.
-
-    As rewiring while running is not currently supported, only those blocks that are
-    configured in the components configuration are instantiated, and attempting to
-    read or write to params/muxes that are on blocks that are not instantiated will
-    return 0.
+    invariant while Tickit is running, and only those blocks that are configured in
+    components are instantiated.
 
     Configuration that is currently passed down to Block behaviour from `params`:
     - For AND/OR gates N=1,2,3,4, the following (default 0) may be set
@@ -43,7 +39,7 @@ class Zebra(ComponentConfig):
     components: List[AndOrBlockConfig]
     host: str = "localhost"
     port: int = 7012
-    params: dict[str, int] = Field(default_factory=_default)
+    params: dict[str, int] = Field(default_factory=dict)
 
     @validator("params")
     def add_defaults(cls, v: dict[str, int]) -> dict[str, int]:

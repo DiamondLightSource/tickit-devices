@@ -1,23 +1,35 @@
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar, Union
 
 import pydantic
 from tickit.core.components.component import ComponentConfig
-from tickit.core.device import Device
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from typing_extensions import get_type_hints
 
 
 @dataclass
 class Param:
+    """
+    Representation of the internal configuration of the Zebra.
+    Sometimes is shared state between multiple blocks.
+    """
+
     reg: int
     blocks: List[str]
 
 
 @dataclass
 class Mux:
+    """
+    Representation of the internal mapping of the Zebra.
+    e.g If AND1_INP1=Mux(0x08, ...) is set to 0x09, then
+    AND1_INP1 should take the same input as AND1_INP2=Mux(0x09, ...)
+
+    """
+
     reg: int
     block: Optional[str] = None
 
@@ -197,11 +209,33 @@ register_names = {reg.reg: name for name, reg in register_types.items()}
 param_types = {name: t for name, t in register_types.items() if isinstance(t, Param)}
 mux_types = {name: t for name, t in register_types.items() if isinstance(t, Mux)}
 
+Inputs = TypeVar("Inputs")
+Outputs = TypeVar("Outputs")
+
 
 @dataclass
-class Block(Device, ABC):
+class Block(Device, ABC, Generic[Inputs, Outputs]):
     name: str
+    """
+    Blocks take 20ns to propagate a signal across, so we cache the next output value
+    and emit it 20ns later.
+    """
+    previous_outputs: Outputs
+    next_outputs: Optional[Outputs] = None
     params: Optional[Dict[str, int]] = None
+
+    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+        if self.next_outputs:
+            self.previous_outputs = self.next_outputs
+            self.next_outputs = None
+            return DeviceUpdate(self.previous_outputs, call_at=None)
+        else:
+            self.next_outputs = self._get_next_outputs(inputs)
+            return DeviceUpdate(self.previous_outputs, call_at=SimTime(time + 20))
+
+    @abstractmethod
+    def _get_next_outputs(self, inputs: Inputs) -> Outputs:
+        ...
 
     @property
     def num(self):
@@ -209,13 +243,11 @@ class Block(Device, ABC):
         assert match, f"No trailing number in {self.name}"
         return int(match.group())
 
-    @abstractmethod
     def read_mux(self, register: str) -> int:
-        ...
+        return 0
 
-    @abstractmethod
     def set_mux(self, register: str, value: int) -> int:
-        ...
+        return 0
 
 
 @pydantic.v1.dataclasses.dataclass

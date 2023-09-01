@@ -1,5 +1,5 @@
 import asyncio
-from typing import Dict, Optional, Union
+from typing import Dict, Union
 
 from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
@@ -7,13 +7,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.typedefs import ComponentID
 
-from tickit_devices.zebra._common import (
-    Block,
-    Mux,
-    mux_types,
-    param_types,
-    register_names,
-)
+from tickit_devices.zebra._common import param_types, register_names
 
 
 class ZebraAdapter(BaseSystemSimulationAdapter):
@@ -21,21 +15,18 @@ class ZebraAdapter(BaseSystemSimulationAdapter):
     params: dict[str, int]
     """
     Network adapter for a Zebra system simulation, which operates a TCP server for
-    reading and writing params (configuration of the internal blocks) and muxes
-    (state of the internal blocks).
+    reading and setting configuration of blocks and internal wiring mapping.
+    N.B. Reading and setting internal wiring is not currently supported,and all
+    "mux" related queries will return as though successful but not operate.
 
-    Attempting to set or read muxes from blocks that are not instantiated returns 0.
+    See documentation for the Zebra:
+    `https://github.com/dls-controls/zebra/blob/master/documentation/TDI-CTRL-TNO-042-Zebra-Manual.pdf`
 
-    Params that are currently supported:
+    Configuration that is currently supported:
     - For AND/OR gates N=1,2,3,4, the following (default 0) may be set
     to Σ2**M where M is each input (1,2,3,4) for which the behaviour is desired.
     {AND|OR}{N}_INV: Inverts input(s) M
     {AND|OR}{N}_ENA: Enables input(s) M
-
-    Muxes that are currently supported:
-    The following values may also be read from or set on the register of the blocks:
-    - For AND/OR gates N=1,2,3,4, for inputs M=1,2,3,4
-    {AND|OR}{N}_INP{M}
     """
 
     def __init__(self, params: dict[str, int]):
@@ -82,26 +73,11 @@ class ZebraAdapter(BaseSystemSimulationAdapter):
             value_int = self._read_mux(reg_name)
         return b"R%02X%04XOK" % (reg_int, value_int)
 
-    def _read_mux(self, reg_name: str) -> int:
-        block = self._get_mux_block(reg_name)
-        if block:
-            return block.read_mux(reg_name.removeprefix(f"{block.name}_"))
+    def _read_mux(self, reg_name: str) -> int:  # type: ignore
+        # TODO: Support reading Muxes: map internal wiring into Mux values
         return 0
 
-    def _set_mux(self, reg_name: str, value: int) -> int:
-        block = self._get_mux_block(reg_name)
-        if block:
-            return block.set_mux(reg_name.removeprefix(f"{block.name}_"), value)
+    def _set_mux(self, reg_name: str, value: int) -> int:  # type: ignore
+        # TODO: Support setting Muxes: map Mux value into internal wiring
+        # TODO: Support cyclic wirings involving Zebra: AND1_OUT->AND1_INP1 is valid
         return 0
-
-    def _get_mux_block(self, reg_name: str) -> Optional[Block]:
-        register: Mux = mux_types[reg_name]
-        if not register:
-            return None
-        block_name = register.block
-        if not block_name:
-            return None
-        block = self._components.get(ComponentID(block_name))
-        if not isinstance(block, Block):
-            return None
-        return block
