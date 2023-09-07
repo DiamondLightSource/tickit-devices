@@ -4,16 +4,16 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
-    "version": "0.1.0",
-    "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
+    "version": "0.3.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.3.0/"
   },
   {
     "version": "0.2.0",
     "url": "https://dls-controls.github.io/tickit-devices/0.2.0/"
   },
   {
-    "version": "0.3.0",
-    "url": "https://dls-controls.github.io/tickit-devices/0.3.0/"
+    "version": "0.1.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
   },
   {
     "version": "DiamondJoseph-patch-1",
@@ -34,5 +34,17 @@
   {
     "version": "pydantic-eiger2",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger2/"
+  },
+  {
+    "version": "zebra",
+    "url": "https://dls-controls.github.io/tickit-devices/zebra/"
+  },
+  {
+    "version": "zebra-broken",
+    "url": "https://dls-controls.github.io/tickit-devices/zebra-broken/"
+  },
+  {
+    "version": "zebra-device",
+    "url": "https://dls-controls.github.io/tickit-devices/zebra-device/"
   }
 ]
