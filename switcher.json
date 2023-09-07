@@ -34,17 +34,5 @@
   {
     "version": "pydantic-eiger2",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger2/"
-  },
-  {
-    "version": "zebra",
-    "url": "https://dls-controls.github.io/tickit-devices/zebra/"
-  },
-  {
-    "version": "zebra-broken",
-    "url": "https://dls-controls.github.io/tickit-devices/zebra-broken/"
-  },
-  {
-    "version": "zebra-device",
-    "url": "https://dls-controls.github.io/tickit-devices/zebra-device/"
   }
 ]
