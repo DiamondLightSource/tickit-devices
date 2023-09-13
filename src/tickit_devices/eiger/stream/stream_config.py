@@ -1,7 +1,11 @@
 from dataclasses import dataclass, field, fields
-from typing import Any
+from typing import Any, List
 
-from tickit_devices.eiger.eiger_schema import rw_str
+from tickit_devices.eiger.eiger_schema import ro_str_list, rw_state, rw_str
+
+
+def stream_config_keys() -> list[str]:
+    return ["header_appendix", "header_detail", "image_appendix", "mode"]
 
 
 @dataclass
@@ -9,13 +13,15 @@ class StreamConfig:
     """Eiger stream configuration taken from the API spec."""
 
     mode: str = field(
-        default="enabled", metadata=rw_str(allowed_values=["disabled", "enabled"])
+        default="enabled", metadata=rw_state(allowed_values=["disabled", "enabled"])
     )
     header_detail: str = field(
         default="basic", metadata=rw_str(allowed_values=["none", "basic", "all"])
     )
     header_appendix: str = field(default="", metadata=rw_str())
     image_appendix: str = field(default="", metadata=rw_str())
+
+    keys: List[str] = field(default_factory=stream_config_keys, metadata=ro_str_list())
 
     def __getitem__(self, key: str) -> Any:  # noqa: D105
         f = {}
