@@ -33,6 +33,7 @@ dev = [
     "pre-commit",
     "pydata-sphinx-theme>=0.12",
     "pytest-cov",
+    "pytest-mock",
     "pytest-mypy",
     "pytest-flake8",
     "pytest-black",
