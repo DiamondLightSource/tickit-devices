@@ -16,7 +16,8 @@ dependencies = [
     "typing_extensions",
     "softioc",
     "pydantic>1",
-    "apischema"
+    "apischema",
+    "cbor2",
 ]
 dynamic = ["version"]
 license.file = "LICENSE"

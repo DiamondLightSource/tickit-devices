@@ -8,6 +8,8 @@ from tickit.adapters.zmq import ZeroMqPushAdapter
 
 from tickit_devices.eiger.eiger import EigerDevice
 from tickit_devices.eiger.eiger_schema import SequenceComplete, construct_value
+from tickit_devices.eiger.stream.eiger_stream import EigerStream
+from tickit_devices.eiger.stream.eiger_stream_2 import EigerStream2
 
 API_VERSION = "1.8.0"
 DETECTOR_API = f"detector/api/{API_VERSION}"
@@ -319,8 +321,8 @@ class EigerRESTAdapter(HttpAdapter):
         """
         param = request.match_info["param"]
 
-        if hasattr(self.device.stream.status, param):
-            return web.json_response(construct_value(self.device.stream.status, param))
+        if hasattr(self.device.stream_status, param):
+            return web.json_response(construct_value(self.device.stream_status, param))
         else:
             return web.json_response(status=404)
 
@@ -337,8 +339,8 @@ class EigerRESTAdapter(HttpAdapter):
         """
         param = request.match_info["param"]
 
-        if hasattr(self.device.stream.config, param):
-            return web.json_response(construct_value(self.device.stream.config, param))
+        if hasattr(self.device.stream_config, param):
+            return web.json_response(construct_value(self.device.stream_config, param))
         else:
             return web.json_response(status=404)
 
@@ -358,12 +360,12 @@ class EigerRESTAdapter(HttpAdapter):
 
         response = await request.json()
 
-        if hasattr(self.device.stream.config, param):
+        if hasattr(self.device.stream_config, param):
             attr = response["value"]
 
             LOGGER.debug(f"Changing to {attr} for {param}")
 
-            self.device.stream.config[param] = attr
+            self.device.stream_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
             return web.json_response(serialize([param]))
@@ -511,11 +513,11 @@ class EigerZMQAdapter(ZeroMqPushAdapter):
 
     device: EigerDevice
 
-    def __init__(self, device: EigerDevice) -> None:
+    def __init__(self, stream: EigerStream | EigerStream2) -> None:
         super().__init__()
-        self.device = device
+        self.stream = stream
 
     def after_update(self) -> None:
         """Updates IOC values immediately following a device update."""
-        if buffered_data := list(self.device.stream.consume_data()):
+        if buffered_data := list(self.stream.consume_data()):
             self.add_message_to_stream(buffered_data)
