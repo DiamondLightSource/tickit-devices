@@ -24,6 +24,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
   {
+    "version": "eiger-stream2",
+    "url": "https://dls-controls.github.io/tickit-devices/eiger-stream2/"
+  },
+  {
     "version": "enum_type_annotations",
     "url": "https://dls-controls.github.io/tickit-devices/enum_type_annotations/"
   },
