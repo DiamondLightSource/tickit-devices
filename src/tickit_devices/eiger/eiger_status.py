@@ -5,25 +5,33 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
-from .eiger_schema import ro_datetime, ro_float, ro_state, ro_str_list
+from .eiger_schema import ro_float, ro_str, ro_str_list
 
 
 class State(Enum):
     """Possible states of the Eiger detector."""
 
     NA = "na"
-    READY = "ready"
-    INITIALIZE = "initialize"
-    CONFIGURE = "configure"
-    ACQUIRE = "acquire"
     IDLE = "idle"
-    TEST = "test"
+    READY = "ready"
+    ACQUIRE = "acquire"
+    CONFIGURE = "configure"
+    INITIALIZE = "initialize"
     ERROR = "error"
+    # TEST = "test"
 
 
 def status_keys() -> list[str]:
-    # TO DO: The real detector does not have errors
-    return ["humidity", "state", "temperature", "time", "error"]
+    return [
+        # "error",  # Eiger does not report error as a key
+        "humidity",
+        "link_0",
+        "link_1",
+        "series_unique_id",
+        "state",
+        "temperature",
+        "time",
+    ]
 
 
 @dataclass
@@ -32,13 +40,18 @@ class EigerStatus:
 
     state: State = field(
         default=State.NA,
-        metadata=ro_state(allowed_values=[state.value for state in State]),
+        metadata=ro_str(allowed_values=[state.value for state in State]),
     )
-    error: list[str] = field(default_factory=list, metadata=ro_str_list())
+    error: list[str] = field(default_factory=list, metadata=ro_str())
     temperature: float = field(default=24.5, metadata=ro_float())
     humidity: float = field(default=0.2, metadata=ro_float())
-    time: datetime = field(default=datetime.now(), metadata=ro_datetime())
+    time: datetime = field(default=datetime.now(), metadata=ro_str())
     dcu_buffer_free: float = field(default=0.5, metadata=ro_float())
+    link_0: str = field(default="up", metadata=ro_str(allowed_values=["up", "down"]))
+    link_1: str = field(default="up", metadata=ro_str(allowed_values=["up", "down"]))
+    series_unique_id: str = field(
+        default="01HBV3JPF9T4ZDPADX6EMK6XMZ", metadata=ro_str()
+    )
 
     keys: list[str] = field(default_factory=status_keys, metadata=ro_str_list())
 

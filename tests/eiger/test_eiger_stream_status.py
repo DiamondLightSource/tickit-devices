@@ -16,3 +16,6 @@ def test_eiger_stream_status_constructor():
 
 def test_eiger_status_getitem(stream_status):
     assert "ready" == stream_status["state"]["value"]
+
+    with pytest.raises(ValueError):
+        stream_status["doesnt_exist"]

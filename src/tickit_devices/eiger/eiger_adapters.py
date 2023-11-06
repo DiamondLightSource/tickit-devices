@@ -8,7 +8,6 @@ from tickit.adapters.zmq import ZeroMqPushAdapter
 
 from tickit_devices.eiger.eiger import EigerDevice
 from tickit_devices.eiger.eiger_schema import SequenceComplete, construct_value
-from tickit_devices.eiger.eiger_status import State
 
 API_VERSION = "1.8.0"
 DETECTOR_API = f"detector/api/{API_VERSION}"
@@ -61,13 +60,7 @@ class EigerRESTAdapter(HttpAdapter):
 
         response = await request.json()
 
-        if self.device.get_state() is not State.IDLE:
-            LOGGER.warning("Eiger not initialized or is currently running.")
-            return web.json_response(serialize([]))
-        elif (
-            hasattr(self.device.settings, param)
-            and self.device.get_state() is State.IDLE
-        ):
+        if hasattr(self.device.settings, param):
             attr = response["value"]
 
             LOGGER.debug(f"Changing to {str(attr)} for {str(param)}")
@@ -75,6 +68,62 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.settings[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
+            return web.json_response(serialize([param]))
+        else:
+            LOGGER.debug("Eiger has no config variable: " + str(param))
+            return web.json_response(status=404)
+
+    @HttpEndpoint.get(
+        f"/{DETECTOR_API}" + "/config/threshold/{threshold}/{parameter_name}"
+    )
+    async def get_threshold_config(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for requesting threshold configuration from the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the given parameter.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        threshold = request.match_info["threshold"]
+        param = request.match_info["parameter_name"]
+
+        config = self.device.settings.threshold_config
+        if threshold in config and hasattr(config[threshold], param):
+            return web.json_response(construct_value(config[threshold], param))
+        else:
+            return web.json_response(status=404)
+
+    @HttpEndpoint.put(
+        f"/{DETECTOR_API}" + "/config/threshold/{threshold}/{parameter_name}"
+    )
+    async def put_threshold_config(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for requesting threshold configuration from the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the given parameter.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        threshold = request.match_info["threshold"]
+        param = request.match_info["parameter_name"]
+
+        response = await request.json()
+
+        config = self.device.settings.threshold_config
+        if threshold in config and hasattr(config[threshold], param):
+            attr = response["value"]
+
+            LOGGER.debug(
+                f"Changing to {str(attr)} for threshold/{threshold}{str(param)}"
+            )
+
+            config[threshold][param] = attr
+
+            LOGGER.debug(f"Set threshold/{threshold}{str(param)} to {str(attr)}")
             return web.json_response(serialize([param]))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))

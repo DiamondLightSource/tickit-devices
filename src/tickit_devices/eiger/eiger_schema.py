@@ -5,7 +5,7 @@ from enum import Enum
 from functools import partial
 from typing import Any, Generic, TypeVar
 
-from apischema import serialized
+from apischema import order, serialized
 from apischema.fields import with_fields_set
 from apischema.metadata import skip
 from apischema.serialization import serialize
@@ -73,6 +73,9 @@ ro_int: partial = partial(
 rw_uint: partial = partial(
     field_config, value_type=ValueType.UINT, access_mode=AccessMode.READ_WRITE
 )
+ro_uint: partial = partial(
+    field_config, value_type=ValueType.UINT, access_mode=AccessMode.READ_ONLY
+)
 rw_str: partial = partial(
     field_config, value_type=ValueType.STRING, access_mode=AccessMode.READ_WRITE
 )
@@ -112,6 +115,7 @@ ro_str_list: partial = partial(
 )
 
 
+@order(["access_mode", "allowed_values", "max", "min", "unit", "value", "value_type"])
 @with_fields_set
 @dataclass
 class Value(Generic[T]):
