@@ -3,7 +3,7 @@ from typing import Dict, Union
 
 from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.typedefs import ComponentID
 
@@ -11,7 +11,7 @@ from tickit_devices.zebra._common import param_types, register_names
 
 
 class ZebraAdapter(BaseSystemSimulationAdapter):
-    _components: Dict[ComponentID, DeviceSimulation]
+    _components: Dict[ComponentID, DeviceComponent]
     params: dict[str, int]
     """
     Network adapter for a Zebra system simulation, which operates a TCP server for
@@ -34,7 +34,7 @@ class ZebraAdapter(BaseSystemSimulationAdapter):
 
     def setup_adapter(
         self,
-        components: Dict[ComponentID, DeviceSimulation],
+        components: Dict[ComponentID, DeviceComponent],
         wiring: Union[Wiring, InverseWiring],
     ) -> None:
         """
