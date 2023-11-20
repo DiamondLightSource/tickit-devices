@@ -38,5 +38,9 @@
   {
     "version": "pydantic-eiger2",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger2/"
+  },
+  {
+    "version": "rename-component",
+    "url": "https://dls-controls.github.io/tickit-devices/rename-component/"
   }
 ]
