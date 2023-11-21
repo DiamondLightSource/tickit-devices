@@ -3,7 +3,7 @@ from operator import and_, or_
 from typing import Dict, TypedDict
 
 import pydantic.v1.dataclasses
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 
 from tickit_devices.zebra._common import Block, BlockConfig, extract_bit
 
@@ -44,5 +44,5 @@ class AndOrBlock(Block):
 
 @pydantic.v1.dataclasses.dataclass
 class AndOrBlockConfig(BlockConfig):
-    def __call__(self) -> DeviceSimulation:
-        return DeviceSimulation(name=self.name, device=AndOrBlock(name=self.name))
+    def __call__(self) -> DeviceComponent:
+        return DeviceComponent(name=self.name, device=AndOrBlock(name=self.name))

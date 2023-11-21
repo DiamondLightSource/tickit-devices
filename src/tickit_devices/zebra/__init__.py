@@ -6,7 +6,7 @@ from pydantic.v1 import validator
 from tickit.adapters.io import TcpIo
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import ComponentConfig
-from tickit.core.components.system_simulation import SystemSimulationComponent
+from tickit.core.components.system_component import SystemComponent
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
 from tickit_devices.zebra._common import param_types
@@ -45,8 +45,8 @@ class Zebra(ComponentConfig):
     def add_defaults(cls, v: dict[str, int]) -> dict[str, int]:
         return {**_default(), **v}
 
-    def __call__(self) -> SystemSimulationComponent:
-        return SystemSimulationComponent(
+    def __call__(self) -> SystemComponent:
+        return SystemComponent(
             adapter=AdapterContainer(
                 adapter=ZebraAdapter(params=self.params),
                 io=TcpIo(host=self.host, port=self.port),
