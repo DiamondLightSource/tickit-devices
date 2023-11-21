@@ -2,7 +2,7 @@ import pydantic.v1.dataclasses
 from tickit.adapters.io import TcpIo
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 
 from .cryostream import CryostreamAdapter, CryostreamDevice
 
@@ -25,7 +25,7 @@ class Cryostream(ComponentConfig):
                 ),
             )
         ]
-        return DeviceSimulation(
+        return DeviceComponent(
             name=self.name,
             device=device,
             adapters=adapters,
