@@ -46,9 +46,5 @@
   {
     "version": "rename-component",
     "url": "https://dls-controls.github.io/tickit-devices/rename-component/"
-  },
-  {
-    "version": "tickit-name-update",
-    "url": "https://dls-controls.github.io/tickit-devices/tickit-name-update/"
   }
 ]
