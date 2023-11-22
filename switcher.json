@@ -46,5 +46,9 @@
   {
     "version": "rename-component",
     "url": "https://dls-controls.github.io/tickit-devices/rename-component/"
+  },
+  {
+    "version": "trigger-eiger",
+    "url": "https://dls-controls.github.io/tickit-devices/trigger-eiger/"
   }
 ]
