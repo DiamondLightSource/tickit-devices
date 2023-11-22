@@ -36,6 +36,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/fix-eiger-stream/"
   },
   {
+    "version": "pin-version",
+    "url": "https://dls-controls.github.io/tickit-devices/pin-version/"
+  },
+  {
     "version": "pydantic-eiger",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
   },
