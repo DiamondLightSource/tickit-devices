@@ -20,6 +20,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/DiamondJoseph-patch-1/"
   },
   {
+    "version": "add-job",
+    "url": "https://dls-controls.github.io/tickit-devices/add-job/"
+  },
+  {
     "version": "debug-configurations",
     "url": "https://dls-controls.github.io/tickit-devices/debug-configurations/"
   },
@@ -34,10 +38,6 @@
   {
     "version": "fix-eiger-stream",
     "url": "https://dls-controls.github.io/tickit-devices/fix-eiger-stream/"
-  },
-  {
-    "version": "pin-version",
-    "url": "https://dls-controls.github.io/tickit-devices/pin-version/"
   },
   {
     "version": "pydantic-eiger",
