@@ -4,16 +4,16 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
-    "version": "0.1.0",
-    "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
+    "version": "0.3.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.3.0/"
   },
   {
     "version": "0.2.0",
     "url": "https://dls-controls.github.io/tickit-devices/0.2.0/"
   },
   {
-    "version": "0.3.0",
-    "url": "https://dls-controls.github.io/tickit-devices/0.3.0/"
+    "version": "0.1.0",
+    "url": "https://dls-controls.github.io/tickit-devices/0.1.0/"
   },
   {
     "version": "DiamondJoseph-patch-1",
@@ -34,6 +34,10 @@
   {
     "version": "fix-eiger-stream",
     "url": "https://dls-controls.github.io/tickit-devices/fix-eiger-stream/"
+  },
+  {
+    "version": "pin-version",
+    "url": "https://dls-controls.github.io/tickit-devices/pin-version/"
   },
   {
     "version": "pydantic-eiger",
