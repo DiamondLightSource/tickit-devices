@@ -36,10 +36,6 @@
     "url": "https://dls-controls.github.io/tickit-devices/enum_type_annotations/"
   },
   {
-    "version": "fix-eiger-stream",
-    "url": "https://dls-controls.github.io/tickit-devices/fix-eiger-stream/"
-  },
-  {
     "version": "pydantic-eiger",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
   },
