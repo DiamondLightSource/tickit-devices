@@ -4,6 +4,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/main/"
   },
   {
+    "version": "0.3.1",
+    "url": "https://dls-controls.github.io/tickit-devices/0.3.1/"
+  },
+  {
     "version": "0.3.0",
     "url": "https://dls-controls.github.io/tickit-devices/0.3.0/"
   },
@@ -18,10 +22,6 @@
   {
     "version": "DiamondJoseph-patch-1",
     "url": "https://dls-controls.github.io/tickit-devices/DiamondJoseph-patch-1/"
-  },
-  {
-    "version": "add-job",
-    "url": "https://dls-controls.github.io/tickit-devices/add-job/"
   },
   {
     "version": "debug-configurations",
