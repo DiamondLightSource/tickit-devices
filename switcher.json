@@ -48,6 +48,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/rename-component/"
   },
   {
+    "version": "signal-generator",
+    "url": "https://dls-controls.github.io/tickit-devices/signal-generator/"
+  },
+  {
     "version": "trigger-eiger",
     "url": "https://dls-controls.github.io/tickit-devices/trigger-eiger/"
   }
