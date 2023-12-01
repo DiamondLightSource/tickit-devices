@@ -6,7 +6,6 @@ from typing import Any, TypedDict
 import pydantic.v1.dataclasses
 from pydantic.v1 import Field
 from softioc import builder
-
 from tickit.adapters.epics import EpicsAdapter
 from tickit.adapters.io import EpicsIo
 from tickit.core.adapter import AdapterContainer
@@ -82,7 +81,7 @@ class SignalGeneratorDevice(Device):
         self._wave.amplitude = amplitude
 
     def get_amplitude_offset(self) -> float:
-        return self._wave.amplitude
+        return self._wave.amplitude_offset
 
     def set_amplitude_offset(self, amplitude_offset: float) -> None:
         self._wave.amplitude_offset = amplitude_offset
@@ -119,10 +118,10 @@ class SignalGeneratorDevice(Device):
 
     def _sine(self, time: SimTime) -> float:
         return self._wave.amplitude_offset + (
-            self._wave.amplitude * self._sinosoid(time)
+            self._wave.amplitude * self._sinusoid(time)
         )
 
-    def _sinosoid(self, time: SimTime) -> float:
+    def _sinusoid(self, time: SimTime) -> float:
         time_seconds = time * 1e-9
         return math.sin(2 * math.pi * self._wave.frequency * time_seconds)
 

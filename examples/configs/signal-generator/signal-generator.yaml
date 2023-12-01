@@ -1,4 +1,4 @@
-- type: tickit.devices.signal_generator.EpicsSignalGenerator
+- type: tickit_devices.signal_generator.signal_generator.EpicsSignalGenerator
   name: gen
   inputs: {}
 - type: tickit.devices.sink.Sink
