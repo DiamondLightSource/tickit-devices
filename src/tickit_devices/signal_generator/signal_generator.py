@@ -127,7 +127,6 @@ class SignalGeneratorAdapter(EpicsAdapter):
         self.device = device
 
     def on_db_load(self) -> None:
-        """Customises records that have been loaded in to suit the simulation."""
         self.float_rbv(
             "Amplitude",
             self.device.get_amplitude,
