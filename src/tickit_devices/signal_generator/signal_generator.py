@@ -163,8 +163,8 @@ class SignalGeneratorAdapter(EpicsAdapter):
             self.device.set_enabled,
         )
 
-        self.link_input_on_interrupt(builder.aIn("Signal_RBV"), self.device.get_value)
-        self.link_input_on_interrupt(builder.aIn("Gate_RBV"), self.device.is_gate_open)
+        self.float_ro("Signal_RBV", self.device.get_value)
+        self.bool_ro("Gate_RBV", self.device.is_gate_open)
 
         self.polling_interrupt(0.1)
 
