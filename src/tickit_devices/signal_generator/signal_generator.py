@@ -16,7 +16,11 @@ from tickit.core.typedefs import SimTime
 
 
 @pydantic.v1.dataclasses.dataclass
-class WaveConfig:
+class WaveSettings:
+    """
+    Settings to determine the shape of the sine wave produced by a signal generator
+    """
+
     amplitude: float = 1.0
     amplitude_offset: float = 1.0
     frequency: float = 1.0
@@ -24,7 +28,10 @@ class WaveConfig:
 
 
 class SignalGeneratorDevice(Device):
-    """A simple device which produces a pre-configured value."""
+    """
+    A device that can generate fake sine and boolean trigger signals, useful
+    for testing triggerable devices
+    """
 
     #: An empty typed mapping of device inputs
     class Inputs(TypedDict):
@@ -35,35 +42,19 @@ class SignalGeneratorDevice(Device):
         value: float
         gate: bool
 
-    _wave: WaveConfig
+    _wave: WaveSettings
     _gate_threshold: float
 
     _value: float
     _gate: bool
 
-    def __init__(self, wave: WaveConfig, gate_threshold: float = 0.5) -> None:
-        """A constructor of the source, which takes the pre-configured output value.
-
-        Args:
-            value (Any): A pre-configured output value.
-        """
+    def __init__(self, wave: WaveSettings, gate_threshold: float = 0.5) -> None:
         self._wave = wave
         self._gate_threshold = gate_threshold
         self._value = 0.0
         self._gate = False
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """The update method which produces the pre-configured output value.
-
-        Args:
-            time (SimTime): The current simulation time (in nanoseconds).
-            inputs (State): A mapping of inputs to the device and their values.
-
-        Returns:
-            DeviceUpdate[Outputs]:
-                The produced update event which contains the pre-configured value, and
-                never requests a callback.
-        """
         self._value = self._compute_wave(time)
         self._gate = self._value > self._gate_threshold
         return DeviceUpdate(
@@ -127,7 +118,7 @@ class SignalGeneratorDevice(Device):
 
 
 class SignalGeneratorAdapter(EpicsAdapter):
-    """The adapter for the Femto device."""
+    """IOC for controlling signal generator"""
 
     device: SignalGeneratorDevice
 
@@ -171,9 +162,9 @@ class SignalGeneratorAdapter(EpicsAdapter):
 
 @pydantic.v1.dataclasses.dataclass
 class SignalGenerator(ComponentConfig):
-    """Source of a fixed value."""
+    """Config for adapterless signal generator"""
 
-    wave: WaveConfig = Field(default_factory=WaveConfig)
+    wave: WaveSettings = Field(default_factory=WaveSettings)
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceComponent(
@@ -183,9 +174,9 @@ class SignalGenerator(ComponentConfig):
 
 @pydantic.v1.dataclasses.dataclass
 class EpicsSignalGenerator(ComponentConfig):
-    """Source of a fixed value."""
+    """Config for signal generator with an IOC"""
 
-    wave: WaveConfig = Field(default_factory=WaveConfig)
+    wave: WaveSettings = Field(default_factory=WaveSettings)
     ioc_name: str = "SIGNALGEN"
 
     def __call__(self) -> Component:  # noqa: D102

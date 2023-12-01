@@ -6,13 +6,13 @@ from tickit.core.typedefs import SimTime
 
 from tickit_devices.signal_generator.signal_generator import (
     SignalGeneratorDevice,
-    WaveConfig,
+    WaveSettings,
 )
 
 
 @pytest.fixture
 def signal_generator() -> SignalGeneratorDevice:
-    config = WaveConfig()
+    config = WaveSettings()
     return SignalGeneratorDevice(config)
 
 
@@ -95,7 +95,7 @@ def test_signal_generator_produces_outputs(
 
 
 def test_config_passes(signal_generator: SignalGeneratorDevice):
-    default_wave_config = WaveConfig()
+    default_wave_config = WaveSettings()
     signal_generator.get_amplitude() == default_wave_config.amplitude
     signal_generator.get_amplitude_offset() == default_wave_config.amplitude_offset
     signal_generator.get_frequency() == default_wave_config.frequency
