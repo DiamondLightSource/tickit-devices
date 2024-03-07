@@ -15,7 +15,7 @@ def test_eiger_status_constructor():
 
 
 def test_eiger_status_getitem(eiger_status):
-    assert 24.5 == eiger_status["th0_temp"]["value"]
+    assert 24.5 == eiger_status["temperature"]["value"]
 
     with pytest.raises(ValueError):
         eiger_status["doesnt_exist"]
