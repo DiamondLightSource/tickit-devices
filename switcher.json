@@ -32,8 +32,16 @@
     "url": "https://dls-controls.github.io/tickit-devices/eiger-stream2/"
   },
   {
+    "version": "eiger-stream2-backup",
+    "url": "https://dls-controls.github.io/tickit-devices/eiger-stream2-backup/"
+  },
+  {
     "version": "enum_type_annotations",
     "url": "https://dls-controls.github.io/tickit-devices/enum_type_annotations/"
+  },
+  {
+    "version": "fix-eiger-stream",
+    "url": "https://dls-controls.github.io/tickit-devices/fix-eiger-stream/"
   },
   {
     "version": "pydantic-eiger",
