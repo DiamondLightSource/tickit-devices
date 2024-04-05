@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field, fields
 from typing import Any
 
-from tickit_devices.eiger.eiger_schema import ro_int, ro_str, ro_str_list, ro_uint
+from tickit_devices.eiger.eiger_schema import ro_int, ro_str, ro_uint
 
 
 def monitor_status_keys() -> list[str]:
@@ -19,7 +19,7 @@ class MonitorStatus:
     state: str = field(
         default="normal", metadata=ro_str(allowed_values=["normal", "overflow"])
     )
-    keys: list[str] = field(default_factory=monitor_status_keys, metadata=ro_str_list())
+    keys: list[str] = field(default_factory=monitor_status_keys)
 
     def __getitem__(self, key: str) -> Any:  # noqa: D105
         for field_ in fields(self):

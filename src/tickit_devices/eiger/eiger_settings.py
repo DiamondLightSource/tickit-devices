@@ -7,7 +7,6 @@ from typing import Any
 from .eiger_schema import (
     ro_float,
     ro_str,
-    ro_str_list,
     ro_uint,
     rw_bool,
     rw_float,
@@ -258,7 +257,7 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=ro_uint())
 
-    keys: list[str] = field(default_factory=config_keys, metadata=ro_str_list())
+    keys: list[str] = field(default_factory=config_keys)
 
     def __post_init__(self):
         self._threshold_config = {

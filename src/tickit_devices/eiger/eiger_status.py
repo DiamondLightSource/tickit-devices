@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
-from .eiger_schema import ro_float, ro_str, ro_str_list
+from .eiger_schema import ro_float, ro_str
 
 
 class State(Enum):
@@ -53,7 +53,7 @@ class EigerStatus:
         default="01HBV3JPF9T4ZDPADX6EMK6XMZ", metadata=ro_str()
     )
 
-    keys: list[str] = field(default_factory=status_keys, metadata=ro_str_list())
+    keys: list[str] = field(default_factory=status_keys)
 
     def __getitem__(self, key: str) -> Any:  # noqa: D105
         for field_ in fields(self):

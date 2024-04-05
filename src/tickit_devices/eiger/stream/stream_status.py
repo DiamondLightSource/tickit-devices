@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field, fields
 from typing import Any
 
-from tickit_devices.eiger.eiger_schema import ro_str, ro_str_list, ro_uint
+from tickit_devices.eiger.eiger_schema import ro_str, ro_uint
 
 
 def stream_status_keys() -> list[str]:
@@ -20,7 +20,7 @@ class StreamStatus:
     error: list[str] = field(default_factory=lambda: [], metadata=ro_str())
     dropped: int = field(default=0, metadata=ro_uint())
 
-    keys: list[str] = field(default_factory=stream_status_keys, metadata=ro_str_list())
+    keys: list[str] = field(default_factory=stream_status_keys)
 
     def __getitem__(self, key: str) -> Any:  # noqa: D105
         for field_ in fields(self):

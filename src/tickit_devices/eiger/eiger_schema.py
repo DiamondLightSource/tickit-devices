@@ -133,8 +133,9 @@ class Value(Generic[T]):
 def construct_value(obj, param):  # noqa: D103
     value = obj[param]["value"]
     meta = obj[param]["metadata"]
-
-    if "allowed_values" in meta:
+    if param == "keys":
+        data = serialize(value)
+    elif "allowed_values" in meta:
         data = serialize(
             Value(
                 value,
@@ -143,7 +144,6 @@ def construct_value(obj, param):  # noqa: D103
                 allowed_values=meta["allowed_values"],
             )
         )
-
     else:
         data = serialize(
             Value(
