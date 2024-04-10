@@ -178,6 +178,14 @@ async def test_eiger_system(tickit_task):
         await get_status(status="state", expected="idle")
 
         async with session.put(
+            DETECTOR_URL + "config/ntrigger",
+            headers=headers,
+            json={"value": 2},
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert ["ntrigger"] == (await response.json())
+
+        async with session.put(
             DETECTOR_URL + "command/arm",
             timeout=REQUEST_TIMEOUT,
         ) as response:
@@ -190,6 +198,16 @@ async def test_eiger_system(tickit_task):
             timeout=REQUEST_TIMEOUT,
         ) as response:
             assert {"sequence id": 4} == (await response.json())
+
+        await get_status(status="state", expected="ready")
+
+        async with session.put(
+            DETECTOR_URL + "command/trigger",
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert {"sequence id": 4} == (await response.json())
+
+        await get_status(status="state", expected="idle")
 
         # Test we get a 404 for a non-existent URI
         async with session.get(

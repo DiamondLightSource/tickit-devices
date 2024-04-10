@@ -245,7 +245,7 @@ class EigerRESTAdapter(HttpAdapter):
         await self.device.trigger()
 
         await self.interrupt()
-        await self.device.finished_aquisition.wait()
+        await self.device.finished_trigger.wait()
 
         return web.json_response(serialize(SequenceComplete(4)))
 
