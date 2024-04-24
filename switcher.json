@@ -48,6 +48,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/fix-formatting/"
   },
   {
+    "version": "merlin",
+    "url": "https://dls-controls.github.io/tickit-devices/merlin/"
+  },
+  {
     "version": "pydantic-eiger",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
   },
