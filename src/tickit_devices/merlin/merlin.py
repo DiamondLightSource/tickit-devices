@@ -6,6 +6,8 @@ from typing import List, Tuple
 from pydantic import BaseModel
 
 from tickit_devices.merlin.acq_header import get_acq_header
+import numpy as np
+import numpy.typing as npt
 
 
 @dataclass
@@ -140,6 +142,7 @@ class Merlin(BaseModel):
     version: str = "0.69.0.2"
     voltage: int = 15
     counter_mode: int = 0  # 0, 1 or 2
+    _last_image: npt.NDArray[np.uint8 | np.uint16 | np.uint32] | None = None
 
     @property
     def shutter_time_s(self):
@@ -226,7 +229,30 @@ class Merlin(BaseModel):
         header += f"{chip_timestamp},{self.shutter_time_ns}ns,{self.counter_depth},"
         self._last_header = header.ljust(header_size + 15, " ")
         # 15 is len("MPX,0000XXXXXX,")
-        return self._last_header
+        return self._last_header.encode()
 
     def get_acq_header(self):
-        return get_acq_header(self)
+        return get_acq_header(self).encode()
+
+    def get_image(self):
+        resolution = self.get_resolution()
+        if self._last_image is None or self._last_image.shape != resolution:
+            # create new image, otherwise use existing one if same shape
+            if self.counter_depth == 1:
+                raise NotImplementedError("1 bit images not currently supported")
+            else:
+                if self.counter_depth == 6:
+                    dtype = np.uint8
+                elif self.counter_depth == 12:
+                    dtype = np.uint16
+                else:  # 24 bit
+                    dtype = np.uint32
+                self._last_image = np.random.randint(  # type: ignore
+                    2**self.counter_depth, size=resolution, dtype=dtype
+                )
+                # create a black border for checking alignment of image
+                self._last_image[:10, :] = 0
+                self._last_image[-10:, :] = 0
+                self._last_image[:, :10] = 0
+                self._last_image[:, -10:] = 0
+        return self._last_image.tobytes()
