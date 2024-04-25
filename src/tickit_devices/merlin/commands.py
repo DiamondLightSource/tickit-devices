@@ -4,7 +4,7 @@ import re
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from tickit_devices.merlin.adapters import MerlinAdapter
+    from tickit_devices.merlin.adapters import MerlinControlAdapter
 
 
 class CommandType(str, Enum):
@@ -110,11 +110,11 @@ def request_command(
     return command.encode()
 
 
-def parse_request(command: bytes, adapter: "MerlinAdapter") -> bytes | None:
+def parse_request(command: bytes, adapter: "MerlinControlAdapter") -> bytes | None:
     """
     Read encoded command and return encoded response
     """
-    parts = command.decode().split(DLIM)
+    parts = command.decode().rstrip("\r\n").split(DLIM)
     if (
         parts[0] != PREFIX
         or not re.match(r"^[0-9]{10}$", parts[1])

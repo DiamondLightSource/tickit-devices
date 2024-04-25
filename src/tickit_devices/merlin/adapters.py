@@ -15,15 +15,31 @@ from tickit_devices.merlin.commands import (
     ErrorCode,
     commands,
 )
-from tickit_devices.merlin.merlin import Merlin, State
+from tickit_devices.merlin.merlin import MerlinDetector, State
 import asyncio
+from tickit.adapters.tcp import CommandAdapter
 
-LOGGER = logging.getLogger("MerlinAdapter")
+LOGGER = logging.getLogger("MerlinControlAdapter")
 
 
-class MerlinAdapter:
-    def __init__(self, detector: Merlin):
+class MerlinDataAdapter:
+    def __init__(self, detector: MerlinDetector):
         self.detector = detector
+
+    def after_update(self) -> None: ...
+
+
+class MerlinControlAdapter(CommandAdapter):
+    def __init__(self, detector: MerlinDetector, data_adapter: MerlinDataAdapter):
+        self.detector = detector
+        self.data_adapter = data_adapter
+
+    def after_update(self) -> None: ...
+
+    async def handle(self, message):
+        response = parse_request(message, self)
+        print(response, "now what do we do with this response")
+        # this is where we accept commands, parsing should be done from here?
 
     def get(self, parameter: str) -> Tuple[Any, ErrorCode]:
         value = "0"
@@ -59,8 +75,10 @@ class MerlinAdapter:
 
 
 if __name__ in "__main__":
-    merlin = Merlin()
-    adapter = MerlinAdapter(merlin)
-    print(merlin.get_acq_header().decode())
-    for command in commands[CommandType.SET]:
-        print(parse_request(request_command(command, CommandType.GET), adapter))
+    merlin = MerlinDetector()
+    data_adapter = MerlinDataAdapter(merlin)
+    adapter = MerlinControlAdapter(merlin, data_adapter)
+    print(request_command("GAIN", CommandType.GET))
+    # print(merlin.get_acq_header().decode())
+    # for command in commands[CommandType.SET]:
+    #     print(parse_request(request_command(command, CommandType.GET), adapter))

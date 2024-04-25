@@ -2,12 +2,12 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from tickit_devices.merlin.merlin import Merlin, GapFillMode
+    from tickit_devices.merlin.merlin import MerlinDetector, GapFillMode
 
 ACQ_HEADER_SIZE = 2049
 
 
-def get_acq_header(merlin: "Merlin"):
+def get_acq_header(merlin: "MerlinDetector"):
 
     dac_string = ";\n".join(
         [chip.get_dac_string() for chip in merlin.chips if chip.enabled]

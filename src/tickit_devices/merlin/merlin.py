@@ -6,6 +6,9 @@ from typing import List, Tuple
 from tickit_devices.merlin.acq_header import get_acq_header
 import numpy as np
 import numpy.typing as npt
+from tickit.core.device import Device, DeviceUpdate
+from typing_extensions import TypedDict
+from tickit.core.typedefs import SimTime
 
 
 @dataclass
@@ -85,9 +88,11 @@ class GapFillMode(int, Enum):
     Distribute = 2
     Interpolate = 3
 
+
 class FileFormat(int, Enum):
     Binary = 0
     ASCII = 1
+
 
 class TriggerOut(int, Enum):
     TriggerInTTL = 0
@@ -98,6 +103,7 @@ class TriggerOut(int, Enum):
     OnePerAcqBurst = 5
     ShutterAndSensorReadout = 6
     Busy = 7
+
 
 @dataclass
 class Chip:
@@ -122,7 +128,7 @@ class Chip:
     @property
     def dac_file(self):
         return (
-            fr"c:\MERLIN_Quad_Config\{self.id}\{self.id}_{self.mode}.dacs"
+            rf"c:\MERLIN_Quad_Config\{self.id}\{self.id}_{self.mode}.dacs"
             if self.enabled
             else ""
         )
@@ -142,17 +148,14 @@ class Chip:
         )
 
 
-@dataclass
-class Merlin:
+class MerlinDetector(Device):
     COUNTERDEPTH: int = 12
-    chips: List[Chip] = field(
-        default_factory=lambda: [
-            Chip(id="CHIP_1", x=0, y=0),
-            Chip(id="CHIP_2", x=1, y=0, enabled=False),
-            Chip(id="CHIP_3", x=0, y=1, enabled=False),
-            Chip(id="CHIP_4", x=1, y=1, enabled=False),
-        ]
-    )
+    chips: List[Chip] = [
+        Chip(id="CHIP_1", x=0, y=0),
+        Chip(id="CHIP_2", x=1, y=0, enabled=False),
+        Chip(id="CHIP_3", x=0, y=1, enabled=False),
+        Chip(id="CHIP_4", x=1, y=1, enabled=False),
+    ]
     gap: bool = True  # 3px gap between chips
     COLOURMODE: ColourMode = ColourMode.MONOCHROME
     CONTINUOUSRW: bool = False
@@ -214,7 +217,6 @@ class Merlin:
     def ACQUISITIONPERIOD(self) -> float:
         return (self._gap_time_ns + self.shutter_time_ns) * 1e-9
 
-
     @property
     def THRESHOLD0(self):
         print("Not doing correction calculation yet!!")
@@ -255,6 +257,11 @@ class Merlin:
     @property
     def DACFILE(self):
         return self.chips[0].dac_file
+
+    class Inputs(TypedDict, total=False):
+        trigger: bool
+
+    class Outputs(TypedDict): ...
 
     def get_resolution(self) -> Tuple[int, int]:
         chips = [c for c in self.chips if c.enabled]
@@ -364,3 +371,7 @@ class Merlin:
                 self._last_image[:, :10] = 0
                 self._last_image[:, -10:] = 0
         return self._last_image.tobytes()
+
+    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+        # print('TODO: Doing nothing in update, see EigerDevice.update for comparison')
+        return DeviceUpdate(self.Outputs(), SimTime(time))
