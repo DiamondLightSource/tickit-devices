@@ -70,6 +70,12 @@ class Polarity(str, Enum):
     NEG = "Negative"
 
 
+class State(int, Enum):
+    IDLE = 0
+    BUSY = 1
+    Standby = 2
+
+
 @dataclass
 class Chip:
     id: str
