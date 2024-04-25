@@ -4,7 +4,7 @@ import re
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from tickit_devices.merlin.adapters import MerlinControlAdapter
+    from tickit_devices.merlin.adapters import MerlinAdapter
 
 
 class CommandType(str, Enum):
@@ -40,11 +40,6 @@ commands = {
         "TEMPERATURE",
     ],
     CommandType.SET: [
-        "SOFTWAREVERSION",
-        "TRIGGERINTTL",
-        "TRIGGERINLVDS",
-        "DETECTORSTATUS",
-        "TEMPERATURE",
         "COLOURMODE",
         "CHARGESUMMING",
         "GAIN",
@@ -71,15 +66,17 @@ commands = {
         "TRIGGERSTART",
         "TRIGGERSTOP",
         "NUMFRAMESPERTRIGGER",
-        "TRIGGEROUTTTL",
-        "TRIGGEROUTLVDS",
-        "TRIGGEROUTTTLINVERT",
-        "TRIGGEROUTLVDSINVERT",
-        "TRIGGERINTTLDELAY",
-        "TRIGGERINLVDSDELAY",
-        "TRIGGERUSEDELAY",
-        "SOFTTRIGGEROUTTTL",
-        "SOFTTRIGGEROUTLVDS",
+        "TriggerOutTTL",
+        "TriggerOutLVDS",
+        "TriggerOutTTLInvert",
+        "TriggerOutLVDSInvert",
+        "TriggerOutTTLDelay",
+        "TriggerOutLVDSDelay",
+        "TriggerUseDelay",
+        "SoftTriggerOutTTL",
+        "SoftTriggerOutLVDS",
+        "TriggerInTTL",
+        "TriggerInLVDS",
         "THSCAN",
         "THSTART",
         "THSTOP",
@@ -113,7 +110,7 @@ def request_command(
     return command.encode()
 
 
-def parse_request(command: bytes, adapter: "MerlinControlAdapter") -> bytes | None:
+def parse_request(command: bytes, adapter: "MerlinAdapter") -> bytes | None:
     """
     Read encoded command and return encoded response
     """
@@ -128,26 +125,28 @@ def parse_request(command: bytes, adapter: "MerlinControlAdapter") -> bytes | No
     parameter = parts[3]
     code = ErrorCode.UNDERSTOOD
     value = "0"  # default in case get fails
-    try:
-        if command_type == CommandType.SET:
-            if len(parts) != 5:
-                return None
-            adapter.set(parameter, parts[4])
-        elif command_type == CommandType.GET:
-            value = adapter.get(parameter)
-        else:  # CMD
-            adapter.cmd(parameter)
-    except KeyError:
-        code = ErrorCode.UNRECOGNISED
-    except ValueError:
-        code = ErrorCode.RANGE
-    finally:
-        parts = (
-            [command_type.value, parameter, value, code]
-            if command_type == CommandType.SET
-            else [command_type.value, parameter, code]
-        )
-        response_part = DLIM.join([command_type.value, parameter, code])
+    if command_type == CommandType.SET:
+        if len(parts) != 5:
+            return None
+        code = adapter.set(parameter, parts[4])
+    elif command_type == CommandType.GET:
+        value, code = adapter.get(parameter)
+        if isinstance(value, bool):
+            value = str(int(value))
+        elif isinstance(value, Enum):
+            value = str(value.value)
+        elif isinstance(value, float):
+            value = f"{value:.6f}"
+        else:
+            value = str(value)
+    else:  # CMD
+        code = adapter.cmd(parameter)
+    parts = (
+        [command_type.value, parameter, value, code]
+        if command_type == CommandType.GET
+        else [command_type.value, parameter, code]
+    )
+    response_part = DLIM.join(parts)
     return DLIM.join(
         [PREFIX, f"{(len(response_part) + 1):010}", response_part]
     ).encode()

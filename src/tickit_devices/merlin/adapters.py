@@ -4,53 +4,63 @@ and one that spits out data
 
 """
 
-from typing import Any
+from typing import Any, Tuple
 import logging
+from dataclasses import fields
 
 from tickit_devices.merlin.commands import (
     parse_request,
     CommandType,
     request_command,
     ErrorCode,
+    commands,
 )
-from tickit_devices.merlin.merlin import Merlin
+from tickit_devices.merlin.merlin import Merlin, State
+import asyncio
+
+LOGGER = logging.getLogger("MerlinAdapter")
 
 
-class MerlinControlAdapter:
-    def __init__(self, detector: Merlin): ...
+class MerlinAdapter:
+    def __init__(self, detector: Merlin):
+        self.detector = detector
 
-    def get(self, parameter: str) -> Any:
-        if parameter == "FAKE":
-            raise KeyError(f"Merlin does not have a parameter {parameter}")
-        # return dummy value for now
-        return "1"
+    def get(self, parameter: str) -> Tuple[Any, ErrorCode]:
+        value = "0"
+        code = ErrorCode.UNDERSTOOD
+        if parameter not in commands[CommandType.GET] + commands[
+            CommandType.SET
+        ] or not hasattr(self.detector, parameter):
+            code = ErrorCode.UNRECOGNISED
+            LOGGER.error(f"Merlin does not have a parameter {parameter}")
+        else:
+            value = getattr(self.detector, parameter)
+        return (value, code)
 
-    def cmd(self, command: str) -> None:
-        if command == "FAKE":
-            raise KeyError(f"Merlin does not have a command {command}")
+    def cmd(self, command: str) -> ErrorCode:
+        code = ErrorCode.UNDERSTOOD
+        if command not in commands[CommandType.CMD]:
+            LOGGER.error(f"Merlin does not have a command {command}")
+            code = ErrorCode.UNRECOGNISED
+        else:
+            ...  # add the rest of the command logic here
+        return code
 
-    def set(self, parameter: str, value: str) -> None:
-        "either return nothing or raise an exception"
-        if parameter == "FAKE":
-            raise KeyError(f"Merlin does not have a parameter {parameter}")
+    def set(self, parameter: str, value: str) -> ErrorCode:
+        code = ErrorCode.UNDERSTOOD
+        if parameter not in commands[CommandType.GET] + commands[CommandType.SET]:
+            code = ErrorCode.UNRECOGNISED
+            LOGGER.error(f"Merlin does not have a parameter {parameter}")
         elif value == "bad":
-            raise ValueError(f"{value} is not a valid value for {parameter}")
+            code = ErrorCode.RANGE
+        elif self.detector.DETECTORSTATUS != State.IDLE:
+            code = ErrorCode.BUSY
+        return code
 
 
 if __name__ in "__main__":
     merlin = Merlin()
-    adapter = MerlinControlAdapter(merlin)
-    print(
-        parse_request(
-            request_command("NUMFRAMESTOACQUIRE", CommandType.SET, 1), adapter
-        )
-    )
-    print(
-        parse_request(
-            request_command("NUMFRAMESTOACQUIRE", CommandType.SET, "bad"), adapter
-        )
-    )
-    print(parse_request(request_command("FAKE", CommandType.SET, "ok"), adapter))
-    print(parse_request(request_command("GAIN", CommandType.SET, "bad"), adapter))
-    # print(parse_request(request_command("DONOTHING", CommandType.CMD), adapter))
-    print(request_command("DONOTHING", CommandType.CMD))
+    adapter = MerlinAdapter(merlin)
+    print(merlin.get_acq_header().decode())
+    for command in commands[CommandType.SET]:
+        print(parse_request(request_command(command, CommandType.GET), adapter))
