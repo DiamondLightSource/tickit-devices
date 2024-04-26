@@ -3,13 +3,15 @@ from datetime import datetime
 from enum import Enum, EnumMeta
 from typing import List, Tuple
 
-from tickit_devices.merlin.acq_header import get_acq_header
 import numpy as np
 import numpy.typing as npt
 from tickit.core.device import Device, DeviceUpdate
-from typing_extensions import TypedDict
 from tickit.core.typedefs import SimTime
+from typing_extensions import TypedDict
+
+from tickit_devices.merlin.acq_header import get_acq_header
 from tickit_devices.merlin.commands import ErrorCode
+
 
 @dataclass
 class ChipDACs:
@@ -303,8 +305,6 @@ class MerlinDetector(Device):
     def ABORT_cmd(self) -> ErrorCode:
         # TODO: write command
         return ErrorCode.UNDERSTOOD
-
-
 
     def get_resolution(self) -> Tuple[int, int]:
         chips = [c for c in self.chips if c.enabled]

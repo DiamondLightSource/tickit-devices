@@ -1,7 +1,6 @@
-from enum import Enum
-from typing import Any
 import re
-from typing import TYPE_CHECKING
+from enum import Enum
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from tickit_devices.merlin.adapters import MerlinControlAdapter
@@ -98,7 +97,6 @@ commands = {
 }
 
 
-# we don't need this
 def request_command(
     parameter: str, command_type: CommandType, value: Any = None
 ) -> bytes:
@@ -108,45 +106,3 @@ def request_command(
         command_part = DLIM.join([command_type.value, parameter])
     command = DLIM.join([PREFIX, f"{(len(command_part) + 1):010}", command_part])
     return command.encode()
-
-
-def parse_request(command: bytes, adapter: "MerlinControlAdapter") -> bytes | None:
-    """
-    Read encoded command and return encoded response
-    """
-    parts = command.decode().rstrip("\r\n").split(DLIM)
-    if (
-        parts[0] != PREFIX
-        or not re.match(r"^[0-9]{10}$", parts[1])
-        or parts[2] not in CommandType.__members__
-    ):
-        return None  # to indicate that message would not be read
-    command_type = CommandType(parts[2])
-    parameter = parts[3]
-    code = ErrorCode.UNDERSTOOD
-    value = "0"  # default in case get fails
-    if command_type == CommandType.SET:
-        if len(parts) != 5:
-            return None
-        code = adapter.set(parameter, parts[4])
-    elif command_type == CommandType.GET:
-        value, code = adapter.get(parameter)
-        if isinstance(value, bool):
-            value = str(int(value))
-        elif isinstance(value, Enum):
-            value = str(value.value)
-        elif isinstance(value, float):
-            value = f"{value:.6f}"
-        else:
-            value = str(value)
-    else:  # CMD
-        code = adapter.cmd(parameter)
-    parts = (
-        [command_type.value, parameter, value, code]
-        if command_type == CommandType.GET
-        else [command_type.value, parameter, code]
-    )
-    response_part = DLIM.join(parts)
-    return DLIM.join(
-        [PREFIX, f"{(len(response_part) + 1):010}", response_part]
-    ).encode()
