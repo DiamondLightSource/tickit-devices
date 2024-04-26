@@ -1,8 +1,8 @@
 import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
-from enum import Enum, EnumMeta
-from typing import List, Tuple
+from enum import Enum
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import numpy.typing as npt
@@ -216,7 +216,7 @@ class MerlinDetector(Device):
     SoftTriggerOutLVDS: bool = False
     TriggerInTTL: bool = False
     TriggerInLVDS: bool = False
-    _last_image: npt.NDArray[np.uint8 | np.uint16 | np.uint32] | None = None
+    _last_image: Optional[npt.NDArray[Union[np.uint8, np.uint16, np.uint32]]] = None
     THSCAN: int = 0
     THSTART: float = 0
     THSTOP: float = 0
