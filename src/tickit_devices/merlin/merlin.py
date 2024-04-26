@@ -11,7 +11,7 @@ from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
 
 from tickit_devices.merlin.acq_header import get_acq_header
-from tickit_devices.merlin.commands import ErrorCode
+from tickit_devices.merlin.commands import ErrorCode, CommandType, commands
 
 
 @dataclass
@@ -150,15 +150,15 @@ class Chip:
             ]
         )
 
-
+@dataclass
 class MerlinDetector(Device):
     COUNTERDEPTH: int = 12
-    chips: List[Chip] = [
+    chips: List[Chip] = field(default_factory = lambda: [
         Chip(id="CHIP_1", x=0, y=0),
         Chip(id="CHIP_2", x=1, y=0, enabled=False),
         Chip(id="CHIP_3", x=0, y=1, enabled=False),
         Chip(id="CHIP_4", x=1, y=1, enabled=False),
-    ]
+    ])
     gap: bool = True  # 3px gap between chips
     COLOURMODE: ColourMode = ColourMode.MONOCHROME
     CONTINUOUSRW: bool = False
@@ -311,7 +311,12 @@ class MerlinDetector(Device):
         return ErrorCode.UNDERSTOOD
 
     def RESET_cmd(self) -> ErrorCode:
-        # TODO: write command
+        # TODO: how does this work during acquisition?
+        skip = ["chips"]
+        for field in fields(self):
+            if field.name in skip:
+                continue
+            setattr(self, field.name, field.default)
         return ErrorCode.UNDERSTOOD
 
     def ABORT_cmd(self) -> ErrorCode:

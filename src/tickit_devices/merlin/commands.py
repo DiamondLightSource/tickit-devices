@@ -1,9 +1,5 @@
-import re
 from enum import Enum
 from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from tickit_devices.merlin.adapters import MerlinControlAdapter
 
 
 class CommandType(str, Enum):
