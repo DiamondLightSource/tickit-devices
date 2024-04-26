@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field, fields
 from datetime import datetime
-from enum import Enum
+from enum import Enum, EnumMeta
 from typing import List, Tuple
 
 from tickit_devices.merlin.acq_header import get_acq_header
@@ -9,7 +9,7 @@ import numpy.typing as npt
 from tickit.core.device import Device, DeviceUpdate
 from typing_extensions import TypedDict
 from tickit.core.typedefs import SimTime
-
+from tickit_devices.merlin.commands import ErrorCode
 
 @dataclass
 class ChipDACs:
@@ -262,6 +262,49 @@ class MerlinDetector(Device):
         trigger: bool
 
     class Outputs(TypedDict): ...
+
+    def set_parameter(self, parameter: str, value_str: str) -> ErrorCode:
+        """Cast value to correct type and set"""
+        try:
+            attr = getattr(self, parameter)
+            attr_type = type(attr)
+            if isinstance(attr, Enum) and isinstance(attr, int):
+                value = attr_type(int(value_str))
+                setattr(self, parameter, attr_type(int(value)))
+            else:
+                value = attr_type(value_str)
+            setattr(self, parameter, value)
+            code = ErrorCode.UNDERSTOOD
+        except Exception as e:  # TODO: use more specific exception
+            print(e)
+            code = ErrorCode.RANGE
+        return code
+
+    def STARTACQUISITION_cmd(self) -> ErrorCode:
+        # TODO: write command
+        return ErrorCode.UNDERSTOOD
+
+    def STOPACQUISITION_cmd(self) -> ErrorCode:
+        # TODO: write command
+        return ErrorCode.UNDERSTOOD
+
+    def SOFTTRIGGER_cmd(self) -> ErrorCode:
+        # TODO: write command
+        return ErrorCode.UNDERSTOOD
+
+    def THSCAN_cmd(self) -> ErrorCode:
+        # TODO: write command
+        return ErrorCode.UNDERSTOOD
+
+    def RESET_cmd(self) -> ErrorCode:
+        # TODO: write command
+        return ErrorCode.UNDERSTOOD
+
+    def ABORT_cmd(self) -> ErrorCode:
+        # TODO: write command
+        return ErrorCode.UNDERSTOOD
+
+
 
     def get_resolution(self) -> Tuple[int, int]:
         chips = [c for c in self.chips if c.enabled]
