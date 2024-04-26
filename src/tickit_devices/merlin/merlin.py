@@ -1,3 +1,4 @@
+import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum, EnumMeta
@@ -165,6 +166,8 @@ class MerlinDetector(Device):
     _current_counter: int = 0
     shutter_time_ns: int = 10000000
     _configuration: str = ""
+    acquiring: bool = False
+    _images_remaining: int = 0
     GAIN: GainMode = GainMode.SLGM
     CHARGESUMMING: bool = False
     _last_header: str = ""
@@ -214,6 +217,7 @@ class MerlinDetector(Device):
     THWINDOWSIZE: float = 0
     FLATFIELDCORRECTION: bool = False
     _gap_time_ns: int = 1000000
+    _acq_header_enabled: bool = True
 
     @property
     def ACQUISITIONPERIOD(self) -> float:
@@ -283,11 +287,19 @@ class MerlinDetector(Device):
         return code
 
     def STARTACQUISITION_cmd(self) -> ErrorCode:
-        # TODO: write command
+        if self.DETECTORSTATUS is not State.IDLE:
+            return ErrorCode.BUSY
+
+        self.acquiring = True
+        self._images_remaining = self.NUMFRAMESTOACQUIRE
+        self._current_frame = 1
+        # TODO: add NUMFRAMESPERTRIGGER logic, only really works with external triggers
         return ErrorCode.UNDERSTOOD
 
     def STOPACQUISITION_cmd(self) -> ErrorCode:
-        # TODO: write command
+        self.DETECTORSTATUS = State.IDLE  # type: ignore
+        self.acquiring = False
+        self._current_frame = 1
         return ErrorCode.UNDERSTOOD
 
     def SOFTTRIGGER_cmd(self) -> ErrorCode:
@@ -337,7 +349,7 @@ class MerlinDetector(Device):
                 bits += 2**idx
         return hex(bits)[2:]  # discard hex prefix
 
-    def get_frame_header(self):
+    def get_frame_header(self) -> str:
         enabled_chips = [c for c in self.chips if c.enabled]
         header_size = 256 + 128 * len(enabled_chips)
         x, y = self.get_resolution()
@@ -387,10 +399,10 @@ class MerlinDetector(Device):
         header += f"{chip_timestamp},{self.shutter_time_ns}ns,{self.COUNTERDEPTH},"
         self._last_header = header.ljust(header_size + 15, " ")
         # 15 is len("MPX,0000XXXXXX,")
-        return self._last_header.encode()
+        return self._last_header
 
     def get_acq_header(self):
-        return get_acq_header(self).encode()
+        return get_acq_header(self)
 
     def get_image(self):
         resolution = self.get_resolution()
@@ -413,7 +425,19 @@ class MerlinDetector(Device):
                 self._last_image[-10:, :] = 0
                 self._last_image[:, :10] = 0
                 self._last_image[:, -10:] = 0
-        return self._last_image.tobytes()
+        if self._acq_header_enabled:
+            header = self.get_acq_header() + self.get_frame_header()
+        else:
+            header = self.get_frame_header()
+        time.sleep(self.ACQUISITIONPERIOD)
+        self._images_remaining -= 1
+        self._current_frame += 1
+        if self._images_remaining == 0:
+            self.STOPACQUISITION_cmd()
+        return (
+            header.encode("ascii") + self._last_image.tobytes()
+        )  # do we want to encode or decode??
+        # return self._last_image.tobytes()
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         # print('TODO: Doing nothing in update, see EigerDevice.update for comparison')

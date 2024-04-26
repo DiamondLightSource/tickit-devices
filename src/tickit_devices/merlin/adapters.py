@@ -5,11 +5,13 @@ and one that spits out data
 """
 
 import logging
+import time
 from enum import Enum
-from typing import Any, Tuple
+from typing import TYPE_CHECKING, Any, Tuple
 
 from tickit.adapters.specifications.regex_command import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
+from tickit.adapters.zmq import ZeroMqPushAdapter
 
 from tickit_devices.merlin.commands import (
     DLIM,
@@ -19,15 +21,20 @@ from tickit_devices.merlin.commands import (
     commands,
 )
 from tickit_devices.merlin.merlin import MerlinDetector, State
+from tickit_devices.merlin.tcp import TcpPushAdapter
 
 LOGGER = logging.getLogger("MerlinControlAdapter")
 
 
-class MerlinDataAdapter:
+class MerlinDataAdapter(TcpPushAdapter):
     def __init__(self, detector: MerlinDetector):
+        super().__init__()
         self.detector = detector
 
-    def after_update(self) -> None: ...
+    def after_update(self) -> None:
+        if self.detector.acquiring:
+            message = self.detector.get_image()
+            self.add_message_to_stream(message)
 
 
 class MerlinControlAdapter(CommandAdapter):
@@ -36,6 +43,7 @@ class MerlinControlAdapter(CommandAdapter):
         self.data_adapter = data_adapter
 
     def after_update(self) -> None: ...
+
     # TODO
 
     @RegexCommand(r"MPX,[0-9]{10},GET,([a-zA-Z]*)$", format="utf-8")
