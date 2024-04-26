@@ -108,6 +108,12 @@ class TriggerOut(int, Enum):
     Busy = 7
 
 
+class CounterMode(int, Enum):
+    Counter0 = 0
+    Counter1 = 1
+    Both = 2
+
+
 @dataclass
 class Chip:
     id: str
@@ -150,20 +156,23 @@ class Chip:
             ]
         )
 
+
 @dataclass
 class MerlinDetector(Device):
     COUNTERDEPTH: int = 12
-    chips: List[Chip] = field(default_factory = lambda: [
-        Chip(id="CHIP_1", x=0, y=0),
-        Chip(id="CHIP_2", x=1, y=0, enabled=False),
-        Chip(id="CHIP_3", x=0, y=1, enabled=False),
-        Chip(id="CHIP_4", x=1, y=1, enabled=False),
-    ])
+    chips: List[Chip] = field(
+        default_factory=lambda: [
+            Chip(id="CHIP_1", x=0, y=0),
+            Chip(id="CHIP_2", x=1, y=0, enabled=False),
+            Chip(id="CHIP_3", x=0, y=1, enabled=False),
+            Chip(id="CHIP_4", x=1, y=1, enabled=False),
+        ]
+    )
     gap: bool = True  # 3px gap between chips
     COLOURMODE: ColourMode = ColourMode.MONOCHROME
     CONTINUOUSRW: bool = False
     _current_frame: int = 1
-    _current_counter: int = 0
+    _current_layer: int = 0
     shutter_time_ns: int = 10000000
     _configuration: str = ""
     acquiring: bool = False
@@ -171,6 +180,9 @@ class MerlinDetector(Device):
     GAIN: GainMode = GainMode.SLGM
     CHARGESUMMING: bool = False
     _last_header: str = ""
+    chip_type: str = "Medipix 3RX"
+    readout_system: str = "Merlin Quad"
+    medipix_clock: int = 120
     dead_time_file: str = "Dummy (C:\\<NUL>\\)"
     FLATFIELDFILE: str = "None"
     FILLMODE: GapFillMode = GapFillMode.NONE
@@ -184,7 +196,7 @@ class MerlinDetector(Device):
     POLARITY: Polarity = Polarity.POS
     version: str = "0.69.0.2"
     HVBIAS: int = 15
-    ENABLECOUNTER1: int = 0  # 0, 1 or 2
+    ENABLECOUNTER1: CounterMode = CounterMode.Counter0
     DETECTORSTATUS: State = State.IDLE
     FILECOUNTER: int = 0
     FILEFORMAT: FileFormat = FileFormat.Binary
@@ -300,6 +312,7 @@ class MerlinDetector(Device):
         self.DETECTORSTATUS = State.IDLE  # type: ignore
         self.acquiring = False
         self._current_frame = 1
+        self._current_layer = 0
         return ErrorCode.UNDERSTOOD
 
     def SOFTTRIGGER_cmd(self) -> ErrorCode:
@@ -354,7 +367,7 @@ class MerlinDetector(Device):
                 bits += 2**idx
         return hex(bits)[2:]  # discard hex prefix
 
-    def get_frame_header(self) -> str:
+    def get_frame_header(self) -> bytes:
         enabled_chips = [c for c in self.chips if c.enabled]
         header_size = 256 + 128 * len(enabled_chips)
         x, y = self.get_resolution()
@@ -392,7 +405,7 @@ class MerlinDetector(Device):
                 self.get_chip_flags().rjust(2, "0"),
                 header_timestamp,
                 f"{self.ACQUISITIONTIME:.6f}",
-                str(self._current_counter),
+                str(self._current_layer),
                 str(int(self.COLOURMODE)),
                 str(self.GAIN.value),
             ]
@@ -404,13 +417,26 @@ class MerlinDetector(Device):
         header += f"{chip_timestamp},{self.shutter_time_ns}ns,{self.COUNTERDEPTH},"
         self._last_header = header.ljust(header_size + 15, " ")
         # 15 is len("MPX,0000XXXXXX,")
-        return self._last_header
+        return self._last_header.encode("ascii")
 
-    def get_acq_header(self):
-        return get_acq_header(self)
+    def get_acq_header(self) -> bytes:
+        return get_acq_header(self).encode("ascii")
 
     def get_image(self):
+        # TODO: handle two threshold and colour mode
         resolution = self.get_resolution()
+        # we decrement until _current_layer reaches 0, append all the images together and send at once
+        if self.ENABLECOUNTER1 == CounterMode.Both:
+            layers = (
+                list(range(8))
+                if self.COLOURMODE == ColourMode.COLOUR
+                else list(range(2))
+            )
+        elif self.ENABLECOUNTER1 == CounterMode.Counter0:
+            layers = list(range(4)) if self.COLOURMODE == ColourMode.COLOUR else [0]
+        else:  # self.ENABLECOUNTER1 == CounterMode.Counter1:
+            layers = list(range(4, 8)) if self.COLOURMODE == ColourMode.COLOUR else [1]
+        layers.reverse()
         if self._last_image is None or self._last_image.shape != resolution:
             # create new image, otherwise use existing one if same shape
             if self.COUNTERDEPTH == 1:
@@ -430,19 +456,20 @@ class MerlinDetector(Device):
                 self._last_image[-10:, :] = 0
                 self._last_image[:, :10] = 0
                 self._last_image[:, -10:] = 0
-        if self._acq_header_enabled:
-            header = self.get_acq_header() + self.get_frame_header()
+        if self._acq_header_enabled and self._current_frame == 1:
+            message = self.get_acq_header()
         else:
-            header = self.get_frame_header()
+            message = b""
         time.sleep(self.ACQUISITIONPERIOD)
+        for layer in layers:
+            self._current_layer = layer
+            message += self.get_frame_header()
+            message += self._last_image.tobytes()
         self._images_remaining -= 1
         self._current_frame += 1
         if self._images_remaining == 0:
             self.STOPACQUISITION_cmd()
-        return (
-            header.encode("ascii") + self._last_image.tobytes()
-        )  # do we want to encode or decode??
-        # return self._last_image.tobytes()
+        return message
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         # print('TODO: Doing nothing in update, see EigerDevice.update for comparison')

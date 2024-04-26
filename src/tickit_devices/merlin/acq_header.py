@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from tickit_devices.merlin.merlin import GapFillMode, MerlinDetector
+    from tickit_devices.merlin.merlin import MerlinDetector
 
 ACQ_HEADER_SIZE = 2049
 
@@ -20,10 +20,8 @@ def get_acq_header(merlin: "MerlinDetector"):
         counter_string = "Counter 0 & Counter 1"
     if merlin.FILLMODE == 0:
         fill_string = "None"
-
     elif merlin.FILLMODE == 1:
         fill_string = "Zero Fill"
-
     elif merlin.FILLMODE == 2:
         fill_string = "Distribute"
     else:
@@ -32,7 +30,7 @@ def get_acq_header(merlin: "MerlinDetector"):
     MPX,{ACQ_HEADER_SIZE:010},HDR,	
     Time and Date Stamp (day, mnth, yr, hr, min, s):	{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
     Chip ID:	{", ".join([chip.get_id_for_header() for chip in merlin.chips])}
-    Chip Type (Medipix 3.0, Medipix 3.1, Medipix 3RX):	Medipix 3RX
+    Chip Type (Medipix 3.0, Medipix 3.1, Medipix 3RX):	{merlin.chip_type}
     Assembly Size (NX1, 2X2):	   {merlin.get_configuration()}
     Chip Mode  (SPM, CSM, CM, CSCM):	{merlin.chips[0].mode}
     Counter Depth (number):	{merlin.COUNTERDEPTH}
@@ -54,8 +52,8 @@ def get_acq_header(merlin: "MerlinDetector"):
     Sensor Polarity (Positive, Negative):	{merlin.POLARITY}
     Temperature (C):	Board Temp {merlin.TEMPERATURE:.6f} Deg C
     Humidity (%):	Board Humidity {merlin.humidity:.6f}
-    Medipix Clock (MHz):	120MHz
-    Readout System:	Merlin Quad
+    Medipix Clock (MHz):	{merlin.medipix_clock}MHz
+    Readout System:	{merlin.readout_system}
     Software Version:	{merlin.version}
     End
     """.ljust(
