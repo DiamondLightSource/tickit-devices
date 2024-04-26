@@ -162,10 +162,10 @@ class MerlinDetector(Device):
     COUNTERDEPTH: int = 12
     chips: List[Chip] = field(
         default_factory=lambda: [
-            Chip(id="CHIP_1", x=0, y=0),
-            Chip(id="CHIP_2", x=1, y=0, enabled=False),
-            Chip(id="CHIP_3", x=0, y=1, enabled=False),
-            Chip(id="CHIP_4", x=1, y=1, enabled=False),
+            Chip(id="CHIP_1", x=0, y=0, enabled=True),
+            Chip(id="CHIP_2", x=1, y=0, enabled=True),
+            Chip(id="CHIP_3", x=0, y=1, enabled=True),
+            Chip(id="CHIP_4", x=1, y=1, enabled=True),
         ]
     )
     gap: bool = True  # 3px gap between chips
@@ -194,7 +194,7 @@ class MerlinDetector(Device):
     TRIGGERSTART: Trigger = Trigger.INT
     TRIGGERSTOP: Trigger = Trigger.INT
     POLARITY: Polarity = Polarity.POS
-    version: str = "0.69.0.2"
+    SOFTWAREVERSION: str = "0.69.0.2"
     HVBIAS: int = 15
     ENABLECOUNTER1: CounterMode = CounterMode.Counter0
     DETECTORSTATUS: State = State.IDLE
@@ -209,8 +209,8 @@ class MerlinDetector(Device):
     TriggerOutLVDS: TriggerOut = TriggerOut.TriggerInTTL
     TriggerOutTTLInvert: bool = False
     TriggerOutLVDSInvert: bool = False
-    TriggerOutTTLDelay: int = 0
-    TriggerOutLVDSDelay: int = 0
+    TriggerInTTLDelay: int = 0
+    TriggerInLVDSDelay: int = 0
     TriggerUseDelay: bool = False
     SoftTriggerOutTTL: bool = False
     SoftTriggerOutLVDS: bool = False

@@ -42,7 +42,7 @@ class MerlinControlAdapter(CommandAdapter):
     # TODO
     def after_update(self) -> None: ...
 
-    @RegexCommand(r"MPX,[0-9]{10},GET,([a-zA-Z]*)$", format="utf-8")
+    @RegexCommand(r"MPX,[0-9]{10},GET,([a-zA-Z0-9]*)$", format="utf-8")
     async def get(self, parameter: str) -> bytes:
         value = "0"
         code = ErrorCode.UNDERSTOOD
@@ -63,9 +63,10 @@ class MerlinControlAdapter(CommandAdapter):
                 value = str(value)
         result_part = DLIM.join([CommandType.GET.value, parameter, value, code])
         response = DLIM.join([PREFIX, f"{(len(result_part) + 1):010}", result_part])
+        print(response)
         return response.encode("utf-8")
 
-    @RegexCommand(r"MPX,[0-9]{10},CMD,([a-zA-Z]*)$", format="utf-8")
+    @RegexCommand(r"MPX,[0-9]{10},CMD,([a-zA-Z0-9]*)$", format="utf-8")
     async def cmd(self, command_name: str) -> bytes:
         command = getattr(self.detector, f"{command_name}_cmd", None)
         if command_name not in commands[CommandType.CMD] or command is None:
