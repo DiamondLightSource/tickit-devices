@@ -169,7 +169,6 @@ class MerlinDetector(Device):
         ]
     )
     gap: bool = True  # 3px gap between chips
-    COLOURMODE: ColourMode = ColourMode.MONOCHROME
     CONTINUOUSRW: bool = False
     _current_frame: int = 1
     _current_layer: int = 0
@@ -230,10 +229,33 @@ class MerlinDetector(Device):
     FLATFIELDCORRECTION: bool = False
     _gap_time_ns: int = 1000000
     _acq_header_enabled: bool = True
+    _colour_mode: ColourMode = ColourMode.MONOCHROME
+
+    @property
+    def COLOURMODE(self) -> ColourMode:
+        return self._colour_mode
+
+    @COLOURMODE.setter
+    def COLOURMODE(self, value: ColourMode):
+        self._colour_mode = value
+        if value:
+            self.ENABLECOUNTER1 = CounterMode.Both
 
     @property
     def ACQUISITIONPERIOD(self) -> float:
-        return (self._gap_time_ns + self.shutter_time_ns) * 1e-9
+        # returns as ms
+        return (self._gap_time_ns + self.shutter_time_ns) * 1e-6
+
+    @ACQUISITIONPERIOD.setter
+    def ACQUISITIONPERIOD(self, value: float):
+        # value comes in in ms
+        value_ns = 1e6 * value
+        if value_ns >= self.shutter_time_ns:
+            # enforce minimum readout time of 822us
+            self._gap_time_ns = int(max(value_ns - self.shutter_time_ns, 822e3))
+        else:
+            # TODO: double check if this returns a RANGE error or not.
+            raise ValueError("Can not set acquisition period below shutter period")
 
     @property
     def THRESHOLD0(self):
@@ -270,7 +292,7 @@ class MerlinDetector(Device):
 
     @property
     def ACQUISITIONTIME(self):
-        return self.shutter_time_ns * 1e-9
+        return self.shutter_time_ns * 1e-6
 
     @property
     def DACFILE(self):
@@ -460,7 +482,7 @@ class MerlinDetector(Device):
             message = self.get_acq_header()
         else:
             message = b""
-        time.sleep(self.ACQUISITIONPERIOD)
+        time.sleep(self.ACQUISITIONPERIOD * 1e-3)
         for layer in layers:
             self._current_layer = layer
             message += self.get_frame_header()
