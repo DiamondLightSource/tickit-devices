@@ -2,7 +2,7 @@ import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 
 import numpy as np
 import numpy.typing as npt
@@ -11,7 +11,7 @@ from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
 
 from tickit_devices.merlin.acq_header import get_acq_header
-from tickit_devices.merlin.commands import ErrorCode, CommandType, commands
+from tickit_devices.merlin.commands import ErrorCode
 
 
 @dataclass
@@ -215,7 +215,8 @@ class MerlinDetector(Device):
     SoftTriggerOutLVDS: bool = False
     TriggerInTTL: bool = False
     TriggerInLVDS: bool = False
-    _last_image: Optional[npt.NDArray[Union[np.uint8, np.uint16, np.uint32]]] = None
+    _last_encoded_image: Optional[bytes] = None
+    _last_image_shape: Optional[Tuple[int, int]] = None
     THSCAN: int = 0
     THSTART: float = 0
     THSTOP: float = 0
@@ -459,10 +460,19 @@ class MerlinDetector(Device):
         else:  # self.ENABLECOUNTER1 == CounterMode.Counter1:
             layers = list(range(4, 8)) if self.COLOURMODE == ColourMode.COLOUR else [1]
         layers.reverse()
-        if self._last_image is None or self._last_image.shape != resolution:
+        if self._last_encoded_image is None or self._last_image_shape != resolution:
             # create new image, otherwise use existing one if same shape
             if self.COUNTERDEPTH == 1:
-                raise NotImplementedError("1 bit images not currently supported")
+                image = b""
+                pixels = resolution[0] * resolution[1]
+                for _ in range(pixels // 8):
+                    # generate random bytes
+                    image += bytes([np.random.randint(2)])
+                # if there is a remainder of pixels that doesn't divide into 8
+                # add a zeroed byte to the end.
+                if pixels % 8:
+                    image += bytes([0])
+                self._last_encoded_image = image
             else:
                 if self.COUNTERDEPTH == 6:
                     dtype = np.uint8
@@ -470,14 +480,16 @@ class MerlinDetector(Device):
                     dtype = np.uint16
                 else:  # 24 bit
                     dtype = np.uint32
-                self._last_image = np.random.randint(  # type: ignore
+                image = np.random.randint(  # type: ignore
                     2**self.COUNTERDEPTH, size=resolution, dtype=dtype
                 )
                 # create a black border for checking alignment of image
-                self._last_image[:10, :] = 0
-                self._last_image[-10:, :] = 0
-                self._last_image[:, :10] = 0
-                self._last_image[:, -10:] = 0
+                image[:10, :] = 0
+                image[-10:, :] = 0
+                image[:, :10] = 0
+                image[:, -10:] = 0
+                self._last_encoded_image = image.tobytes()
+            self._last_image_shape = resolution
         if self._acq_header_enabled and self._current_frame == 1:
             message = self.get_acq_header()
         else:
@@ -486,7 +498,7 @@ class MerlinDetector(Device):
         for layer in layers:
             self._current_layer = layer
             message += self.get_frame_header()
-            message += self._last_image.tobytes()
+            message += self._last_encoded_image
         self._images_remaining -= 1
         self._current_frame += 1
         if self._images_remaining == 0:

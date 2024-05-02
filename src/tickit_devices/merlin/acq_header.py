@@ -27,7 +27,7 @@ def get_acq_header(merlin: "MerlinDetector"):
     else:
         fill_string = "Interpolate"
     acquisition_header = (
-f"""MPX,{ACQ_HEADER_SIZE:010},HDR,
+        f"""MPX,{ACQ_HEADER_SIZE:010},HDR,
 Time and Date Stamp (day, mnth, yr, hr, min, s):	{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
 Chip ID:	{", ".join([chip.get_id_for_header() for chip in merlin.chips])}
 Chip Type (Medipix 3.0, Medipix 3.1, Medipix 3RX):	{merlin.chip_type}
@@ -56,7 +56,6 @@ Medipix Clock (MHz):	{merlin.medipix_clock}MHz
 Readout System:	{merlin.readout_system}
 Software Version:	{merlin.SOFTWAREVERSION}
 End
-""").ljust(
-        ACQ_HEADER_SIZE + len(f"MPX,{ACQ_HEADER_SIZE:010},")
-    )
+"""
+    ).ljust(ACQ_HEADER_SIZE + len(f"MPX,{ACQ_HEADER_SIZE:010},"))
     return acquisition_header
