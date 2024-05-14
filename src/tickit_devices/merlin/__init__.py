@@ -1,5 +1,5 @@
 import pydantic.v1.dataclasses
-from tickit.adapters.io import TcpIo, ZeroMqPushIo
+from tickit.adapters.io import TcpIo
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_component import DeviceComponent

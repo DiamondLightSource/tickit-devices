@@ -5,7 +5,7 @@ from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 
 class TcpPushAdapter:
-    """An adapter interface for the ZeroMqPushIo."""
+    """An adapter interface for the TcpPushIo."""
 
     _message_queue: Optional[asyncio.Queue]
 
@@ -27,7 +27,7 @@ class TcpPushAdapter:
 
 
 class TcpPushIo(AdapterIo["TcpPushAdapter"]):
-    """AdapterIo for a ZeroMQ data stream."""
+    """AdapterIo for a read-only TCP data stream."""
 
     _host: str
     _port: int

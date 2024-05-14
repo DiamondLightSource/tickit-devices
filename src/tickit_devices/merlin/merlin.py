@@ -5,7 +5,6 @@ from enum import Enum
 from typing import List, Optional, Tuple
 
 import numpy as np
-import numpy.typing as npt
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
@@ -63,10 +62,10 @@ class ChipMode(str, Enum):
     CSCM = "CSCM"
 
 
-class Trigger(str, Enum):
-    POS = "Positive"
-    NEG = "Negative"
-    INT = "Internal"
+class Trigger(int, Enum):
+    POS = 0
+    NEG = 1
+    INT = 2
 
 
 class Polarity(str, Enum):
@@ -150,9 +149,9 @@ class Chip:
     def get_threshold_string_scientific(self):
         return ",".join(
             [
-                f"{getattr(self.DACs, field.name):.7E}"
-                for field in fields(self.DACs)
-                if field.name.startswith("Threshold")
+                f"{getattr(self.DACs, f.name):.7E}"
+                for f in fields(self.DACs)
+                if f.name.startswith("Threshold")
             ]
         )
 
@@ -168,69 +167,69 @@ class MerlinDetector(Device):
             Chip(id="CHIP_4", x=1, y=1, enabled=True),
         ]
     )
-    gap: bool = True  # 3px gap between chips
-    CONTINUOUSRW: bool = False
+    _acq_header_enabled: bool = True
     _current_frame: int = 1
     _current_layer: int = 0
-    shutter_time_ns: int = 10000000
+    _colour_mode: ColourMode = ColourMode.MONOCHROME
     _configuration: str = ""
-    acquiring: bool = False
     _images_remaining: int = 0
-    GAIN: GainMode = GainMode.SLGM
-    CHARGESUMMING: bool = False
+    _gap_time_ns: int = 1000000
     _last_header: str = ""
-    chip_type: str = "Medipix 3RX"
-    readout_system: str = "Merlin Quad"
-    medipix_clock: int = 120
-    dead_time_file: str = "Dummy (C:\\<NUL>\\)"
-    FLATFIELDFILE: str = "None"
-    FILLMODE: GapFillMode = GapFillMode.NONE
-    TEMPERATURE: float = 0.0
-    humidity: float = 0.0
+    _last_encoded_image: Optional[bytes] = None
+    _last_image_shape: Optional[Tuple[int, int]] = None
     acq_type: AcquisitionType = AcquisitionType.NORMAL
+    acquiring: bool = False
+    chip_type: str = "Medipix 3RX"
+    dead_time_file: str = "Dummy (C:\\<NUL>\\)"
+    gap: bool = True  # 3px gap between chips
+    humidity: float = 0.0
+    medipix_clock: int = 120
+    readout_system: str = "Merlin Quad"
+    shutter_time_ns: int = 10000000
+    CHARGESUMMING: bool = False
+    CONTINUOUSRW: bool = False
+    DEADTIMECORRECTION: bool = False
+    DETECTORSTATUS: State = State.IDLE
+    ENABLECOUNTER1: CounterMode = CounterMode.Counter0
+    FILECOUNTER: int = 0
+    FILEDIRECTORY: str = ""
+    FILEENABLE: bool = False
+    FILEFORMAT: FileFormat = FileFormat.Binary
+    FILLMODE: GapFillMode = GapFillMode.NONE
+    FILENAME: str = ""
+    FLATFIELDCORRECTION: bool = False
+    FLATFIELDFILE: str = "None"
+    GAIN: GainMode = GainMode.SLGM
+    HVBIAS: int = 15
+    MASKINDATA: bool = False
     NUMFRAMESTOACQUIRE: int = 1
     NUMFRAMESPERTRIGGER: int = 1
-    TRIGGERSTART: Trigger = Trigger.INT
-    TRIGGERSTOP: Trigger = Trigger.INT
-    POLARITY: Polarity = Polarity.POS
-    SOFTWAREVERSION: str = "0.69.0.2"
-    HVBIAS: int = 15
-    ENABLECOUNTER1: CounterMode = CounterMode.Counter0
-    DETECTORSTATUS: State = State.IDLE
-    FILECOUNTER: int = 0
-    FILEFORMAT: FileFormat = FileFormat.Binary
-    FILEDIRECTORY: str = ""
-    FILENAME: str = ""
+    OPERATINGENERGY: float = 0
     PIXELMATRIXSAVEFILE: str = ""
     PIXELMATRIXLOADFILE: str = ""
-    FILEENABLE: bool = False
+    POLARITY: Polarity = Polarity.POS
+    SOFTWAREVERSION: str = "0.69.0.2"
+    TEMPERATURE: float = 0.0
+    THNUMSTEPS: int = 0
+    THSTART: float = 0
+    THSTEP: float = 0
+    THSCAN: int = 0
+    THSTOP: float = 0
+    THWINDOWMODE: bool = False
+    THWINDOWSIZE: float = 0
+    TRIGGERSTART: Trigger = Trigger.INT
+    TRIGGERSTOP: Trigger = Trigger.INT
+    SoftTriggerOutTTL: bool = False
+    SoftTriggerOutLVDS: bool = False
+    TriggerInTTLDelay: int = 0
+    TriggerInLVDSDelay: int = 0
     TriggerOutTTL: TriggerOut = TriggerOut.TriggerInTTL
     TriggerOutLVDS: TriggerOut = TriggerOut.TriggerInTTL
     TriggerOutTTLInvert: bool = False
     TriggerOutLVDSInvert: bool = False
-    TriggerInTTLDelay: int = 0
-    TriggerInLVDSDelay: int = 0
     TriggerUseDelay: bool = False
-    SoftTriggerOutTTL: bool = False
-    SoftTriggerOutLVDS: bool = False
     TriggerInTTL: bool = False
     TriggerInLVDS: bool = False
-    _last_encoded_image: Optional[bytes] = None
-    _last_image_shape: Optional[Tuple[int, int]] = None
-    THSCAN: int = 0
-    THSTART: float = 0
-    THSTOP: float = 0
-    THSTEP: float = 0
-    THNUMSTEPS: int = 0
-    OPERATINGENERGY: float = 0
-    MASKINDATA: bool = False
-    DEADTIMECORRECTION: bool = False
-    THWINDOWMODE: bool = False
-    THWINDOWSIZE: float = 0
-    FLATFIELDCORRECTION: bool = False
-    _gap_time_ns: int = 1000000
-    _acq_header_enabled: bool = True
-    _colour_mode: ColourMode = ColourMode.MONOCHROME
 
     @property
     def COLOURMODE(self) -> ColourMode:
@@ -349,10 +348,10 @@ class MerlinDetector(Device):
     def RESET_cmd(self) -> ErrorCode:
         # TODO: how does this work during acquisition?
         skip = ["chips"]
-        for field in fields(self):
-            if field.name in skip:
+        for f in fields(self):
+            if f.name in skip:
                 continue
-            setattr(self, field.name, field.default)
+            setattr(self, f.name, f.default)
         return ErrorCode.UNDERSTOOD
 
     def ABORT_cmd(self) -> ErrorCode:
@@ -420,7 +419,7 @@ class MerlinDetector(Device):
                 "MQ1",
                 f"{self._current_frame:06}",
                 f"{header_size:05}",
-                f"{len(enabled_chips):02}",  # double check if this is all chips or enabled chips
+                f"{len(enabled_chips):02}",
                 f"{x:04}",
                 f"{y:04}",
                 dtype,
@@ -448,7 +447,6 @@ class MerlinDetector(Device):
     def get_image(self):
         # TODO: handle two threshold and colour mode
         resolution = self.get_resolution()
-        # we decrement until _current_layer reaches 0, append all the images together and send at once
         if self.ENABLECOUNTER1 == CounterMode.Both:
             layers = (
                 list(range(8))
@@ -495,6 +493,8 @@ class MerlinDetector(Device):
         else:
             message = b""
         time.sleep(self.ACQUISITIONPERIOD * 1e-3)
+        # decrement until _current_layer reaches 0
+        # append all the images together and send at once
         for layer in layers:
             self._current_layer = layer
             message += self.get_frame_header()

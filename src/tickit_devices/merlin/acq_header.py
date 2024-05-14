@@ -28,7 +28,8 @@ def get_acq_header(merlin: "MerlinDetector"):
         fill_string = "Interpolate"
     acquisition_header = (
         f"""MPX,{ACQ_HEADER_SIZE:010},HDR,
-Time and Date Stamp (day, mnth, yr, hr, min, s):	{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
+Time and Date Stamp (day, mnth, yr, hr, min, s):	{
+    datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
 Chip ID:	{", ".join([chip.get_id_for_header() for chip in merlin.chips])}
 Chip Type (Medipix 3.0, Medipix 3.1, Medipix 3RX):	{merlin.chip_type}
 Assembly Size (NX1, 2X2):	   {merlin.get_configuration()}
@@ -46,8 +47,10 @@ Dead Time File:	{merlin.dead_time_file}
 Acquisition Type (Normal, Th_scan, Config):	{merlin.acq_type}
 Frames in Acquisition (Number):	{merlin.NUMFRAMESTOACQUIRE}
 Frames per Trigger (Number):	{merlin.NUMFRAMESPERTRIGGER}
-Trigger Start (Positive, Negative, Internal):	{merlin.TRIGGERSTART}
-Trigger Stop (Positive, Negative, Internal):	{merlin.TRIGGERSTOP}
+Trigger Start (Positive, Negative, Internal):	{
+    ["Positive", "Negative", "Internal"][merlin.TRIGGERSTART.value]}
+Trigger Stop (Positive, Negative, Internal):	{
+    ["Positive", "Negative", "Internal"][merlin.TRIGGERSTOP.value]}
 Sensor Bias (V):	{merlin.HVBIAS} V
 Sensor Polarity (Positive, Negative):	{merlin.POLARITY}
 Temperature (C):	Board Temp {merlin.TEMPERATURE:.6f} Deg C
