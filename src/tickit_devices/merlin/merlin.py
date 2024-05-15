@@ -2,7 +2,7 @@ import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 from tickit.core.device import Device, DeviceUpdate
@@ -11,6 +11,8 @@ from typing_extensions import TypedDict
 
 from tickit_devices.merlin.acq_header import get_acq_header
 from tickit_devices.merlin.commands import ErrorCode
+
+from typing import Generic, TypeVar
 
 
 @dataclass
@@ -156,9 +158,33 @@ class Chip:
         )
 
 
+T = TypeVar("T")
+
+
+# TODO: maybe TypeVar is inappropriate here
+class MerlinParameter(Generic[T]):
+    _value: Optional[T]
+
+    def __init__(
+        self,
+        value: Optional[T] = None,
+        getter: Optional[Callable[[], T]] = None,
+        setter: Optional[Callable[[T], None]] = None,
+    ):
+        self._value = value
+        self.get: Callable[[], T] = getter if getter is not None else self.default_get
+        self.set: Callable[[T], None] = setter if setter is not None else self.default_set
+
+    def default_get(self) -> T:
+        return self._value
+
+    # TODO: test this!!
+    def default_set(self, value: T):
+        self._value = value
+
+
 @dataclass
 class MerlinDetector(Device):
-    COUNTERDEPTH: int = 12
     chips: List[Chip] = field(
         default_factory=lambda: [
             Chip(id="CHIP_1", x=0, y=0, enabled=True),
@@ -186,60 +212,119 @@ class MerlinDetector(Device):
     medipix_clock: int = 120
     readout_system: str = "Merlin Quad"
     shutter_time_ns: int = 10000000
-    CHARGESUMMING: bool = False
-    CONTINUOUSRW: bool = False
-    DEADTIMECORRECTION: bool = False
-    DETECTORSTATUS: State = State.IDLE
-    ENABLECOUNTER1: CounterMode = CounterMode.Counter0
-    FILECOUNTER: int = 0
-    FILEDIRECTORY: str = ""
-    FILEENABLE: bool = False
-    FILEFORMAT: FileFormat = FileFormat.Binary
-    FILLMODE: GapFillMode = GapFillMode.NONE
-    FILENAME: str = ""
-    FLATFIELDCORRECTION: bool = False
-    FLATFIELDFILE: str = "None"
-    GAIN: GainMode = GainMode.SLGM
-    HVBIAS: int = 15
-    MASKINDATA: bool = False
-    NUMFRAMESTOACQUIRE: int = 1
-    NUMFRAMESPERTRIGGER: int = 1
-    OPERATINGENERGY: float = 0
-    PIXELMATRIXSAVEFILE: str = ""
-    PIXELMATRIXLOADFILE: str = ""
-    POLARITY: Polarity = Polarity.POS
-    SOFTWAREVERSION: str = "0.69.0.2"
-    TEMPERATURE: float = 0.0
-    THNUMSTEPS: int = 0
-    THSTART: float = 0
-    THSTEP: float = 0
-    THSCAN: int = 0
-    THSTOP: float = 0
-    THWINDOWMODE: bool = False
-    THWINDOWSIZE: float = 0
-    TRIGGERSTART: Trigger = Trigger.INT
-    TRIGGERSTOP: Trigger = Trigger.INT
-    SoftTriggerOutTTL: bool = False
-    SoftTriggerOutLVDS: bool = False
-    TriggerInTTLDelay: int = 0
-    TriggerInLVDSDelay: int = 0
-    TriggerOutTTL: TriggerOut = TriggerOut.TriggerInTTL
-    TriggerOutLVDS: TriggerOut = TriggerOut.TriggerInTTL
-    TriggerOutTTLInvert: bool = False
-    TriggerOutLVDSInvert: bool = False
-    TriggerUseDelay: bool = False
-    TriggerInTTL: bool = False
-    TriggerInLVDS: bool = False
+    parameters: Dict[str, MerlinParameter[Any]] = field(
+        default_factory=lambda: {
+            "COUNTERDEPTH": MerlinParameter(12),
+            "CHARGESUMMING": MerlinParameter(False),
+            "CONTINUOUSRW": MerlinParameter(False),
+            "DEADTIMECORRECTION": MerlinParameter(False),
+            "DETECTORSTATUS": MerlinParameter(State.IDLE),
+            "ENABLECOUNTER1": MerlinParameter(CounterMode.Counter0),
+            "FILECOUNTER": MerlinParameter(0),
+            "FILEDIRECTORY": MerlinParameter(""),
+            "FILEENABLE": MerlinParameter(False),
+            "FILEFORMAT": MerlinParameter(FileFormat.Binary),
+            "FILLMODE": MerlinParameter(GapFillMode.NONE),
+            "FILENAME": MerlinParameter(""),
+            "FLATFIELDCORRECTION": MerlinParameter(False),
+            "FLATFIELDFILE": MerlinParameter("None"),
+            "GAIN": MerlinParameter(GainMode.SLGM),
+            "HVBIAS": MerlinParameter(15),
+            "MASKINDATA": MerlinParameter(False),
+            "NUMFRAMESTOACQUIRE": MerlinParameter(1),
+            "NUMFRAMESPERTRIGGER": MerlinParameter(1),
+            "OPERATINGENERGY": MerlinParameter(0),
+            "PIXELMATRIXSAVEFILE": MerlinParameter(""),
+            "PIXELMATRIXLOADFILE": MerlinParameter(""),
+            "POLARITY": MerlinParameter(Polarity.POS),
+            "SOFTWAREVERSION": MerlinParameter("0.69.0.2"),
+            "TEMPERATURE": MerlinParameter(0.0),
+            "THNUMSTEPS": MerlinParameter(0),
+            "THSTART": MerlinParameter(0),
+            "THSTEP": MerlinParameter(0),
+            "THSCAN": MerlinParameter(0),
+            "THSTOP": MerlinParameter(0),
+            "THWINDOWMODE": MerlinParameter(False),
+            "THWINDOWSIZE": MerlinParameter(0),
+            "TRIGGERSTART": MerlinParameter(Trigger.INT),
+            "TRIGGERSTOP": MerlinParameter(Trigger.INT),
+            "SoftTriggerOutTTL": MerlinParameter(False),
+            "SoftTriggerOutLVDS": MerlinParameter(False),
+            "TriggerInTTLDelay": MerlinParameter(0),
+            "TriggerInLVDSDelay": MerlinParameter(0),
+            "TriggerOutTTL": MerlinParameter(TriggerOut.TriggerInTTL),
+            "TriggerOutLVDS": MerlinParameter(TriggerOut.TriggerInTTL),
+            "TriggerOutTTLInvert": MerlinParameter(False),
+            "TriggerOutLVDSInvert": MerlinParameter(False),
+            "TriggerUseDelay": MerlinParameter(False),
+            "TriggerInTTL": MerlinParameter(False),
+            "TriggerInLVDS": MerlinParameter(False),
+        }
+    )
 
-    @property
-    def COLOURMODE(self) -> ColourMode:
-        return self._colour_mode
+    def initialise(self):
+        """Create parameters with custom getters/setters"""
+        self.parameters["THRESHOLD0"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold0,
+            lambda val: self.set_threshold(0, val),
+        )
+        self.parameters["THRESHOLD1"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold1,
+            lambda val: self.set_threshold(1, val),
+        )
+        self.parameters["THRESHOLD2"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold2,
+            lambda val: self.set_threshold(2, val),
+        )
+        self.parameters["THRESHOLD3"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold3,
+            lambda val: self.set_threshold(3, val),
+        )
+        self.parameters["THRESHOLD4"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold4,
+            lambda val: self.set_threshold(4, val),
+        )
+        self.parameters["THRESHOLD5"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold5,
+            lambda val: self.set_threshold(5, val),
+        )
+        self.parameters["THRESHOLD6"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold6,
+            lambda val: self.set_threshold(6, val),
+        )
+        self.parameters["THRESHOLD7"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].DACs.Threshold7,
+            lambda val: self.set_threshold(7, val),
+        )
+        self.parameters["COLOURMODE"] = MerlinParameter(
+            None,
+            lambda: self._colour_mode,
+            lambda val: self.set_colour_mode(val)
+        )
+        self.parameters["DACFILE"] = MerlinParameter(
+            None,
+            lambda: self.chips[0].dac_file,
+            lambda val: setattr(self.chips[0], "dac_file", val)
+        )
 
-    @COLOURMODE.setter
-    def COLOURMODE(self, value: ColourMode):
-        self._colour_mode = value
-        if value:
-            self.ENABLECOUNTER1 = CounterMode.Both
+    def get(self, parameter: str):
+        return self.parameters[parameter].get()
+
+    def set_threshold(self, threshold: int, value_str: int):
+        setattr(self.chips[0].DACs, f"Threshold{threshold}", int(value_str))
+
+    def set_colour_mode(self, value_str: str):
+        self.parameters["COLOURMODE"].default_set(value_str)
+        if self.get("COLOURMODE") == ColourMode.COLOUR:
+            self.set_param("ENABLECOUNTER1", CounterMode.Both)
 
     @property
     def ACQUISITIONPERIOD(self) -> float:
@@ -258,62 +343,28 @@ class MerlinDetector(Device):
             raise ValueError("Can not set acquisition period below shutter period")
 
     @property
-    def THRESHOLD0(self):
-        print("Not doing correction calculation yet!!")
-        return self.chips[0].DACs.Threshold0
-
-    @property
-    def THRESHOLD1(self):
-        return self.chips[0].DACs.Threshold1
-
-    @property
-    def THRESHOLD2(self):
-        return self.chips[0].DACs.Threshold2
-
-    @property
-    def THRESHOLD3(self):
-        return self.chips[0].DACs.Threshold3
-
-    @property
-    def THRESHOLD4(self):
-        return self.chips[0].DACs.Threshold4
-
-    @property
-    def THRESHOLD5(self):
-        return self.chips[0].DACs.Threshold5
-
-    @property
-    def THRESHOLD6(self):
-        return self.chips[0].DACs.Threshold6
-
-    @property
-    def THRESHOLD7(self):
-        return self.chips[0].DACs.Threshold7
-
-    @property
     def ACQUISITIONTIME(self):
         return self.shutter_time_ns * 1e-6
-
-    @property
-    def DACFILE(self):
-        return self.chips[0].dac_file
 
     class Inputs(TypedDict, total=False):
         trigger: bool
 
     class Outputs(TypedDict): ...
 
-    def set_parameter(self, parameter: str, value_str: str) -> ErrorCode:
+    def set_param(self, parameter: str, value: Any):
+        self.parameters[parameter].set(value)
+
+    def set_param_from_string(self, parameter: str, value_str: str) -> ErrorCode:
         """Cast value to correct type and set"""
         try:
-            attr = getattr(self, parameter)
+            attr = self.get(parameter)  # get current value to determine type
+            # we could probably pass the type to MerlinParameter instead
             attr_type = type(attr)
             if isinstance(attr, Enum) and isinstance(attr, int):
                 value = attr_type(int(value_str))
-                setattr(self, parameter, attr_type(int(value)))
             else:
                 value = attr_type(value_str)
-            setattr(self, parameter, value)
+            self.set_param(parameter, value)
             code = ErrorCode.UNDERSTOOD
         except Exception as e:  # TODO: use more specific exception
             print(e)
@@ -321,17 +372,17 @@ class MerlinDetector(Device):
         return code
 
     def STARTACQUISITION_cmd(self) -> ErrorCode:
-        if self.DETECTORSTATUS is not State.IDLE:
+        if self.get("DETECTORSTATUS") is not State.IDLE:
             return ErrorCode.BUSY
 
         self.acquiring = True
-        self._images_remaining = self.NUMFRAMESTOACQUIRE
+        self._images_remaining = self.get("NUMFRAMESTOACQUIRE")
         self._current_frame = 1
         # TODO: add NUMFRAMESPERTRIGGER logic, only really works with external triggers
         return ErrorCode.UNDERSTOOD
 
     def STOPACQUISITION_cmd(self) -> ErrorCode:
-        self.DETECTORSTATUS = State.IDLE  # type: ignore
+        self.set_param("DETECTORSTATUS", State.IDLE)
         self.acquiring = False
         self._current_frame = 1
         self._current_layer = 0
@@ -346,13 +397,14 @@ class MerlinDetector(Device):
         return ErrorCode.UNDERSTOOD
 
     def RESET_cmd(self) -> ErrorCode:
+        raise NotImplementedError("Fix this")
         # TODO: how does this work during acquisition?
-        skip = ["chips"]
-        for f in fields(self):
-            if f.name in skip:
-                continue
-            setattr(self, f.name, f.default)
-        return ErrorCode.UNDERSTOOD
+        # skip = ["chips"]
+        # for f in fields(self):
+        #     if f.name in skip:
+        #         continue
+        #     setattr(self, f.name, f.default)
+        # return ErrorCode.UNDERSTOOD
 
     def ABORT_cmd(self) -> ErrorCode:
         # TODO: write command
@@ -360,14 +412,15 @@ class MerlinDetector(Device):
 
     def get_resolution(self) -> Tuple[int, int]:
         chips = [c for c in self.chips if c.enabled]
-        chip_size = 128 if self.COLOURMODE == ColourMode.COLOUR else 256
+        colour_mode = self.get("COLOURMODE")
+        chip_size = 128 if colour_mode == ColourMode.COLOUR else 256
         x_gaps = max([c.x for c in chips]) - min(c.x for c in chips)
         y_gaps = max([c.y for c in chips]) - min(c.y for c in chips)
         # assuming in 2x2 configuration, TL, TR, BL, BR
         x = chip_size * (x_gaps + 1)
         y = chip_size * (y_gaps + 1)
         if self.gap:
-            gap_size = 1 if self.COLOURMODE == ColourMode.COLOUR else 3
+            gap_size = 1 if colour_mode == ColourMode.COLOUR else 3
             x += x_gaps * gap_size
             y += y_gaps * gap_size
         return (x, y)
@@ -396,16 +449,17 @@ class MerlinDetector(Device):
         pixels = x * y
         header_timestamp = datetime.now().strftime("%Y-%m-%d-%H:%M:%S.%f")
         chip_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f000Z")
-        if self.COUNTERDEPTH == 1:
+        depth = self.get("COUNTERDEPTH")
+        if depth == 1:
             data_size = pixels // 8
             dtype = "U8"
-        elif self.COUNTERDEPTH == 6:
+        elif depth == 6:
             data_size = pixels
             dtype = "U8"
-        elif self.COUNTERDEPTH == 12:
+        elif depth == 12:
             data_size = pixels * 2
             dtype = "U16"
-        elif self.COUNTERDEPTH == 24:
+        elif depth == 24:
             data_size = pixels * 4
             dtype = "U32"
         else:
@@ -426,17 +480,19 @@ class MerlinDetector(Device):
                 self.get_configuration().rjust(6),
                 self.get_chip_flags().rjust(2, "0"),
                 header_timestamp,
-                f"{self.ACQUISITIONTIME:.6f}",
+                f"{self.get('ACQUISITIONTIME'):.6f}",
                 str(self._current_layer),
-                str(int(self.COLOURMODE)),
-                str(self.GAIN.value),
+                str(int(self.get("COLOURMODE"))),
+                str(self.get("GAIN").value),
             ]
         )
         header += "," + enabled_chips[0].get_threshold_string_scientific() + ",3RX,"
         for chip in enabled_chips:
             header += chip.get_dac_string() + ","
         header += "MQ1A,"
-        header += f"{chip_timestamp},{self.shutter_time_ns}ns,{self.COUNTERDEPTH},"
+        header += (
+            f"{chip_timestamp},{self.shutter_time_ns}ns,{self.get('COUNTERDEPTH')},"
+        )
         self._last_header = header.ljust(header_size + 15, " ")
         # 15 is len("MPX,0000XXXXXX,")
         return self._last_header.encode("ascii")
@@ -447,20 +503,21 @@ class MerlinDetector(Device):
     def get_image(self):
         # TODO: handle two threshold and colour mode
         resolution = self.get_resolution()
-        if self.ENABLECOUNTER1 == CounterMode.Both:
+        colour_mode = self.get("COLOURMODE")
+        counter_mode = self.get("ENABLECOUNTER1")
+        if counter_mode == CounterMode.Both:
             layers = (
-                list(range(8))
-                if self.COLOURMODE == ColourMode.COLOUR
-                else list(range(2))
+                list(range(8)) if colour_mode == ColourMode.COLOUR else list(range(2))
             )
-        elif self.ENABLECOUNTER1 == CounterMode.Counter0:
-            layers = list(range(4)) if self.COLOURMODE == ColourMode.COLOUR else [0]
-        else:  # self.ENABLECOUNTER1 == CounterMode.Counter1:
-            layers = list(range(4, 8)) if self.COLOURMODE == ColourMode.COLOUR else [1]
+        elif counter_mode == CounterMode.Counter0:
+            layers = list(range(4)) if colour_mode == ColourMode.COLOUR else [0]
+        else:  # counter_mode == CounterMode.Counter1:
+            layers = list(range(4, 8)) if colour_mode == ColourMode.COLOUR else [1]
         layers.reverse()
         if self._last_encoded_image is None or self._last_image_shape != resolution:
             # create new image, otherwise use existing one if same shape
-            if self.COUNTERDEPTH == 1:
+            depth = self.get("COUNTERDEPTH")
+            if depth == 1:
                 image = b""
                 pixels = resolution[0] * resolution[1]
                 for _ in range(pixels // 8):
@@ -472,14 +529,14 @@ class MerlinDetector(Device):
                     image += bytes([0])
                 self._last_encoded_image = image
             else:
-                if self.COUNTERDEPTH == 6:
+                if depth == 6:
                     dtype = np.uint8
-                elif self.COUNTERDEPTH == 12:
+                elif depth == 12:
                     dtype = np.uint16
                 else:  # 24 bit
                     dtype = np.uint32
                 image = np.random.randint(  # type: ignore
-                    2**self.COUNTERDEPTH, size=resolution, dtype=dtype
+                    2**depth, size=resolution, dtype=dtype
                 )
                 # create a black border for checking alignment of image
                 image[:10, :] = 0
@@ -492,7 +549,7 @@ class MerlinDetector(Device):
             message = self.get_acq_header()
         else:
             message = b""
-        time.sleep(self.ACQUISITIONPERIOD * 1e-3)
+        time.sleep(self.get("ACQUISITIONPERIOD") * 1e-3)
         # decrement until _current_layer reaches 0
         # append all the images together and send at once
         for layer in layers:

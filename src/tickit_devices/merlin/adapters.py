@@ -37,6 +37,7 @@ class MerlinDataAdapter(TcpPushAdapter):
 class MerlinControlAdapter(CommandAdapter):
     def __init__(self, detector: MerlinDetector, data_adapter: MerlinDataAdapter):
         self.detector = detector
+        self.detector.initialise()
         self.data_adapter = data_adapter
 
     # TODO
@@ -46,13 +47,14 @@ class MerlinControlAdapter(CommandAdapter):
     async def get(self, parameter: str) -> bytes:
         value = "0"
         code = ErrorCode.UNDERSTOOD
-        if parameter not in commands[CommandType.GET] + commands[
-            CommandType.SET
-        ] or not hasattr(self.detector, parameter):
+        if (
+            parameter not in commands[CommandType.GET] + commands[CommandType.SET]
+            or not parameter in self.detector.parameters
+        ):
             code = ErrorCode.UNRECOGNISED
             LOGGER.error(f"Merlin does not have a parameter {parameter}")
         else:
-            value = getattr(self.detector, parameter)
+            value = self.detector.get(parameter)
             if isinstance(value, bool):
                 value = str(int(value))
             elif isinstance(value, Enum):
@@ -63,7 +65,6 @@ class MerlinControlAdapter(CommandAdapter):
                 value = str(value)
         result_part = DLIM.join([CommandType.GET.value, parameter, value, code])
         response = DLIM.join([PREFIX, f"{(len(result_part) + 1):010}", result_part])
-        print(response)
         return response.encode("utf-8")
 
     @RegexCommand(r"MPX,[0-9]{10},CMD,([a-zA-Z0-9]*)$", format="utf-8")
@@ -80,16 +81,18 @@ class MerlinControlAdapter(CommandAdapter):
 
     @RegexCommand(r"MPX,[0-9]{10},SET,([a-zA-Z]*),([a-zA-Z0-9]*)$", format="utf-8")
     async def set(self, parameter: str, value: str) -> bytes:
-        if parameter not in commands[CommandType.SET] or not hasattr(
-            self.detector, parameter
+        if (
+            parameter not in commands[CommandType.SET]
+            or not parameter in self.detector.parameters
         ):
             code = ErrorCode.UNRECOGNISED
             # TODO: is this the right error code for setting a read only value??
             LOGGER.error(f"Merlin can't set parameter {parameter}")
-        elif self.detector.DETECTORSTATUS != State.IDLE:
+        elif self.detector.parameters["DETECTORSTATUS"].get() != State.IDLE:
             code = ErrorCode.BUSY
         else:
-            code = self.detector.set_parameter(parameter, value)
+            code = self.detector.set_param_from_string(parameter, value)
         result_part = DLIM.join([CommandType.SET.value, parameter, code])
         response = DLIM.join([PREFIX, f"{(len(result_part) + 1):010}", result_part])
+        print(response)
         return response.encode("utf-8")
