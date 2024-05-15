@@ -79,7 +79,7 @@ class MerlinControlAdapter(CommandAdapter):
         response = DLIM.join([PREFIX, f"{(len(result_part) + 1):010}", result_part])
         return response.encode("utf-8")
 
-    @RegexCommand(r"MPX,[0-9]{10},SET,([a-zA-Z]*),([a-zA-Z0-9]*)$", format="utf-8")
+    @RegexCommand(r"MPX,[0-9]{10},SET,([a-zA-Z0-9]*),([a-zA-Z0-9.]*)$", format="utf-8")
     async def set(self, parameter: str, value: str) -> bytes:
         if (
             parameter not in commands[CommandType.SET]
@@ -94,5 +94,4 @@ class MerlinControlAdapter(CommandAdapter):
             code = self.detector.set_param_from_string(parameter, value)
         result_part = DLIM.join([CommandType.SET.value, parameter, code])
         response = DLIM.join([PREFIX, f"{(len(result_part) + 1):010}", result_part])
-        print(response)
         return response.encode("utf-8")

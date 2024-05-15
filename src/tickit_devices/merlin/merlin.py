@@ -199,7 +199,7 @@ class MerlinDetector(Device):
     _colour_mode: ColourMode = ColourMode.MONOCHROME
     _configuration: str = ""
     _images_remaining: int = 0
-    _gap_time_ns: int = 1000000
+    _gap_time_ns: int = 1_000_000 # 1ms
     _last_header: str = ""
     _last_encoded_image: Optional[bytes] = None
     _last_image_shape: Optional[Tuple[int, int]] = None
@@ -211,7 +211,7 @@ class MerlinDetector(Device):
     humidity: float = 0.0
     medipix_clock: int = 120
     readout_system: str = "Merlin Quad"
-    shutter_time_ns: int = 10000000
+    shutter_time_ns: int = 10_000_000 # 10ms
     parameters: Dict[str, MerlinParameter[Any]] = field(
         default_factory=lambda: {
             "COUNTERDEPTH": MerlinParameter(12),
@@ -314,25 +314,35 @@ class MerlinDetector(Device):
             lambda: self.chips[0].dac_file,
             lambda val: setattr(self.chips[0], "dac_file", val)
         )
+        self.parameters["ACQUISITIONTIME"] = MerlinParameter(
+            None,
+            lambda: self.shutter_time_ns * 1e-6,  # returns in ms
+            lambda val: self.set_acq_time(val)
+        )
+        self.parameters["ACQUISITIONPERIOD"] = MerlinParameter(
+            None,
+            lambda: (self._gap_time_ns + self.shutter_time_ns) * 1e-6,
+            lambda val: self.set_acq_period(val)
+        )
 
     def get(self, parameter: str):
         return self.parameters[parameter].get()
 
-    def set_threshold(self, threshold: int, value_str: int):
-        setattr(self.chips[0].DACs, f"Threshold{threshold}", int(value_str))
+    def set_threshold(self, threshold: int, value: int):
+        setattr(self.chips[0].DACs, f"Threshold{threshold}", value)
 
     def set_colour_mode(self, value_str: str):
         self.parameters["COLOURMODE"].default_set(value_str)
         if self.get("COLOURMODE") == ColourMode.COLOUR:
             self.set_param("ENABLECOUNTER1", CounterMode.Both)
 
-    @property
-    def ACQUISITIONPERIOD(self) -> float:
-        # returns as ms
-        return (self._gap_time_ns + self.shutter_time_ns) * 1e-6
+    def set_acq_time(self, value: float):
+        new_shutter_time_ns = int(1e6 * value)
+        # adjust gap time so that acq period doesn't change
+        self._gap_time_ns += (self.shutter_time_ns - new_shutter_time_ns)
+        self.shutter_time_ns = new_shutter_time_ns
 
-    @ACQUISITIONPERIOD.setter
-    def ACQUISITIONPERIOD(self, value: float):
+    def set_acq_period(self, value: float):
         # value comes in in ms
         value_ns = 1e6 * value
         if value_ns >= self.shutter_time_ns:
@@ -341,10 +351,6 @@ class MerlinDetector(Device):
         else:
             # TODO: double check if this returns a RANGE error or not.
             raise ValueError("Can not set acquisition period below shutter period")
-
-    @property
-    def ACQUISITIONTIME(self):
-        return self.shutter_time_ns * 1e-6
 
     class Inputs(TypedDict, total=False):
         trigger: bool
