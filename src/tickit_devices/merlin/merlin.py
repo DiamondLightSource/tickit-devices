@@ -2,7 +2,7 @@ import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Union, Tuple
 
 import numpy as np
 from tickit.core.device import Device, DeviceUpdate
@@ -13,6 +13,8 @@ from tickit_devices.merlin.acq_header import get_acq_header
 from tickit_devices.merlin.commands import ErrorCode
 
 from typing import Generic, TypeVar
+
+MAX_THRESHOLD = 100  # keV, assume that a DAC value of 2**9 - 1 represents this energy
 
 
 @dataclass
@@ -42,6 +44,16 @@ class ChipDACs:
     Cas: int = field(default=144)
     TPRefA: int = field(default=511)
     TPRefB: int = field(default=511)
+
+    def set_threshold(self, threshold: int, value_keV: float):
+        max_DAC = 2**9 - 1  # 511
+        value_DAC = min(max_DAC, round(value_keV * max_DAC / MAX_THRESHOLD))
+        setattr(self, f"Threshold{threshold}", value_DAC)
+
+    def get_threshold_kev(self, threshold: int) -> float:
+        value_DAC = getattr(self, f"Threshold{threshold}")
+        max_DAC = 2**9 - 1  # 511
+        return value_DAC * MAX_THRESHOLD / max_DAC
 
 
 class GainMode(int, Enum):
@@ -163,23 +175,22 @@ T = TypeVar("T")
 
 # TODO: maybe TypeVar is inappropriate here
 class MerlinParameter(Generic[T]):
-    _value: Optional[T]
-
     def __init__(
         self,
-        value: Optional[T] = None,
-        getter: Optional[Callable[[], T]] = None,
+        getter: Union[T, Callable[[], T]],
         setter: Optional[Callable[[T], None]] = None,
     ):
-        self._value = value
-        self.get: Callable[[], T] = getter if getter is not None else self.default_get
-        self.set: Callable[[T], None] = setter if setter is not None else self.default_set
+        self._value = getter
+        self.set: Callable[[T], None] = setter if setter is not None else self._set
 
-    def default_get(self) -> T:
+    def get(self) -> T:
+        if callable(self._value):
+            return self._value()
         return self._value
 
-    # TODO: test this!!
-    def default_set(self, value: T):
+    def _set(self, value: T):
+        if callable(self._value):
+            raise RuntimeError("Can not use default setter with custom getter")
         self._value = value
 
 
@@ -199,10 +210,11 @@ class MerlinDetector(Device):
     _colour_mode: ColourMode = ColourMode.MONOCHROME
     _configuration: str = ""
     _images_remaining: int = 0
-    _gap_time_ns: int = 1_000_000 # 1ms
+    _gap_time_ns: int = 1_000_000  # 1ms
     _last_header: str = ""
     _last_encoded_image: Optional[bytes] = None
     _last_image_shape: Optional[Tuple[int, int]] = None
+    _operating_energy: float = 0
     acq_type: AcquisitionType = AcquisitionType.NORMAL
     acquiring: bool = False
     chip_type: str = "Medipix 3RX"
@@ -211,7 +223,7 @@ class MerlinDetector(Device):
     humidity: float = 0.0
     medipix_clock: int = 120
     readout_system: str = "Merlin Quad"
-    shutter_time_ns: int = 10_000_000 # 10ms
+    shutter_time_ns: int = 10_000_000  # 10ms
     parameters: Dict[str, MerlinParameter[Any]] = field(
         default_factory=lambda: {
             "COUNTERDEPTH": MerlinParameter(12),
@@ -265,81 +277,84 @@ class MerlinDetector(Device):
     def initialise(self):
         """Create parameters with custom getters/setters"""
         self.parameters["THRESHOLD0"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold0,
+            lambda: self.get_threshold(0),
             lambda val: self.set_threshold(0, val),
         )
         self.parameters["THRESHOLD1"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold1,
+            lambda: self.get_threshold(1),
             lambda val: self.set_threshold(1, val),
         )
         self.parameters["THRESHOLD2"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold2,
+            lambda: self.get_threshold(2),
             lambda val: self.set_threshold(2, val),
         )
         self.parameters["THRESHOLD3"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold3,
+            lambda: self.get_threshold(3),
             lambda val: self.set_threshold(3, val),
         )
         self.parameters["THRESHOLD4"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold4,
+            lambda: self.get_threshold(4),
             lambda val: self.set_threshold(4, val),
         )
         self.parameters["THRESHOLD5"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold5,
+            lambda: self.get_threshold(5),
             lambda val: self.set_threshold(5, val),
         )
         self.parameters["THRESHOLD6"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold6,
+            lambda: self.get_threshold(6),
             lambda val: self.set_threshold(6, val),
         )
         self.parameters["THRESHOLD7"] = MerlinParameter(
-            None,
-            lambda: self.chips[0].DACs.Threshold7,
+            lambda: self.get_threshold(7),
             lambda val: self.set_threshold(7, val),
         )
         self.parameters["COLOURMODE"] = MerlinParameter(
-            None,
-            lambda: self._colour_mode,
-            lambda val: self.set_colour_mode(val)
+            lambda: self._colour_mode, lambda val: self.set_colour_mode(val)
         )
         self.parameters["DACFILE"] = MerlinParameter(
-            None,
             lambda: self.chips[0].dac_file,
-            lambda val: setattr(self.chips[0], "dac_file", val)
+            lambda val: setattr(self.chips[0], "dac_file", val),
         )
         self.parameters["ACQUISITIONTIME"] = MerlinParameter(
-            None,
             lambda: self.shutter_time_ns * 1e-6,  # returns in ms
-            lambda val: self.set_acq_time(val)
+            lambda val: self.set_acq_time(val),
         )
         self.parameters["ACQUISITIONPERIOD"] = MerlinParameter(
-            None,
             lambda: (self._gap_time_ns + self.shutter_time_ns) * 1e-6,
-            lambda val: self.set_acq_period(val)
+            lambda val: self.set_acq_period(val),
+        )
+        self.parameters["OPERATINGENERGY"] = MerlinParameter(
+            lambda: self._operating_energy,
+            lambda val: self.set_operating_energy(val),
         )
 
     def get(self, parameter: str):
         return self.parameters[parameter].get()
 
-    def set_threshold(self, threshold: int, value: int):
-        setattr(self.chips[0].DACs, f"Threshold{threshold}", value)
+    def set_operating_energy(self, value: float):
+        self._operating_energy = value
+        half_value = value / 2
+        for threshold in range(8):
+            self.set_threshold(threshold, half_value)
 
-    def set_colour_mode(self, value_str: str):
-        self.parameters["COLOURMODE"].default_set(value_str)
+    def get_threshold(self, threshold: int):
+        return self.chips[0].DACs.get_threshold_kev(threshold)
+
+    def set_threshold(self, threshold: int, value: float):
+        if value < 0:
+            raise ValueError("Threshold energy should be positive")
+        for chip in self.chips:
+            chip.DACs.set_threshold(threshold, value)
+
+    def set_colour_mode(self, colour_mode: ColourMode):
+        self._colour_mode = colour_mode
         if self.get("COLOURMODE") == ColourMode.COLOUR:
             self.set_param("ENABLECOUNTER1", CounterMode.Both)
 
     def set_acq_time(self, value: float):
         new_shutter_time_ns = int(1e6 * value)
         # adjust gap time so that acq period doesn't change
-        self._gap_time_ns += (self.shutter_time_ns - new_shutter_time_ns)
+        self._gap_time_ns += self.shutter_time_ns - new_shutter_time_ns
         self.shutter_time_ns = new_shutter_time_ns
 
     def set_acq_period(self, value: float):
