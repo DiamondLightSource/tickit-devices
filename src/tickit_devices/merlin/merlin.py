@@ -2,7 +2,7 @@ import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Union, Tuple
+from typing import Any, Callable, Dict, Generic, List, Optional, Tuple, TypeVar, Union
 
 import numpy as np
 from tickit.core.device import Device, DeviceUpdate
@@ -10,9 +10,16 @@ from tickit.core.typedefs import SimTime
 from typing_extensions import TypedDict
 
 from tickit_devices.merlin.acq_header import get_acq_header
-from tickit_devices.merlin.commands import ErrorCode
-
-from typing import Generic, TypeVar
+from tickit_devices.merlin.parameters import (
+    AcquisitionType,
+    ChipMode,
+    ColourMode,
+    CommandType,
+    CounterMode,
+    ErrorCode,
+    State,
+    commands,
+)
 
 MAX_THRESHOLD = 100  # keV, assume that a DAC value of 2**9 - 1 represents this energy
 
@@ -54,77 +61,6 @@ class ChipDACs:
         value_DAC = getattr(self, f"Threshold{threshold}")
         max_DAC = 2**9 - 1  # 511
         return value_DAC * MAX_THRESHOLD / max_DAC
-
-
-class GainMode(int, Enum):
-    SLGM = 0
-    LGM = 1
-    HGM = 2
-    SHGM = 3
-
-
-class AcquisitionType(str, Enum):
-    NORMAL = "Normal"
-    TH_SCAN = "Th_scan"
-    CONFIG = "Config"
-
-
-class ChipMode(str, Enum):
-    SPM = "SPM"
-    CSM = "CSM"
-    CM = "CM"
-    CSCM = "CSCM"
-
-
-class Trigger(int, Enum):
-    POS = 0
-    NEG = 1
-    INT = 2
-
-
-class Polarity(str, Enum):
-    POS = "Positive"
-    NEG = "Negative"
-
-
-class State(int, Enum):
-    IDLE = 0
-    BUSY = 1
-    Standby = 2
-
-
-class ColourMode(int, Enum):
-    MONOCHROME = 0
-    COLOUR = 1
-
-
-class GapFillMode(int, Enum):
-    NONE = 0
-    ZeroFill = 1
-    Distribute = 2
-    Interpolate = 3
-
-
-class FileFormat(int, Enum):
-    Binary = 0
-    ASCII = 1
-
-
-class TriggerOut(int, Enum):
-    TriggerInTTL = 0
-    TriggerInLVDS = 1
-    TriggerInTTLDelayed = 2
-    TriggerInLVDSDelayed = 3
-    FollowShutter = 4
-    OnePerAcqBurst = 5
-    ShutterAndSensorReadout = 6
-    Busy = 7
-
-
-class CounterMode(int, Enum):
-    Counter0 = 0
-    Counter1 = 1
-    Both = 2
 
 
 @dataclass
@@ -181,14 +117,16 @@ class MerlinParameter(Generic[T]):
         setter: Optional[Callable[[T], None]] = None,
     ):
         self._value = getter
-        self.set: Callable[[T], None] = setter if setter is not None else self._set
+        self.set: Callable[[T], None] = (
+            setter if setter is not None else self.default_set
+        )
 
     def get(self) -> T:
         if callable(self._value):
             return self._value()
         return self._value
 
-    def _set(self, value: T):
+    def default_set(self, value: T):
         if callable(self._value):
             raise RuntimeError("Can not use default setter with custom getter")
         self._value = value
@@ -207,14 +145,21 @@ class MerlinDetector(Device):
     _acq_header_enabled: bool = True
     _current_frame: int = 1
     _current_layer: int = 0
-    _colour_mode: ColourMode = ColourMode.MONOCHROME
+    _colour_mode: ColourMode = commands[CommandType.SET]["COLOURMODE"]
     _configuration: str = ""
+    _detector_status: State = commands[CommandType.GET]["DETECTORSTATUS"]
     _images_remaining: int = 0
-    _gap_time_ns: int = 1_000_000  # 1ms
+    _gap_time_ns: int = int(
+        (
+            commands[CommandType.SET]["ACQUISITIONPERIOD"]
+            - commands[CommandType.SET]["ACQUISITIONTIME"]
+        )
+        * 1e6
+    )
     _last_header: str = ""
     _last_encoded_image: Optional[bytes] = None
     _last_image_shape: Optional[Tuple[int, int]] = None
-    _operating_energy: float = 0
+    _operating_energy: float = commands[CommandType.SET]["OPERATINGENERGY"]
     acq_type: AcquisitionType = AcquisitionType.NORMAL
     acquiring: bool = False
     chip_type: str = "Medipix 3RX"
@@ -223,59 +168,16 @@ class MerlinDetector(Device):
     humidity: float = 0.0
     medipix_clock: int = 120
     readout_system: str = "Merlin Quad"
-    shutter_time_ns: int = 10_000_000  # 10ms
-    parameters: Dict[str, MerlinParameter[Any]] = field(
-        default_factory=lambda: {
-            "COUNTERDEPTH": MerlinParameter(12),
-            "CHARGESUMMING": MerlinParameter(False),
-            "CONTINUOUSRW": MerlinParameter(False),
-            "DEADTIMECORRECTION": MerlinParameter(False),
-            "DETECTORSTATUS": MerlinParameter(State.IDLE),
-            "ENABLECOUNTER1": MerlinParameter(CounterMode.Counter0),
-            "FILECOUNTER": MerlinParameter(0),
-            "FILEDIRECTORY": MerlinParameter(""),
-            "FILEENABLE": MerlinParameter(False),
-            "FILEFORMAT": MerlinParameter(FileFormat.Binary),
-            "FILLMODE": MerlinParameter(GapFillMode.NONE),
-            "FILENAME": MerlinParameter(""),
-            "FLATFIELDCORRECTION": MerlinParameter(False),
-            "FLATFIELDFILE": MerlinParameter("None"),
-            "GAIN": MerlinParameter(GainMode.SLGM),
-            "HVBIAS": MerlinParameter(15),
-            "MASKINDATA": MerlinParameter(False),
-            "NUMFRAMESTOACQUIRE": MerlinParameter(1),
-            "NUMFRAMESPERTRIGGER": MerlinParameter(1),
-            "OPERATINGENERGY": MerlinParameter(0),
-            "PIXELMATRIXSAVEFILE": MerlinParameter(""),
-            "PIXELMATRIXLOADFILE": MerlinParameter(""),
-            "POLARITY": MerlinParameter(Polarity.POS),
-            "SOFTWAREVERSION": MerlinParameter("0.69.0.2"),
-            "TEMPERATURE": MerlinParameter(0.0),
-            "THNUMSTEPS": MerlinParameter(0),
-            "THSTART": MerlinParameter(0),
-            "THSTEP": MerlinParameter(0),
-            "THSCAN": MerlinParameter(0),
-            "THSTOP": MerlinParameter(0),
-            "THWINDOWMODE": MerlinParameter(False),
-            "THWINDOWSIZE": MerlinParameter(0),
-            "TRIGGERSTART": MerlinParameter(Trigger.INT),
-            "TRIGGERSTOP": MerlinParameter(Trigger.INT),
-            "SoftTriggerOutTTL": MerlinParameter(False),
-            "SoftTriggerOutLVDS": MerlinParameter(False),
-            "TriggerInTTLDelay": MerlinParameter(0),
-            "TriggerInLVDSDelay": MerlinParameter(0),
-            "TriggerOutTTL": MerlinParameter(TriggerOut.TriggerInTTL),
-            "TriggerOutLVDS": MerlinParameter(TriggerOut.TriggerInTTL),
-            "TriggerOutTTLInvert": MerlinParameter(False),
-            "TriggerOutLVDSInvert": MerlinParameter(False),
-            "TriggerUseDelay": MerlinParameter(False),
-            "TriggerInTTL": MerlinParameter(False),
-            "TriggerInLVDS": MerlinParameter(False),
-        }
-    )
+    shutter_time_ns: int = int(commands[CommandType.SET]["ACQUISITIONTIME"] * 1e6)
+    parameters: Dict[str, MerlinParameter[Any]] = field(default_factory=lambda: {})
+    commands: Dict[str, Callable[[], ErrorCode]] = field(default_factory=lambda: {})
 
     def initialise(self):
         """Create parameters with custom getters/setters"""
+        self.parameters["DETECTORSTATUS"] = MerlinParameter(
+            lambda: self._detector_status,
+            lambda val: setattr(self, "_detector_status", val),
+        )
         self.parameters["THRESHOLD0"] = MerlinParameter(
             lambda: self.get_threshold(0),
             lambda val: self.set_threshold(0, val),
@@ -327,6 +229,24 @@ class MerlinDetector(Device):
             lambda: self._operating_energy,
             lambda val: self.set_operating_energy(val),
         )
+        ro_params: Dict[str, MerlinParameter[Any]] = {
+            parameter: MerlinParameter(default_value)
+            for parameter, default_value in commands[CommandType.GET].items()
+            if parameter not in self.parameters
+        }
+        self.parameters.update(ro_params)
+        rw_params: Dict[str, MerlinParameter[Any]] = {
+            parameter: MerlinParameter(default_value)
+            for parameter, default_value in commands[CommandType.SET].items()
+            if parameter not in self.parameters
+        }
+        self.parameters.update(rw_params)
+        self.commands.update({"STARTACQUISITION": self.start_acquisition_cmd,
+                              "STOPACQUISITION": self.stop_acquisition_cmd,
+                              "SOFTTRIGGER": self.soft_trigger_cmd,
+                              "THSCAN": self.threshold_scan_cmd,
+                              "RESET": self.reset_cmd,
+                              "ABORT": self.abort_cmd})
 
     def get(self, parameter: str):
         return self.parameters[parameter].get()
@@ -392,7 +312,7 @@ class MerlinDetector(Device):
             code = ErrorCode.RANGE
         return code
 
-    def STARTACQUISITION_cmd(self) -> ErrorCode:
+    def start_acquisition_cmd(self) -> ErrorCode:
         if self.get("DETECTORSTATUS") is not State.IDLE:
             return ErrorCode.BUSY
 
@@ -402,32 +322,34 @@ class MerlinDetector(Device):
         # TODO: add NUMFRAMESPERTRIGGER logic, only really works with external triggers
         return ErrorCode.UNDERSTOOD
 
-    def STOPACQUISITION_cmd(self) -> ErrorCode:
+    def stop_acquisition_cmd(self) -> ErrorCode:
         self.set_param("DETECTORSTATUS", State.IDLE)
         self.acquiring = False
         self._current_frame = 1
         self._current_layer = 0
         return ErrorCode.UNDERSTOOD
 
-    def SOFTTRIGGER_cmd(self) -> ErrorCode:
+    def soft_trigger_cmd(self) -> ErrorCode:
         # TODO: write command
         return ErrorCode.UNDERSTOOD
 
-    def THSCAN_cmd(self) -> ErrorCode:
+    def threshold_scan_cmd(self) -> ErrorCode:
         # TODO: write command
         return ErrorCode.UNDERSTOOD
 
-    def RESET_cmd(self) -> ErrorCode:
-        raise NotImplementedError("Fix this")
-        # TODO: how does this work during acquisition?
-        # skip = ["chips"]
-        # for f in fields(self):
-        #     if f.name in skip:
-        #         continue
-        #     setattr(self, f.name, f.default)
-        # return ErrorCode.UNDERSTOOD
+    def reset_cmd(self) -> ErrorCode:
+        for ctype in [CommandType.GET, CommandType.SET]:
+            for parameter, default in commands[ctype].items():
+                try:
+                    if default is not None:
+                        self.set_param(parameter, default)
+                    else:
+                        print("No default value set for", parameter)
+                except RuntimeError:
+                    print("Could not reset parameter", parameter)
+        return ErrorCode.UNDERSTOOD
 
-    def ABORT_cmd(self) -> ErrorCode:
+    def abort_cmd(self) -> ErrorCode:
         # TODO: write command
         return ErrorCode.UNDERSTOOD
 
@@ -580,9 +502,8 @@ class MerlinDetector(Device):
         self._images_remaining -= 1
         self._current_frame += 1
         if self._images_remaining == 0:
-            self.STOPACQUISITION_cmd()
+            self.stop_acquisition_cmd()
         return message
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        # print('TODO: Doing nothing in update, see EigerDevice.update for comparison')
         return DeviceUpdate(self.Outputs(), SimTime(time))

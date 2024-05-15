@@ -10,14 +10,14 @@ from enum import Enum
 from tickit.adapters.specifications.regex_command import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
 
-from tickit_devices.merlin.commands import (
+from tickit_devices.merlin.merlin import MerlinDetector, State
+from tickit_devices.merlin.parameters import (
     DLIM,
     PREFIX,
     CommandType,
     ErrorCode,
     commands,
 )
-from tickit_devices.merlin.merlin import MerlinDetector, State
 from tickit_devices.merlin.tcp import TcpPushAdapter
 
 LOGGER = logging.getLogger("MerlinControlAdapter")
@@ -48,7 +48,8 @@ class MerlinControlAdapter(CommandAdapter):
         value = "0"
         code = ErrorCode.UNDERSTOOD
         if (
-            parameter not in commands[CommandType.GET] + commands[CommandType.SET]
+            parameter
+            not in list(commands[CommandType.GET]) + list(commands[CommandType.SET])
             or not parameter in self.detector.parameters
         ):
             code = ErrorCode.UNRECOGNISED
@@ -69,7 +70,7 @@ class MerlinControlAdapter(CommandAdapter):
 
     @RegexCommand(r"MPX,[0-9]{10},CMD,([a-zA-Z0-9]*)$", format="utf-8")
     async def cmd(self, command_name: str) -> bytes:
-        command = getattr(self.detector, f"{command_name}_cmd", None)
+        command = self.detector.commands.get(command_name, None)
         if command_name not in commands[CommandType.CMD] or command is None:
             LOGGER.error(f"Merlin does not have a command {command}")
             code = ErrorCode.UNRECOGNISED
