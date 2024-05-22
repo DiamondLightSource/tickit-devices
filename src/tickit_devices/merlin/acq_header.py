@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from tickit_devices.merlin.merlin import MerlinDetector
+    from tickit_devices.merlin.detector import MerlinDetector
 
 ACQ_HEADER_SIZE = 2049
 

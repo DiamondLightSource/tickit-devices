@@ -1,5 +1,29 @@
 from enum import Enum
-from typing import Any, Dict
+from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+
+T = TypeVar("T")
+
+
+class MerlinParameter(Generic[T]):
+    def __init__(
+        self,
+        getter: Union[T, Callable[[], T]],
+        setter: Optional[Callable[[T], None]] = None,
+    ):
+        self._value = getter
+        self.set: Callable[[T], None] = (
+            setter if setter is not None else self.default_set
+        )
+
+    def get(self) -> T:
+        if callable(self._value):
+            return self._value()
+        return self._value
+
+    def default_set(self, value: T):
+        if callable(self._value):
+            raise RuntimeError("Can not use default setter with custom getter")
+        self._value = value
 
 
 class CommandType(str, Enum):

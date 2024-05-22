@@ -2,7 +2,7 @@ import time
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Dict, Generic, List, Optional, Tuple, TypeVar, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 from tickit.core.device import Device, DeviceUpdate
@@ -17,6 +17,7 @@ from tickit_devices.merlin.parameters import (
     CommandType,
     CounterMode,
     ErrorCode,
+    MerlinParameter,
     State,
     commands,
 )
@@ -104,32 +105,6 @@ class Chip:
                 if f.name.startswith("Threshold")
             ]
         )
-
-
-T = TypeVar("T")
-
-
-# TODO: maybe TypeVar is inappropriate here
-class MerlinParameter(Generic[T]):
-    def __init__(
-        self,
-        getter: Union[T, Callable[[], T]],
-        setter: Optional[Callable[[T], None]] = None,
-    ):
-        self._value = getter
-        self.set: Callable[[T], None] = (
-            setter if setter is not None else self.default_set
-        )
-
-    def get(self) -> T:
-        if callable(self._value):
-            return self._value()
-        return self._value
-
-    def default_set(self, value: T):
-        if callable(self._value):
-            raise RuntimeError("Can not use default setter with custom getter")
-        self._value = value
 
 
 @dataclass
@@ -241,12 +216,16 @@ class MerlinDetector(Device):
             if parameter not in self.parameters
         }
         self.parameters.update(rw_params)
-        self.commands.update({"STARTACQUISITION": self.start_acquisition_cmd,
-                              "STOPACQUISITION": self.stop_acquisition_cmd,
-                              "SOFTTRIGGER": self.soft_trigger_cmd,
-                              "THSCAN": self.threshold_scan_cmd,
-                              "RESET": self.reset_cmd,
-                              "ABORT": self.abort_cmd})
+        self.commands.update(
+            {
+                "STARTACQUISITION": self.start_acquisition_cmd,
+                "STOPACQUISITION": self.stop_acquisition_cmd,
+                "SOFTTRIGGER": self.soft_trigger_cmd,
+                "THSCAN": self.threshold_scan_cmd,
+                "RESET": self.reset_cmd,
+                "ABORT": self.abort_cmd,
+            }
+        )
 
     def get(self, parameter: str):
         return self.parameters[parameter].get()

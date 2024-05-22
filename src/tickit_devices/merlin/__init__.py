@@ -5,7 +5,7 @@ from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_component import DeviceComponent
 
 from tickit_devices.merlin.adapters import MerlinControlAdapter, MerlinDataAdapter
-from tickit_devices.merlin.merlin import MerlinDetector
+from tickit_devices.merlin.detector import MerlinDetector
 from tickit_devices.merlin.tcp import TcpPushIo
 
 

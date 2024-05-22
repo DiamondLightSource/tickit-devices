@@ -10,7 +10,7 @@ from enum import Enum
 from tickit.adapters.specifications.regex_command import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
 
-from tickit_devices.merlin.merlin import MerlinDetector, State
+from tickit_devices.merlin.detector import MerlinDetector, State
 from tickit_devices.merlin.parameters import (
     DLIM,
     PREFIX,
