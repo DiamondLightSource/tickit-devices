@@ -53,7 +53,7 @@ dev = [
 tickit-devices = "tickit_devices.__main__:main"
 
 [project.urls]
-GitHub = "https://github.com/dls-controls/tickit-devices"
+GitHub = "https://github.com/DiamondLightSource/tickit-devices"
 
 [[project.authors]] # Further authors may be added by duplicating this section
 email = "abigail.emery@diamond.ac.uk"

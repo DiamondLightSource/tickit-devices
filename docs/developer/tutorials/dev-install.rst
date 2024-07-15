@@ -10,7 +10,7 @@ Clone the repository
 First clone the repository locally using `Git
 <https://git-scm.com/downloads>`_::
 
-    $ git clone git://github.com/dls-controls/tickit-devices.git
+    $ git clone git://github.com/DiamondLightSource/tickit-devices.git
 
 Install dependencies
 --------------------

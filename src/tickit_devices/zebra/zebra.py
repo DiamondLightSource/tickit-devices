@@ -20,7 +20,7 @@ class ZebraAdapter(BaseSystemSimulationAdapter):
     "mux" related queries will return as though successful but not operate.
 
     See documentation for the Zebra:
-    `https://github.com/dls-controls/zebra/blob/master/documentation/TDI-CTRL-TNO-042-Zebra-Manual.pdf`
+    `https://github.com/DiamondLightSource/zebra/blob/master/documentation/TDI-CTRL-TNO-042-Zebra-Manual.pdf`
 
     Configuration that is currently supported:
     - For AND/OR gates N=1,2,3,4, the following (default 0) may be set

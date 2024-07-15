@@ -3,13 +3,13 @@ tickit-devices
 
 |code_ci| |docs_ci| |coverage| |pypi_version| |license|
 
-A collection of devices simulated using the `tickit <https://github.com/dls-controls/tickit>`_ framework.
+A collection of devices simulated using the `tickit <https://github.com/DiamondLightSource/tickit>`_ framework.
 
 ============== ==============================================================
 PyPI           ``pip install tickit-devices``
-Source code    https://github.com/dls-controls/tickit-devices
-Documentation  https://dls-controls.github.io/tickit-devices
-Releases       https://github.com/dls-controls/tickit-devices/releases
+Source code    https://github.com/DiamondLightSource/tickit-devices
+Documentation  https://DiamondLightSource.github.io/tickit-devices
+Releases       https://github.com/DiamondLightSource/tickit-devices/releases
 ============== ==============================================================
 
 
@@ -29,16 +29,16 @@ image has been built with the new device and config, follow the instructions `he
 to include it in S03.
 
 
-.. |code_ci| image:: https://github.com/dls-controls/tickit-devices/workflows/Code%20CI/badge.svg?branch=main
-    :target: https://github.com/dls-controls/tickit-devices/actions?query=workflow%3A%22Code+CI%22
+.. |code_ci| image:: https://github.com/DiamondLightSource/tickit-devices/workflows/Code%20CI/badge.svg?branch=main
+    :target: https://github.com/DiamondLightSource/tickit-devices/actions?query=workflow%3A%22Code+CI%22
     :alt: Code CI
 
-.. |docs_ci| image:: https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml/badge.svg?branch=main
-    :target: https://github.com/dls-controls/tickit-devices/actions/workflows/docs.yml
+.. |docs_ci| image:: https://github.com/DiamondLightSource/tickit-devices/actions/workflows/docs.yml/badge.svg?branch=main
+    :target: https://github.com/DiamondLightSource/tickit-devices/actions/workflows/docs.yml
     :alt: Docs CI
 
-.. |coverage| image:: https://codecov.io/gh/dls-controls/tickit-devices/branch/main/graph/badge.svg
-    :target: https://codecov.io/gh/dls-controls/tickit-devices
+.. |coverage| image:: https://codecov.io/gh/DiamondLightSource/tickit-devices/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/DiamondLightSource/tickit-devices
     :alt: Test Coverage
 
 .. |pypi_version| image:: https://img.shields.io/pypi/v/tickit-devices.svg
@@ -53,4 +53,4 @@ to include it in S03.
     Anything below this line is used when viewing README.rst and will be replaced
     when included in index.rst
 
-See https://dls-controls.github.io/tickit-devices for more detailed documentation.
+See https://DiamondLightSource.github.io/tickit-devices for more detailed documentation.
