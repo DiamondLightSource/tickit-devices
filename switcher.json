@@ -52,6 +52,10 @@
     "url": "https://dls-controls.github.io/tickit-devices/merlin/"
   },
   {
+    "version": "migrate-dls-controls-diamondlightsource",
+    "url": "https://dls-controls.github.io/tickit-devices/migrate-dls-controls-diamondlightsource/"
+  },
+  {
     "version": "pydantic-eiger",
     "url": "https://dls-controls.github.io/tickit-devices/pydantic-eiger/"
   },
