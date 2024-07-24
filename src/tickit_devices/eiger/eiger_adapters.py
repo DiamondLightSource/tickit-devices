@@ -15,6 +15,11 @@ STREAM_API = f"stream/api/{API_VERSION}"
 MONITOR_API = "monitor/api/1.8.0"
 FILEWRITER_API = "filewriter/api/1.8.0"
 
+
+def command_404(key: str) -> str:
+    return f'error during request: path error: unknown path: "{key}"'
+
+
 LOGGER = logging.getLogger("EigerAdapter")
 
 
@@ -193,6 +198,9 @@ class EigerRESTAdapter(HttpAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
+        if await request.text() and await request.json():
+            return web.json_response(status=404, text=command_404("initialize"))
+
         await self.device.initialize()
 
         LOGGER.debug("Initializing Eiger...")
@@ -209,6 +217,9 @@ class EigerRESTAdapter(HttpAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
+        if await request.text() and await request.json():
+            return web.json_response(status=404, text=command_404("arm"))
+
         await self.device.arm()
 
         LOGGER.debug("Arming Eiger...")
@@ -225,6 +236,9 @@ class EigerRESTAdapter(HttpAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
+        if await request.text() and await request.json():
+            return web.json_response(status=404, text=command_404("disarm"))
+
         await self.device.disarm()
 
         LOGGER.debug("Disarming Eiger...")
@@ -241,6 +255,11 @@ class EigerRESTAdapter(HttpAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
+        if await request.text() and await request.json():
+            # Only expect a parameter in "inte" mode
+            if self.device.settings.trigger_mode != "inte":
+                return web.json_response(status=404, text=command_404("initialize"))
+
         LOGGER.debug("Triggering Eiger")
         await self.device.trigger()
 
@@ -260,6 +279,9 @@ class EigerRESTAdapter(HttpAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
+        if await request.text() and await request.json():
+            return web.json_response(status=404, text=command_404("cancel"))
+
         await self.device.cancel()
 
         LOGGER.debug("Cancelling Eiger...")
@@ -276,6 +298,9 @@ class EigerRESTAdapter(HttpAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
+        if await request.text() and await request.json():
+            return web.json_response(status=404, text=command_404("abort"))
+
         await self.device.abort()
 
         LOGGER.debug("Aborting Eiger...")
