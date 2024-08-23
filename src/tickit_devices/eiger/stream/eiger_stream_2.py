@@ -1,3 +1,4 @@
+import base64
 import logging
 from collections.abc import Iterable
 from pathlib import Path
@@ -49,9 +50,13 @@ def _load_messages():
 
     # Populate missing large datasets
     sensor_shape = (start["image_size_y"], start["image_size_x"])
-    start["countrate_correction_lookup_table"] = np.zeros((65536,)).tobytes()
-    start["flatfield"]["threshold_1"] = np.zeros(sensor_shape).tobytes()
-    start["pixel_mask"]["threshold_1"] = np.zeros(sensor_shape).tobytes()
+    # we need a base64 encoded array of 4 bit integers, numpy can't provide uint4s
+    # we can construct it manually for the trivial zero case
+    start["countrate_correction_lookup_table"] = base64.b64encode(65536 // 2 * b"\x00")
+    start["flatfield"]["threshold_1"] = base64.b64encode(
+        np.prod(sensor_shape) // 2 * b"\x00"  # 2 pixels per byte
+    )
+    start["pixel_mask"]["threshold_1"] = start["flatfield"]["threshold_1"]  # copy value
 
     with open(DATA_PATH / "image.cbor", "rb") as f:
         image = cbor2.load(f)
