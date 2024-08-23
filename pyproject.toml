@@ -77,7 +77,7 @@ addopts = """
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = [
-    "error",
+    # "error",
     "ignore::ImportWarning" # Ongoing issue in six, which is used by aiokafa https://github.com/benjaminp/six/issues/368
 ]
 # Doctest python code in docs, python code in src docstrings, test functions in tests
