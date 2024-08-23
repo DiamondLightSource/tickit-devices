@@ -1,5 +1,3 @@
-from typing import Dict, List
-
 import pydantic.v1.dataclasses
 from pydantic import Field
 from pydantic.v1 import validator
@@ -34,9 +32,9 @@ class Zebra(ComponentConfig):
     """
 
     name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
-    expose: Dict[PortID, ComponentPort]
-    components: List[AndOrBlockConfig]
+    inputs: dict[PortID, ComponentPort]
+    expose: dict[PortID, ComponentPort]
+    components: list[AndOrBlockConfig]
     host: str = "localhost"
     port: int = 7012
     params: dict[str, int] = Field(default_factory=dict)

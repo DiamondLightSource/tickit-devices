@@ -1,6 +1,7 @@
 import asyncio
 import struct
-from typing import AsyncIterable, TypedDict
+from collections.abc import AsyncIterable
+from typing import TypedDict
 
 from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
@@ -17,8 +18,7 @@ class CryostreamDevice(Device, CryostreamBase):
     """A Cryostream device, used for cooling of samples using cold gas."""
 
     #: An empty typed mapping of device inputs
-    class Inputs(TypedDict):
-        ...
+    class Inputs(TypedDict): ...
 
     #: A typed mapping containing the 'temperature' output value
     class Outputs(TypedDict):

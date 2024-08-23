@@ -1,8 +1,9 @@
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import partial
-from typing import Any, Generic, List, Mapping, Optional, TypeVar
+from typing import Any, Generic, TypeVar
 
 from apischema import serialized
 from apischema.fields import with_fields_set
@@ -112,11 +113,11 @@ class Value(Generic[T]):
 
     value: T
     value_type: str
-    access_mode: Optional[str] = None
-    unit: Optional[str] = None
-    min: Optional[T] = None
-    max: Optional[T] = None
-    allowed_values: Optional[List[str]] = None
+    access_mode: str | None = None
+    unit: str | None = None
+    min: T | None = None
+    max: T | None = None
+    allowed_values: list[str] | None = None
 
 
 def construct_value(obj, param):  # noqa: D103

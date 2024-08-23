@@ -1,8 +1,7 @@
 import itertools
-from unittest.mock import ANY
+from unittest.mock import ANY, MagicMock, Mock
 
 import pytest
-from mock import MagicMock, Mock
 from tickit.core.typedefs import SimTime
 
 from tickit_devices.eiger.eiger import EigerDevice

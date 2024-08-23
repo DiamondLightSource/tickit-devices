@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Tuple
 
 
 @dataclass
@@ -13,10 +12,10 @@ class Image:
     dtype: str
     data: bytes
     encoding: str
-    shape: Tuple[int, int]
+    shape: tuple[int, int]
 
     @classmethod
-    def create_dummy_image(cls, index: int, shape: Tuple[int, int]) -> "Image":
+    def create_dummy_image(cls, index: int, shape: tuple[int, int]) -> "Image":
         """Returns an Image object wrapping the dummy blob using the metadata provided.
 
         Args:

@@ -1,4 +1,5 @@
-from typing import Any, List, Mapping, Union
+from collections.abc import Mapping
+from typing import Any
 
 import pytest
 from pydantic.v1 import BaseModel
@@ -85,7 +86,7 @@ END_SERIES_FOOTER = [AcquisitionSeriesFooter(series=TEST_SERIES_ID)]
 def test_begin_series_produces_correct_headers(
     stream: EigerStream,
     header_detail: str,
-    expected_headers: List[Union[BaseModel, bytes, Mapping[str, Any]]],
+    expected_headers: list[BaseModel | bytes | Mapping[str, Any]],
 ) -> None:
     settings = EigerSettings()
     stream.config.header_detail = header_detail
@@ -124,7 +125,7 @@ def test_data_buffered(stream: EigerStream) -> None:
     assert blobs == ALL_HEADERS + expected_image_blobs(image) + END_SERIES_FOOTER
 
 
-def expected_image_blobs(image: Image) -> List[Union[bytes, BaseModel]]:
+def expected_image_blobs(image: Image) -> list[bytes | BaseModel]:
     return [
         ImageHeader(
             frame=image.index,

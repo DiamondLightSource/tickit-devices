@@ -1,6 +1,5 @@
 import logging
 from ctypes import c_short, c_ubyte, c_ushort
-from typing import Union
 
 from tickit_devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
 from tickit_devices.cryostream.status import ExtendedStatus, Status
@@ -286,7 +285,7 @@ class CryostreamBase:
             self.extended_status.alarm_code = c_ubyte(self.alarm_code).value
             self.extended_status.turbo_mode = c_ubyte(self.turbo_mode).value
 
-    async def get_status(self, status_format: int) -> Union[Status, ExtendedStatus]:
+    async def get_status(self, status_format: int) -> Status | ExtendedStatus:
         """Get a Status or ExtendedStatus packet.
 
         Args:

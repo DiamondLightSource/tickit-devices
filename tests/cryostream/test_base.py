@@ -1,9 +1,9 @@
 from contextlib import nullcontext as does_not_raise
 from random import getrandbits
-from typing import Any, Dict
+from typing import Any
+from unittest.mock import Mock
 
 import pytest
-from mock import Mock
 
 from tickit_devices.cryostream.base import CryostreamBase
 from tickit_devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
@@ -187,7 +187,7 @@ async def test_cool():
     ],
 )
 @pytest.mark.asyncio
-async def test_end(test_params: Dict[str, Any]):
+async def test_end(test_params: dict[str, Any]):
     def set_gas_flow(value: int, target_temp: int) -> None:
         if rand_bool():
             cryostream_base.gas_flow = 10
@@ -225,7 +225,7 @@ async def test_end(test_params: Dict[str, Any]):
     ],
 )
 @pytest.mark.asyncio
-async def test_purge(test_params: Dict[str, Any]):
+async def test_purge(test_params: dict[str, Any]):
     cryostream_base = CryostreamBase()
     cryostream_base.gas_temp = test_params["initial_gas_temp"]
     cryostream_base.ramp = Mock(cryostream_base.ramp)  # type: ignore
