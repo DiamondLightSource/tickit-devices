@@ -169,6 +169,10 @@ class ThresholdDifference:
         self.__dict__[key] = value
 
 
+def detector_translation() -> list[float]:
+    return [0.0, 0.0, 0.0]
+
+
 @dataclass
 class EigerSettings:
     """A data container for Eiger device configuration."""
@@ -198,6 +202,9 @@ class EigerSettings:
     detector_distance: float = field(default=2.0, metadata=rw_float())
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=ro_float())
+    detector_translation: list[float] = field(
+        default_factory=detector_translation, metadata=ro_float()
+    )
     eiger_fw_version: str = field(default="1.8.0", metadata=ro_str())
     element: str = field(
         default="Co", metadata=rw_str(allowed_values=[*(e.name for e in KA_Energy)])
@@ -212,6 +219,7 @@ class EigerSettings:
     flatfield_correction_applied: bool = field(default=True, metadata=rw_bool())
     frame_count_time: float = field(default=0.01, metadata=ro_float())
     frame_time: float = field(default=0.12, metadata=rw_float())
+    frame_period: float = field(default=0.12, metadata=rw_float())
     incident_energy: float = field(default=13458, metadata=rw_float())
     incident_particle_type: str = field(default="photons", metadata=ro_str())
     instrument_name: str = field(default="", metadata=rw_str())
