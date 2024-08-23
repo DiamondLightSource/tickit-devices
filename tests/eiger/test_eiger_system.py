@@ -188,7 +188,7 @@ async def test_eiger_system(tickit_task):
         ) as response:
             assert "ready" == (await response.json())["value"]
 
-        assert get_status(status="state", expected="idle")
+        await get_status(status="state", expected="idle")
 
         async with session.put(
             DETECTOR_URL + "command/arm",
@@ -196,7 +196,7 @@ async def test_eiger_system(tickit_task):
         ) as response:
             assert {"sequence id": 2} == (await response.json())
 
-        assert get_status(status="state", expected="ready")
+        await get_status(status="state", expected="ready")
 
         async with session.put(
             DETECTOR_URL + "command/trigger",

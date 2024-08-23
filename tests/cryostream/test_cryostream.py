@@ -140,3 +140,6 @@ async def test_cryostream_system(tickit_task):
     await write(b"\x04\x0e" + struct.pack(">H", 30000))
     status = await get_status()
     assert status.gas_temp == pytest.approx(30000, rel=5)
+
+    writer.close()
+    await writer.wait_closed()
