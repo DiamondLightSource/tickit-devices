@@ -103,11 +103,18 @@ class EigerStream2:
         # Update message with current state
         start["number_of_images"] = settings.nimages * settings.ntrigger
         for stream_field, setting in STREAM_SETTINGS_MAP.items():
-            start[stream_field] = getattr(settings, setting)
-        for axis in GONIO_AXES:
-            axis_fields: dict[str, float] = start["goniometer"][axis]
-            axis_fields["start"] = float(getattr(settings, f"{axis}_start"))
-            axis_fields["increment"] = float(getattr(settings, f"{axis}_increment"))
+            if stream_field not in start:
+                start[stream_field] = getattr(settings, setting)
+        for axis in [a for a in GONIO_AXES if a not in start["goniometer"]]:
+            # get default values for axes not in start message
+            # TODO: Captured cbor start message should have all axes?
+            start["goniometer"][axis] = {}
+            start["goniometer"][axis]["start"] = float(
+                getattr(settings, f"{axis}_start")
+            )
+            start["goniometer"][axis]["increment"] = float(
+                getattr(settings, f"{axis}_increment")
+            )
 
         start["series_id"] = series_id
 
