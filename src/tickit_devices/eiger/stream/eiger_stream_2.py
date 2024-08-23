@@ -17,8 +17,8 @@ LOGGER = logging.getLogger(__name__)
 DATA_PATH = Path(__file__).parent.parent / "data" / "stream2"
 STREAM_SETTINGS_MAP = {
     # Direct Mappings
-    # "beam_center_x": "beam_center_x",  # These come through as ints for some reason
-    # "beam_center_y": "beam_center_y",
+    "beam_center_x": "beam_center_x",  # These come through as ints for some reason
+    "beam_center_y": "beam_center_y",
     "count_time": "count_time",
     "frame_time": "frame_time",
     "sensor_material": "sensor_material",
