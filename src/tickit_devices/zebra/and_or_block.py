@@ -36,7 +36,14 @@ class AndOrBlock(Block):
 
     def _get_next_outputs(self, inputs: Inputs) -> Outputs:
         op = and_ if self.name.startswith("AND") else or_
-        get_input = partial(self._get_input, inputs)
+        get_input = partial(
+            self._get_input,
+            {
+                k: v
+                for k, v in inputs.items()
+                if isinstance(k, str) and isinstance(v, bool)
+            },
+        )
         outputs = self.Outputs(OUT=reduce(op, map(get_input, range(4))))
         self.last_input = inputs
         return outputs
