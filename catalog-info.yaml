@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tickit-devices
+  title: tickit-devices
+  description: Devices for tickit, an event-based device simulation framework
+spec:
+  type: documentation
+  lifecycle: experimental
+  owner: group:default/sscc
