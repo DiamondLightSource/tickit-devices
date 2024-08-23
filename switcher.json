@@ -28,6 +28,10 @@
     "url": "https://DiamondLightSource.github.io/tickit-devices/debug-configurations/"
   },
   {
+    "version": "eiger-api",
+    "url": "https://DiamondLightSource.github.io/tickit-devices/eiger-api/"
+  },
+  {
     "version": "eiger-stream2",
     "url": "https://DiamondLightSource.github.io/tickit-devices/eiger-stream2/"
   },
