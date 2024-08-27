@@ -1,10 +1,11 @@
-from typing import Any, Dict, Iterable, Tuple, Union
+from collections.abc import Iterable
+from typing import Any
 
 from pydantic.v1 import BaseModel
 from zmq import Frame
 
-Json = Dict[str, Any]
-Sendable = Union[bytes, Frame, memoryview]
+Json = dict[str, Any]
+Sendable = bytes | Frame | memoryview
 MultipartMessage = Iterable[Sendable]
 
 DEFAULT_HEADER_TYPE = "dheader-1.0"
@@ -32,7 +33,7 @@ class AcquisitionDetailsHeader(BaseModel):
     """
 
     htype: str = DEFAULT_HEADER_TYPE
-    shape: Tuple[int, int]
+    shape: tuple[int, int]
     type: str
 
 
@@ -55,7 +56,7 @@ class ImageCharacteristicsHeader(BaseModel):
     """
 
     encoding: str
-    shape: Tuple[int, int]
+    shape: tuple[int, int]
     size: int
     type: str
     htype: str = "dimage_d-1.0"

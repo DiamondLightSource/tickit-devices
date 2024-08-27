@@ -1,5 +1,5 @@
 import pathlib
-from typing import Optional, TypedDict
+from typing import TypedDict
 
 import pydantic.v1.dataclasses
 from softioc import builder
@@ -25,8 +25,7 @@ class SynchrotronCurrentDevice(Device):
     """
 
     #: An empty typed mapping of device inputs
-    class Inputs(TypedDict):
-        ...
+    class Inputs(TypedDict): ...
 
     #: A typed mapping containing the current output value
     class Outputs(TypedDict):
@@ -34,7 +33,7 @@ class SynchrotronCurrentDevice(Device):
 
     def __init__(
         self,
-        initial_current: Optional[float],
+        initial_current: float | None,
         callback_period: int = int(1e9),
         countdown: float = 600.0,
         fill_time: float = 15.0,
@@ -158,7 +157,7 @@ class SynchrotronCurrentEpicsAdapter(EpicsAdapter):
 class SynchrotronCurrent(ComponentConfig):
     """Synchrotron current component."""
 
-    initial_current: Optional[float]
+    initial_current: float | None
     callback_period: int = int(1e9)
     host: str = "localhost"
     port: int = 25565

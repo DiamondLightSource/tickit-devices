@@ -7,10 +7,10 @@ __all__ = ["main"]
 
 def main(args=None):
     parser = ArgumentParser()
-    parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("-v", "--version", action="version", version=__version__)
     args = parser.parse_args(args)
 
 
-# test with: python -m tickit-devices
+# test with: python -m tickit_devices
 if __name__ == "__main__":
     main()

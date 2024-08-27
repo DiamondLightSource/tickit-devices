@@ -1,7 +1,8 @@
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass, field, fields
 from enum import Enum
-from typing import Any, List, Mapping
+from typing import Any
 
 from .eiger_schema import (
     ro_float,
@@ -29,7 +30,7 @@ class KA_Energy(Enum):
     B: float = 183.3
     C: float = 277.0
     N: float = 392.4
-    O: float = 524.9
+    O: float = 524.9  # noqa: E741
     F: float = 676.8
     Ne: float = 848.6
     Na: float = 1040.98
@@ -83,7 +84,7 @@ class EigerSettings:
     element: str = field(
         default="Co", metadata=rw_str(allowed_values=["", *(e.name for e in KA_Energy)])
     )
-    flatfield: List[List[float]] = field(
+    flatfield: list[list[float]] = field(
         default_factory=lambda: [[]], metadata=rw_float_grid()
     )
     flatfield_correction_applied: bool = field(default=True, metadata=rw_bool())
@@ -98,7 +99,7 @@ class EigerSettings:
     phi_increment: float = field(default=0.0, metadata=rw_float())
     phi_start: float = field(default=0.0, metadata=rw_float())
     photon_energy: float = field(default=6930.32, metadata=rw_float())
-    pixel_mask: List[List[int]] = field(
+    pixel_mask: list[list[int]] = field(
         default_factory=lambda: [[]], metadata=rw_uint_grid()
     )
     pixel_mask_applied: bool = field(default=False, metadata=rw_bool())
@@ -164,7 +165,7 @@ class EigerSettings:
 
         LOGGER.warning("Flatfield not recalculated.")
 
-    def filtered(self, exclude_fields: List[str]) -> Mapping[str, Any]:
+    def filtered(self, exclude_fields: list[str]) -> Mapping[str, Any]:
         return {
             fld.name: vars(self)[fld.name]
             for fld in fields(self)

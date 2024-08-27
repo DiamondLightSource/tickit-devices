@@ -1,5 +1,4 @@
 import asyncio
-from typing import Dict, Union
 
 from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
@@ -11,7 +10,7 @@ from tickit_devices.zebra._common import param_types, register_names
 
 
 class ZebraAdapter(BaseSystemSimulationAdapter):
-    _components: Dict[ComponentID, DeviceComponent]
+    _components: dict[ComponentID, DeviceComponent]
     params: dict[str, int]
     """
     Network adapter for a Zebra system simulation, which operates a TCP server for
@@ -34,8 +33,8 @@ class ZebraAdapter(BaseSystemSimulationAdapter):
 
     def setup_adapter(
         self,
-        components: Dict[ComponentID, DeviceComponent],
-        wiring: Union[Wiring, InverseWiring],
+        components: dict[ComponentID, DeviceComponent],
+        wiring: Wiring | InverseWiring,
     ) -> None:
         """
         Sets the shared configuration/"params" between the Zebra and its components

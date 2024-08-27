@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field, fields
-from typing import Any, List
+from typing import Any
 
 from tickit_devices.eiger.eiger_schema import ro_str_list
 
@@ -8,7 +8,7 @@ from tickit_devices.eiger.eiger_schema import ro_str_list
 class MonitorStatus:
     """Eiger monitor status taken from the API spec."""
 
-    error: List[str] = field(default_factory=lambda: [], metadata=ro_str_list())
+    error: list[str] = field(default_factory=lambda: [], metadata=ro_str_list())
 
     def __getitem__(self, key: str) -> Any:  # noqa: D105
         f = {}

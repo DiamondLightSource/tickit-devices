@@ -8,8 +8,7 @@ from tickit.core.typedefs import SimTime
 class CurrentDevice(Device):
     """The current configured device."""
 
-    class Inputs(TypedDict):
-        ...
+    class Inputs(TypedDict): ...
 
     #: A typed mapping containing the current output value
     class Outputs(TypedDict):
@@ -35,9 +34,7 @@ class CurrentDevice(Device):
             DeviceUpdate: A container for the Device's outputs and a callback time.
         """
         output = uniform(100, 200)
-        print(
-            "Output! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
-        )
+        print(f"Output! (delta: {time}, inputs: {inputs}, output: {output})")
         return DeviceUpdate(
             self.Outputs(output=output), SimTime(time + self.callback_period)
         )

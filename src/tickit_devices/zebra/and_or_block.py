@@ -1,6 +1,6 @@
 from functools import partial, reduce
 from operator import and_, or_
-from typing import Dict, TypedDict
+from typing import TypedDict
 
 import pydantic.v1.dataclasses
 from tickit.core.components.device_component import DeviceComponent
@@ -27,7 +27,7 @@ class AndOrBlock(Block):
     def __init__(self, name: str):
         super().__init__(name=name, previous_outputs=self.Outputs(OUT=False))
 
-    def _get_input(self, inputs: Dict[str, bool], i: int) -> bool:
+    def _get_input(self, inputs: dict[str, bool], i: int) -> bool:
         if not self.params:
             raise ValueError
         enabled = extract_bit(self.params, f"{self.name}_ENA", i)
@@ -36,7 +36,14 @@ class AndOrBlock(Block):
 
     def _get_next_outputs(self, inputs: Inputs) -> Outputs:
         op = and_ if self.name.startswith("AND") else or_
-        get_input = partial(self._get_input, inputs)
+        get_input = partial(
+            self._get_input,
+            {
+                k: v
+                for k, v in inputs.items()
+                if isinstance(k, str) and isinstance(v, bool)
+            },
+        )
         outputs = self.Outputs(OUT=reduce(op, map(get_input, range(4))))
         self.last_input = inputs
         return outputs

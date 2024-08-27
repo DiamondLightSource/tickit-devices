@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import struct
-from typing import Optional
 
 import numpy as np
 import pytest
@@ -27,7 +26,7 @@ def test_cryostream_constructor():
 def test_cryostream_update_hold(cryostream):
     starting_temperature = cryostream.gas_temp
     device_update: DeviceUpdate = cryostream.update(time=SimTime(1e9), inputs={})
-    device_update.outputs["temperature"] == starting_temperature
+    assert device_update.outputs["temperature"] == starting_temperature
 
 
 @pytest.mark.asyncio
@@ -41,7 +40,7 @@ async def test_cryostream_update_cool(cryostream: CryostreamDevice):
     while cryostream.phase_id != PhaseIds.HOLD.value:
         logging.info(f"Running time step: {time}")
         device_update = cryostream.update(time, inputs={})
-        time_update: Optional[SimTime] = device_update.call_at
+        time_update: SimTime | None = device_update.call_at
 
         if time_update is None:
             time = SimTime(int(time) + int(1e9))
@@ -69,7 +68,7 @@ async def test_cryostream_update_end(cryostream: CryostreamDevice):
     while cryostream.phase_id != PhaseIds.HOLD.value:
         logging.info(f"Running time step: {time}")
         device_update = cryostream.update(time, inputs={})
-        time_update: Optional[SimTime] = device_update.call_at
+        time_update: SimTime | None = device_update.call_at
 
         if time_update is None:
             continue
@@ -90,7 +89,7 @@ async def test_cryostream_update_plat(cryostream: CryostreamDevice):
     assert cryostream.phase_id == PhaseIds.PLAT.value
 
     time = SimTime(0)
-    time_update: Optional[SimTime] = time
+    time_update: SimTime | None = time
     device_update: DeviceUpdate
     while time_update is not None:
         logging.info(f"Running time step: {time}")
@@ -141,3 +140,6 @@ async def test_cryostream_system(tickit_task):
     await write(b"\x04\x0e" + struct.pack(">H", 30000))
     status = await get_status()
     assert status.gas_temp == pytest.approx(30000, rel=5)
+
+    writer.close()
+    await writer.wait_closed()

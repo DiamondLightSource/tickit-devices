@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from queue import Queue
-from typing import Optional
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
@@ -44,14 +43,13 @@ class EigerDevice(Device):
     class Inputs(TypedDict, total=False):
         trigger: bool
 
-    class Outputs(TypedDict):
-        ...
+    class Outputs(TypedDict): ...
 
     def __init__(
         self,
-        settings: Optional[EigerSettings] = None,
-        status: Optional[EigerStatus] = None,
-        stream: Optional[EigerStream] = None,
+        settings: EigerSettings | None = None,
+        status: EigerStatus | None = None,
+        stream: EigerStream | None = None,
     ) -> None:
         """Construct a new eiger.
 
@@ -78,7 +76,7 @@ class EigerDevice(Device):
         self._data_queue: Queue = Queue()
         self._series_id: int = 0
 
-        self._finished_aquisition: Optional[asyncio.Event] = None
+        self._finished_aquisition: asyncio.Event | None = None
 
     @property
     def finished_aquisition(self) -> asyncio.Event:
