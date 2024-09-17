@@ -3,6 +3,7 @@ from collections.abc import Iterable, Mapping
 from queue import Queue
 from typing import Any, TypedDict
 
+import numpy as np
 from pydantic.v1 import BaseModel
 from tickit.core.typedefs import SimTime
 
@@ -77,8 +78,7 @@ class EigerStream:
                     type="float32",
                 )
                 self._buffer(flatfield_header)
-                flatfield_data_blob = {"blob": "blob"}
-                self._buffer(flatfield_data_blob)
+                self._buffer(np.zeros(shape=(y, x), dtype="float32").tobytes())
 
                 pixel_mask_header = AcquisitionDetailsHeader(
                     htype="dpixelmask-1.0",
@@ -86,17 +86,15 @@ class EigerStream:
                     type="uint32",
                 )
                 self._buffer(pixel_mask_header)
-                pixel_mask_data_blob = {"blob": "blob"}
-                self._buffer(pixel_mask_data_blob)
+                self._buffer(np.zeros(shape=(y, x), dtype="uint32").tobytes())
 
                 countrate_table_header = AcquisitionDetailsHeader(
                     htype="dcountrate_table-1.0",
-                    shape=(x, y),
+                    shape=(2, 1000),
                     type="float32",
                 )
                 self._buffer(countrate_table_header)
-                countrate_table_data_blob = {"blob": "blob"}
-                self._buffer(countrate_table_data_blob)
+                self._buffer(np.zeros(shape=(1000, 2), dtype="float32").tobytes())
 
     def insert_image(self, image: Image, series_id: int) -> None:
         """Send headers and an data blob for a single image.

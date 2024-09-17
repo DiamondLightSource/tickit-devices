@@ -16,3 +16,6 @@ def test_eiger_filewriter_status_constructor():
 
 def test_eiger_status_getitem(filewriter_status):
     assert "ready" == filewriter_status["state"]["value"]
+
+    with pytest.raises(ValueError):
+        filewriter_status["doesnt_exist"]

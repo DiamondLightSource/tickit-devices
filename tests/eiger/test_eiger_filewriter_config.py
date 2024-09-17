@@ -14,5 +14,10 @@ def test_eiger_filewriter_config_constructor():
     FileWriterConfig()
 
 
-def test_eiger_filewriter_config_getitem(filewriter_config):
+def test_eiger_filewriter_config_get_set(filewriter_config):
     assert "enabled" == filewriter_config["mode"]["value"]
+    filewriter_config["mode"] = "disabled"
+    assert "disabled" == filewriter_config["mode"]["value"]
+
+    with pytest.raises(ValueError):
+        filewriter_config["doesnt_exist"]

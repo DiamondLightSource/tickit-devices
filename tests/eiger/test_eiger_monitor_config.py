@@ -14,5 +14,10 @@ def test_eiger_monitor_config_constructor():
     MonitorConfig()
 
 
-def test_eiger_monitor_config_getitem(monitor_config):
+def test_eiger_monitor_config_get_set(monitor_config):
     assert "enabled" == monitor_config["mode"]["value"]
+    monitor_config["mode"] = "disabled"
+    assert "disabled" == monitor_config["mode"]["value"]
+
+    with pytest.raises(ValueError):
+        monitor_config["doesnt_exist"]

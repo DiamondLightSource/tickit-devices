@@ -32,15 +32,6 @@ async def test_eiger_system(tickit_task):
     async with aiohttp.ClientSession() as session:
         await get_status(status="state", expected="na")
 
-        # Test setting config var before Eiger set up
-        async with session.put(
-            DETECTOR_URL + "config/element",
-            headers=headers,
-            json={"value": "test"},
-            timeout=REQUEST_TIMEOUT,
-        ) as response:
-            assert (await response.json()) == []
-
         # Test each command
         for key, value in commands.items():
             async with session.put(
@@ -50,30 +41,20 @@ async def test_eiger_system(tickit_task):
                 assert value == (await response.json())
 
         # Check status
-        await get_status(status="doesnt_exist", expected="None")
         await get_status(status="board_000/th0_temp", expected=24.5)
-        await get_status(status="board_000/doesnt_exist", expected="None")
+        await get_status(status="board_000/th0_humidity", expected=0.2)
         await get_status(status="builder/dcu_buffer_free", expected=0.5)
-        await get_status(status="builder/doesnt_exist", expected="None")
 
         # Test Eiger in IDLE state
         await get_status(status="state", expected="idle")
 
-        # Test settings/getting config
         async with session.get(
-            DETECTOR_URL + "config/doesnt_exist",
+            STREAM_URL + "status/keys",
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert (await response.json())["value"] == "None"
+            assert (await response.json()) == ["dropped", "state"]
 
-        async with session.put(
-            DETECTOR_URL + "config/doesnt_exist",
-            headers=headers,
-            json={"value": "test"},
-            timeout=REQUEST_TIMEOUT,
-        ) as response:
-            assert (await response.json()) == []
-
+        # Test settings/getting config
         async with session.get(
             DETECTOR_URL + "config/element",
             timeout=REQUEST_TIMEOUT,
@@ -108,14 +89,6 @@ async def test_eiger_system(tickit_task):
         ) as response:
             assert ["mode"] == (await response.json())
 
-        async with session.put(
-            FILE_WRITER_URL + "config/test",
-            headers=headers,
-            json={"value": "test"},
-            timeout=REQUEST_TIMEOUT,
-        ) as response:
-            assert [] == (await response.json())
-
         # Test filewriter, monitor and stream endpoints
         async with session.get(
             FILE_WRITER_URL + "status/state",
@@ -136,14 +109,6 @@ async def test_eiger_system(tickit_task):
             timeout=REQUEST_TIMEOUT,
         ) as response:
             assert ["mode"] == (await response.json())
-
-        async with session.put(
-            MONITOR_URL + "config/test",
-            headers=headers,
-            json={"value": "test"},
-            timeout=REQUEST_TIMEOUT,
-        ) as response:
-            assert [] == (await response.json())
 
         async with session.get(
             MONITOR_URL + "status/error",
@@ -166,12 +131,34 @@ async def test_eiger_system(tickit_task):
             assert ["mode"] == (await response.json())
 
         async with session.put(
-            STREAM_URL + "config/test",
+            DETECTOR_URL + "config/threshold/1/energy",
             headers=headers,
-            json={"value": "test"},
+            json={"value": 6829},
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert [] == (await response.json())
+            assert ["energy"] == (await response.json())
+
+        async with session.get(
+            DETECTOR_URL + "config/threshold/1/energy",
+            headers=headers,
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert 6829 == (await response.json())["value"]
+
+        async with session.put(
+            DETECTOR_URL + "config/threshold/difference/mode",
+            headers=headers,
+            json={"value": "enabled"},
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert ["mode"] == (await response.json())
+
+        async with session.get(
+            DETECTOR_URL + "config/threshold/difference/mode",
+            headers=headers,
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert "enabled" == (await response.json())["value"]
 
         # Test acquisition in ints mode
         async with session.put(
@@ -191,6 +178,14 @@ async def test_eiger_system(tickit_task):
         await get_status(status="state", expected="idle")
 
         async with session.put(
+            DETECTOR_URL + "config/ntrigger",
+            headers=headers,
+            json={"value": 2},
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert ["ntrigger"] == (await response.json())
+
+        async with session.put(
             DETECTOR_URL + "command/arm",
             timeout=REQUEST_TIMEOUT,
         ) as response:
@@ -203,3 +198,20 @@ async def test_eiger_system(tickit_task):
             timeout=REQUEST_TIMEOUT,
         ) as response:
             assert {"sequence id": 4} == (await response.json())
+
+        await get_status(status="state", expected="ready")
+
+        async with session.put(
+            DETECTOR_URL + "command/trigger",
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert {"sequence id": 4} == (await response.json())
+
+        await get_status(status="state", expected="idle")
+
+        # Test we get a 404 for a non-existent URI
+        async with session.get(
+            DETECTOR_URL + "status/doesnt_exist",
+            timeout=REQUEST_TIMEOUT,
+        ) as response:
+            assert response.status == 404

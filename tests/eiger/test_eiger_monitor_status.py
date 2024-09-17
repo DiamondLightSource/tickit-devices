@@ -16,3 +16,6 @@ def test_eiger_monitor_status_constructor():
 
 def test_eiger_monitor_status_getitem(monitor_status):
     assert [] == monitor_status["error"]["value"]
+
+    with pytest.raises(ValueError):
+        monitor_status["doesnt_exist"]

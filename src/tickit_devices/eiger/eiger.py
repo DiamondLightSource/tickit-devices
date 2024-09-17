@@ -72,22 +72,23 @@ class EigerDevice(Device):
         self.monitor_callback_period = SimTime(int(1e9))
 
         self._num_frames_left: int = 0
+        self._num_triggers_left: int = 0
         self._total_frames: int = 0
         self._data_queue: Queue = Queue()
         self._series_id: int = 0
 
-        self._finished_aquisition: asyncio.Event | None = None
+        self._finished_trigger: asyncio.Event | None = None
 
     @property
-    def finished_aquisition(self) -> asyncio.Event:
+    def finished_trigger(self) -> asyncio.Event:
         """Event that is set when an acqusition series is complete.
 
         Property ensures the event is created.
         """
-        if self._finished_aquisition is None:
-            self._finished_aquisition = asyncio.Event()
+        if self._finished_trigger is None:
+            self._finished_trigger = asyncio.Event()
 
-        return self._finished_aquisition
+        return self._finished_trigger
 
     async def initialize(self) -> None:
         """Initialize the detector.
@@ -104,6 +105,7 @@ class EigerDevice(Device):
         self._series_id += 1
         self.stream.begin_series(self.settings, self._series_id)
         self._num_frames_left = self.settings.nimages
+        self._num_triggers_left = self.settings.ntrigger
         self._set_state(State.READY)
 
     async def disarm(self) -> None:
@@ -169,11 +171,16 @@ class EigerDevice(Device):
                     self.Outputs(), SimTime(time + int(self.settings.frame_time * 1e9))
                 )
             else:
-                self.finished_aquisition.set()
+                self.finished_trigger.set()
 
-                LOGGER.debug("Ending Series...")
-                self._set_state(State.IDLE)
-                self.stream.end_series(self._series_id)
+                if self._num_triggers_left > 0:
+                    self._set_state(State.READY)
+                    self._num_frames_left = self.settings.nimages
+                else:
+                    LOGGER.debug("Ending Series...")
+                    self._set_state(State.IDLE)
+                    self.stream.end_series(self._series_id)
+
         if inputs.get("trigger", False):
             self._begin_acqusition_mode()
             # Should have another update immediately to begin acquisition
@@ -182,12 +189,15 @@ class EigerDevice(Device):
         return DeviceUpdate(self.Outputs(), None)
 
     def _begin_acqusition_mode(self) -> None:
+        self._num_triggers_left -= 1
         self._set_state(State.ACQUIRE)
         LOGGER.info("Now in acquiring mode")
-        self.finished_aquisition.clear()
+        self.finished_trigger.clear()
 
     def _acquire_frame(self) -> None:
-        frame_id = self.settings.nimages - self._num_frames_left
+        frame_id = (
+            (self.settings.ntrigger - self._num_triggers_left) * self.settings.nimages
+        ) - self._num_frames_left
         LOGGER.debug(f"Frame id {frame_id}")
 
         shape = (
@@ -198,6 +208,7 @@ class EigerDevice(Device):
         self.stream.insert_image(image, self._series_id)
         self._num_frames_left -= 1
         LOGGER.debug(f"Frames left: {self._num_frames_left}")
+        LOGGER.debug(f"Triggers left: {self._num_triggers_left}")
 
     def get_state(self) -> State:
         """Get the eiger's current state

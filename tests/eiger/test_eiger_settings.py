@@ -14,10 +14,13 @@ def test_eiger_settings_constructor():
     EigerSettings()
 
 
-def test_eiger_settings_getitem(eiger_settings):
-    value = eiger_settings["count_time"]["value"]
+def test_eiger_settings_get_set(eiger_settings):
+    assert eiger_settings["count_time"]["value"] == 0.1
+    eiger_settings["count_time"] = 0.2
+    assert eiger_settings["count_time"]["value"] == 0.2
 
-    assert 0.1 == value
+    with pytest.raises(ValueError):
+        eiger_settings["doesnt_exist"]
 
 
 def test_eiger_settings_get_element(eiger_settings):
@@ -59,3 +62,19 @@ def test_eiger_settings_set_count_time(eiger_settings):
         eiger_settings.count_time + eiger_settings.detector_readout_time
         == eiger_settings.frame_time
     )
+
+
+def test_eiger_settings_threshold_config(eiger_settings):
+    assert eiger_settings.threshold_config["1"]["energy"]["value"] == 6729
+    eiger_settings.threshold_config["1"]["energy"] = 6829
+    assert eiger_settings.threshold_config["1"]["energy"]["value"] == 6829
+
+    with pytest.raises(ValueError):
+        eiger_settings.threshold_config["1"]["doesnt_exist"]
+
+    assert eiger_settings.threshold_config["difference"]["mode"]["value"] == "disabled"
+    eiger_settings.threshold_config["difference"]["mode"] = "enabled"
+    assert eiger_settings.threshold_config["difference"]["mode"]["value"] == "enabled"
+
+    with pytest.raises(ValueError):
+        eiger_settings.threshold_config["difference"]["doesnt_exist"]

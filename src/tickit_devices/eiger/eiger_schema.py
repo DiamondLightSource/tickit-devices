@@ -5,7 +5,7 @@ from enum import Enum
 from functools import partial
 from typing import Any, Generic, TypeVar
 
-from apischema import serialized
+from apischema import order, serialized
 from apischema.fields import with_fields_set
 from apischema.metadata import skip
 from apischema.serialization import serialize
@@ -73,6 +73,9 @@ ro_int: partial = partial(
 rw_uint: partial = partial(
     field_config, value_type=ValueType.UINT, access_mode=AccessMode.READ_WRITE
 )
+ro_uint: partial = partial(
+    field_config, value_type=ValueType.UINT, access_mode=AccessMode.READ_ONLY
+)
 rw_str: partial = partial(
     field_config, value_type=ValueType.STRING, access_mode=AccessMode.READ_WRITE
 )
@@ -81,6 +84,9 @@ ro_str: partial = partial(
 )
 rw_bool: partial = partial(
     field_config, value_type=ValueType.BOOL, access_mode=AccessMode.READ_WRITE
+)
+ro_bool: partial = partial(
+    field_config, value_type=ValueType.BOOL, access_mode=AccessMode.READ_ONLY
 )
 rw_float_grid: partial = partial(
     field_config,
@@ -95,8 +101,11 @@ rw_uint_grid: partial = partial(
 ro_date: partial = partial(
     field_config, value_type=ValueType.DATE, access_mode=AccessMode.READ_ONLY
 )
-rw_datetime: partial = partial(
-    field_config, value_type=ValueType.DATETIME, access_mode=AccessMode.READ_WRITE
+ro_datetime: partial = partial(
+    field_config, value_type=ValueType.DATETIME, access_mode=AccessMode.READ_ONLY
+)
+ro_state: partial = partial(
+    field_config, value_type=ValueType.STATE, access_mode=AccessMode.READ_ONLY
 )
 rw_state: partial = partial(
     field_config, value_type=ValueType.STATE, access_mode=AccessMode.READ_WRITE
@@ -106,6 +115,7 @@ ro_str_list: partial = partial(
 )
 
 
+@order(["access_mode", "allowed_values", "max", "min", "unit", "value", "value_type"])
 @with_fields_set
 @dataclass
 class Value(Generic[T]):
@@ -123,8 +133,9 @@ class Value(Generic[T]):
 def construct_value(obj, param):  # noqa: D103
     value = obj[param]["value"]
     meta = obj[param]["metadata"]
-
-    if "allowed_values" in meta:
+    if param == "keys":
+        data = serialize(value)
+    elif "allowed_values" in meta:
         data = serialize(
             Value(
                 value,
@@ -133,7 +144,6 @@ def construct_value(obj, param):  # noqa: D103
                 allowed_values=meta["allowed_values"],
             )
         )
-
     else:
         data = serialize(
             Value(
