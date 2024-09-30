@@ -17,6 +17,30 @@
             ]
         },
         {
+            "name": "digitelMPC",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "tickit",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "args": [
+                "all",
+                "examples/configs/digitelmpc/digitelmpc.yaml"
+            ]
+        },
+        {
+            "name": "femto",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "tickit",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "args": [
+                "all",
+                "examples/configs/femto/current-monitor.yaml"
+            ]
+        },
+        {
             "name": "Debug Unit Test",
             "type": "debugpy",
             "request": "launch",
