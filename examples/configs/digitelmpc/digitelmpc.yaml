@@ -1,3 +1,4 @@
 - type: tickit_devices.digitelmpc.DigitelMpc
   name: digitelMpc
   inputs: {}
+  port: 25566
