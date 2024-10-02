@@ -24,6 +24,78 @@ def command_404(key: str) -> str:
 
 LOGGER = logging.getLogger("EigerAdapter")
 
+_changed_parameters = {  # if not given, changed parameter list for key is [key]
+    "auto_summation": ["auto_summation", "frame_count_time"],
+    "count_time": [
+        "bit_depth_image",
+        "bit_depth_readout",
+        "count_time",
+        "countrate_correction_count_cutoff",
+        "frame_count_time",
+        "frame_time",
+    ],
+    "flatfield": ["flatfield", "threshold/1/flatfield"],
+    "frame_time": [
+        "bit_depth_image",
+        "bit_depth_readout",
+        "count_time",
+        "countrate_correction_count_cutoff",
+        "frame_count_time",
+        "frame_time",
+    ],
+    "incident_energy": [
+        "element",
+        "flatfield",
+        "incident_energy",
+        "photon_energy",
+        "threshold/1/energy",
+        "threshold/1/flatfield",
+        "threshold/2/energy",
+        "threshold/2/flatfield",
+        "threshold_energy",
+        "wavelength",
+    ],
+    "photon_energy": [
+        "element",
+        "flatfield",
+        "incident_energy",
+        "photon_energy",
+        "threshold/1/energy",
+        "threshold/1/flatfield",
+        "threshold/2/energy",
+        "threshold/2/flatfield",
+        "threshold_energy",
+        "wavelength",
+    ],
+    "pixel_mask": ["pixel_mask", "threshold/1/pixel_mask"],
+    "roi_mode": ["count_time", "frame_time", "roi_mode"],
+    "threshold/1/energy": [
+        "flatfield",
+        "threshold/1/energy",
+        "threshold/1/flatfield",
+        "threshold/2/flatfield",
+        "threshold_energy",
+    ],
+    "threshold/1/flatfield": ["flatfield", "threshold/1/flatfield"],
+    "threshold/1/mode": ["threshold/1/mode", "threshold/difference/mode"],
+    "threshold/1/pixel_mask": ["pixel_mask", "threshold/1/pixel_mask"],
+    "threshold/2/energy": [
+        "flatfield",
+        "threshold/1/flatfield",
+        "threshold/2/energy",
+        "threshold/2/flatfield",
+    ],
+    "threshold/2/mode": ["threshold/2/mode", "threshold/difference/mode"],
+    "threshold_energy": [
+        "flatfield",
+        "threshold/1/energy",
+        "threshold/1/flatfield",
+        "threshold/2/flatfield",
+        "threshold_energy",
+    ],
+    "threshold/difference/mode": ["difference_mode"]  # replicating API inconsistency
+}
+
 
 class EigerRESTAdapter(HttpAdapter):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
@@ -75,7 +147,13 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.settings[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+
+            if param in _changed_parameters:
+                list_of_params = _changed_parameters[param]
+            else:
+                list_of_params = [param]
+
+            return web.json_response(serialize(list_of_params))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -123,15 +201,17 @@ class EigerRESTAdapter(HttpAdapter):
         config = self.device.settings.threshold_config
         if threshold in config and hasattr(config[threshold], param):
             attr = response["value"]
-
-            LOGGER.debug(
-                f"Changing to {str(attr)} for threshold/{threshold}{str(param)}"
-            )
-
             config[threshold][param] = attr
 
             LOGGER.debug(f"Set threshold/{threshold}{str(param)} to {str(attr)}")
-            return web.json_response(serialize([param]))
+
+            full_param = f"threshold/{threshold}/{param}"
+            if full_param in _changed_parameters:
+                param_list = _changed_parameters[full_param]
+            else:
+                param_list = [full_param]
+
+            return web.json_response(serialize(param_list))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
