@@ -368,7 +368,7 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.stream_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+            return web.json_response([])
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -415,7 +415,7 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.monitor_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+            return web.json_response([])
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -482,7 +482,7 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.filewriter_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+            return web.json_response([])
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
