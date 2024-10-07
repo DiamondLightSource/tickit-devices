@@ -93,7 +93,7 @@ _changed_parameters = {  # if not given, changed parameter list for key is [key]
         "threshold/2/flatfield",
         "threshold_energy",
     ],
-    "threshold/difference/mode": ["difference_mode"]  # replicating API inconsistency
+    "threshold/difference/mode": ["difference_mode"],  # replicating API inconsistency
 }
 
 
@@ -208,6 +208,7 @@ class EigerRESTAdapter(HttpAdapter):
             full_param = f"threshold/{threshold}/{param}"
             if full_param in _changed_parameters:
                 param_list = _changed_parameters[full_param]
+                print(full_param, param_list)
             else:
                 param_list = [full_param]
 
