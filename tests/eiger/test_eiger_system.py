@@ -87,7 +87,7 @@ async def test_eiger_system(tickit_task):
             json={"value": "enabled"},
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert ["mode"] == (await response.json())
+            assert [] == (await response.json())
 
         # Test filewriter, monitor and stream endpoints
         async with session.get(
@@ -108,7 +108,7 @@ async def test_eiger_system(tickit_task):
             json={"value": "enabled"},
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert ["mode"] == (await response.json())
+            assert [] == (await response.json())
 
         async with session.get(
             MONITOR_URL + "status/error",
@@ -128,7 +128,7 @@ async def test_eiger_system(tickit_task):
             json={"value": "enabled"},
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert ["mode"] == (await response.json())
+            assert [] == (await response.json())
 
         async with session.put(
             DETECTOR_URL + "config/threshold/1/energy",
@@ -136,7 +136,13 @@ async def test_eiger_system(tickit_task):
             json={"value": 6829},
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert ["energy"] == (await response.json())
+            assert [
+                "flatfield",
+                "threshold/1/energy",
+                "threshold/1/flatfield",
+                "threshold/2/flatfield",
+                "threshold_energy",
+            ] == (await response.json())
 
         async with session.get(
             DETECTOR_URL + "config/threshold/1/energy",
@@ -151,7 +157,7 @@ async def test_eiger_system(tickit_task):
             json={"value": "enabled"},
             timeout=REQUEST_TIMEOUT,
         ) as response:
-            assert ["mode"] == (await response.json())
+            assert ["difference_mode"] == (await response.json())
 
         async with session.get(
             DETECTOR_URL + "config/threshold/difference/mode",
