@@ -242,3 +242,73 @@ class EigerDevice(Device):
 
     def _is_in_state(self, state: State) -> bool:
         return self.get_state() is state
+
+
+def get_changed_parameters(key: str) -> list[str]:
+    """Get the list of parameters that may have changed as a result of putting
+    to the parameter provided.
+
+    Args:
+        key: string key of the changed parameter within the detector subsystem
+
+    Returns:
+        list[str]: a list of keys which may have been changed after a PUT request
+    """
+    match key:
+        case "auto_summation":
+            return ["auto_summation", "frame_count_time"]
+        case "count_time" | "frame_time":
+            return [
+                "bit_depth_image",
+                "bit_depth_readout",
+                "count_time",
+                "countrate_correction_count_cutoff",
+                "frame_count_time",
+                "frame_time",
+            ]
+        case "flatfield":
+            return ["flatfield", "threshold/1/flatfield"]
+        case "incident_energy" | "photon_energy":
+            return [
+                "element",
+                "flatfield",
+                "incident_energy",
+                "photon_energy",
+                "threshold/1/energy",
+                "threshold/1/flatfield",
+                "threshold/2/energy",
+                "threshold/2/flatfield",
+                "threshold_energy",
+                "wavelength",
+            ]
+        case "pixel_mask":
+            return ["pixel_mask", "threshold/1/pixel_mask"]
+        case "threshold/1/flatfield":
+            return ["flatfield", "threshold/1/flatfield"]
+        case "roi_mode":
+            return ["count_time", "frame_time", "roi_mode"]
+        case "threshold_energy" | "threshold/1/energy":
+            return [
+                "flatfield",
+                "threshold/1/energy",
+                "threshold/1/flatfield",
+                "threshold/2/flatfield",
+                "threshold_energy",
+            ]
+        case "threshold/2/energy":
+            return [
+                "flatfield",
+                "threshold/1/flatfield",
+                "threshold/2/energy",
+                "threshold/2/flatfield",
+            ]
+        case "threshold/1/mode":
+            return ["threshold/1/mode", "threshold/difference/mode"]
+        case "threshold/2/mode":
+            return ["threshold/2/mode", "threshold/difference/mode"]
+        case "threshold/1/pixel_mask":
+            return ["pixel_mask", "threshold/1/pixel_mask"]
+        case "threshold/difference/mode":
+            return ["difference_mode"]  # replicating API inconsistency
+        case _:
+            return [key]

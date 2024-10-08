@@ -6,7 +6,7 @@ from tickit.adapters.http import HttpAdapter
 from tickit.adapters.specifications import HttpEndpoint
 from tickit.adapters.zmq import ZeroMqPushAdapter
 
-from tickit_devices.eiger.eiger import EigerDevice
+from tickit_devices.eiger.eiger import EigerDevice, get_changed_parameters
 from tickit_devices.eiger.eiger_schema import SequenceComplete, construct_value
 from tickit_devices.eiger.stream.eiger_stream import EigerStream
 from tickit_devices.eiger.stream.eiger_stream_2 import EigerStream2
@@ -75,7 +75,10 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.settings[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+
+            changed_parameters = get_changed_parameters(param)
+
+            return web.json_response(serialize(changed_parameters))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -123,15 +126,14 @@ class EigerRESTAdapter(HttpAdapter):
         config = self.device.settings.threshold_config
         if threshold in config and hasattr(config[threshold], param):
             attr = response["value"]
-
-            LOGGER.debug(
-                f"Changing to {str(attr)} for threshold/{threshold}{str(param)}"
-            )
-
             config[threshold][param] = attr
 
             LOGGER.debug(f"Set threshold/{threshold}{str(param)} to {str(attr)}")
-            return web.json_response(serialize([param]))
+
+            full_param = f"threshold/{threshold}/{param}"
+            changed_parameters = get_changed_parameters(full_param)
+
+            return web.json_response(serialize(changed_parameters))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -368,7 +370,7 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.stream_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+            return web.json_response([])
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -415,7 +417,7 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.monitor_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+            return web.json_response([])
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -482,7 +484,7 @@ class EigerRESTAdapter(HttpAdapter):
             self.device.filewriter_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize([param]))
+            return web.json_response([])
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
