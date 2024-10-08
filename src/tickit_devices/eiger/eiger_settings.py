@@ -84,6 +84,7 @@ def config_keys() -> list[str]:
         "threshold_energy",
         "total_flux",
         "trigger_mode",
+        "trigger_start_delay",
         "two_theta_increment",
         "two_theta_start",
         "virtual_pixel_correction_applied",
@@ -256,6 +257,7 @@ class EigerSettings:
             allowed_values=["eies", "exte", "extg", "exts", "inte", "ints"]
         ),
     )
+    trigger_start_delay: float = field(default=0.0, metadata=rw_float(min=0.0))
     two_theta_increment: float = field(default=0.0, metadata=rw_float())
     two_theta_start: float = field(default=0.0, metadata=rw_float())
     virtual_pixel_correction_applied: bool = field(default=True, metadata=rw_bool())
