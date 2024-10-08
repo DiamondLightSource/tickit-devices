@@ -6,7 +6,7 @@ from tickit.adapters.http import HttpAdapter
 from tickit.adapters.specifications import HttpEndpoint
 from tickit.adapters.zmq import ZeroMqPushAdapter
 
-from tickit_devices.eiger.eiger import EigerDevice
+from tickit_devices.eiger.eiger import EigerDevice, get_changed_parameters
 from tickit_devices.eiger.eiger_schema import SequenceComplete, construct_value
 from tickit_devices.eiger.stream.eiger_stream import EigerStream
 from tickit_devices.eiger.stream.eiger_stream_2 import EigerStream2
@@ -23,78 +23,6 @@ def command_404(key: str) -> str:
 
 
 LOGGER = logging.getLogger("EigerAdapter")
-
-_changed_parameters = {  # if not given, changed parameter list for key is [key]
-    "auto_summation": ["auto_summation", "frame_count_time"],
-    "count_time": [
-        "bit_depth_image",
-        "bit_depth_readout",
-        "count_time",
-        "countrate_correction_count_cutoff",
-        "frame_count_time",
-        "frame_time",
-    ],
-    "flatfield": ["flatfield", "threshold/1/flatfield"],
-    "frame_time": [
-        "bit_depth_image",
-        "bit_depth_readout",
-        "count_time",
-        "countrate_correction_count_cutoff",
-        "frame_count_time",
-        "frame_time",
-    ],
-    "incident_energy": [
-        "element",
-        "flatfield",
-        "incident_energy",
-        "photon_energy",
-        "threshold/1/energy",
-        "threshold/1/flatfield",
-        "threshold/2/energy",
-        "threshold/2/flatfield",
-        "threshold_energy",
-        "wavelength",
-    ],
-    "photon_energy": [
-        "element",
-        "flatfield",
-        "incident_energy",
-        "photon_energy",
-        "threshold/1/energy",
-        "threshold/1/flatfield",
-        "threshold/2/energy",
-        "threshold/2/flatfield",
-        "threshold_energy",
-        "wavelength",
-    ],
-    "pixel_mask": ["pixel_mask", "threshold/1/pixel_mask"],
-    "roi_mode": ["count_time", "frame_time", "roi_mode"],
-    "threshold/1/energy": [
-        "flatfield",
-        "threshold/1/energy",
-        "threshold/1/flatfield",
-        "threshold/2/flatfield",
-        "threshold_energy",
-    ],
-    "threshold/1/flatfield": ["flatfield", "threshold/1/flatfield"],
-    "threshold/1/mode": ["threshold/1/mode", "threshold/difference/mode"],
-    "threshold/1/pixel_mask": ["pixel_mask", "threshold/1/pixel_mask"],
-    "threshold/2/energy": [
-        "flatfield",
-        "threshold/1/flatfield",
-        "threshold/2/energy",
-        "threshold/2/flatfield",
-    ],
-    "threshold/2/mode": ["threshold/2/mode", "threshold/difference/mode"],
-    "threshold_energy": [
-        "flatfield",
-        "threshold/1/energy",
-        "threshold/1/flatfield",
-        "threshold/2/flatfield",
-        "threshold_energy",
-    ],
-    "threshold/difference/mode": ["difference_mode"],  # replicating API inconsistency
-}
 
 
 class EigerRESTAdapter(HttpAdapter):
@@ -148,12 +76,9 @@ class EigerRESTAdapter(HttpAdapter):
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
 
-            if param in _changed_parameters:
-                list_of_params = _changed_parameters[param]
-            else:
-                list_of_params = [param]
+            changed_parameters = get_changed_parameters(param)
 
-            return web.json_response(serialize(list_of_params))
+            return web.json_response(serialize(changed_parameters))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
@@ -206,13 +131,9 @@ class EigerRESTAdapter(HttpAdapter):
             LOGGER.debug(f"Set threshold/{threshold}{str(param)} to {str(attr)}")
 
             full_param = f"threshold/{threshold}/{param}"
-            if full_param in _changed_parameters:
-                param_list = _changed_parameters[full_param]
-                print(full_param, param_list)
-            else:
-                param_list = [full_param]
+            changed_parameters = get_changed_parameters(full_param)
 
-            return web.json_response(serialize(param_list))
+            return web.json_response(serialize(changed_parameters))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
             return web.json_response(status=404)
