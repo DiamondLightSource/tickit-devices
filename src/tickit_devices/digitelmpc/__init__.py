@@ -13,14 +13,14 @@ class DigitelMpc(ComponentConfig):
 
     host: str = "localhost"
     port: int = 25565
-    separator: str = "\r"
+    terminator: str = "\r"
 
     def __call__(self) -> Component:  # noqa: D102
         device = DigitelMpcDevice(port=self.port)
         adapters = [
             AdapterContainer(
                 DigitelMpcAdapter(device),
-                TcpIo(self.host, self.port, separator=self.separator),
+                TcpIo(self.host, self.port, terminator=self.terminator),
             )
         ]
         return DeviceComponent(
