@@ -133,7 +133,7 @@ class KA_Energy(Enum):
 class Threshold:
     """Data container for a single threshold configuration."""
 
-    energy: float = field(default=6729, metadata=rw_float())
+    energy: float = field(default=6729.0, metadata=rw_float())
     mode: str = field(
         default="enabled", metadata=rw_str(allowed_values=["enabled", "disabled"])
     )
@@ -221,7 +221,7 @@ class EigerSettings:
     frame_count_time: float = field(default=0.01, metadata=ro_float())
     frame_time: float = field(default=0.12, metadata=rw_float())
     frame_period: float = field(default=0.12, metadata=rw_float())
-    incident_energy: float = field(default=13458, metadata=rw_float())
+    incident_energy: float = field(default=13458.0, metadata=rw_float())
     incident_particle_type: str = field(default="photons", metadata=ro_str())
     instrument_name: str = field(default="", metadata=rw_str())
     kappa_increment: float = field(default=0.0, metadata=rw_float())
@@ -272,7 +272,7 @@ class EigerSettings:
     def __post_init__(self):
         self._threshold_config = {
             "1": Threshold(),
-            "2": Threshold(energy=18841),
+            "2": Threshold(energy=18841.0),
             "difference": ThresholdDifference(),
         }
 
