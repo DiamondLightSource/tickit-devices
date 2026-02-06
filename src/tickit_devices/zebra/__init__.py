@@ -13,7 +13,7 @@ from tickit_devices.zebra.zebra import ZebraAdapter
 
 
 def _default() -> dict[str, int]:
-    return {k: 0 for k in param_types.keys()}
+    return dict.fromkeys(param_types.keys(), 0)
 
 
 @pydantic.v1.dataclasses.dataclass
