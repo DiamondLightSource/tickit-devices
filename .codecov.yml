@@ -1,0 +1,2 @@
+ignore:
+  - "src/tickit_devices/eiger/stream/stream2.py"
