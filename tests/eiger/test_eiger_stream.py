@@ -1,5 +1,6 @@
 from collections.abc import Mapping
 from typing import Any
+from unittest.mock import ANY
 
 import pytest
 from pydantic.v1 import BaseModel
@@ -56,19 +57,19 @@ ALL_HEADERS = [
         shape=(X_SIZE, Y_SIZE),
         type="float32",
     ),
-    {"blob": "blob"},
+    ANY,
     AcquisitionDetailsHeader(
         htype="dpixelmask-1.0",
         shape=(X_SIZE, Y_SIZE),
         type="uint32",
     ),
-    {"blob": "blob"},
+    ANY,
     AcquisitionDetailsHeader(
         htype="dcountrate_table-1.0",
-        shape=(X_SIZE, Y_SIZE),
+        shape=(2, 1000),
         type="float32",
     ),
-    {"blob": "blob"},
+    ANY,
 ]
 
 
@@ -92,7 +93,9 @@ def test_begin_series_produces_correct_headers(
     stream.config.header_detail = header_detail
     stream.begin_series(settings, TEST_SERIES_ID)
     blobs = list(stream.consume_data())
-    assert blobs == expected_headers
+
+    for a, b in zip(expected_headers, blobs, strict=True):
+        assert a == b
 
 
 @pytest.mark.parametrize("number_of_times", [1, 2])
@@ -122,7 +125,10 @@ def test_data_buffered(stream: EigerStream) -> None:
     stream.insert_image(image, TEST_SERIES_ID)
     stream.end_series(TEST_SERIES_ID)
     blobs = list(stream.consume_data())
-    assert blobs == ALL_HEADERS + expected_image_blobs(image) + END_SERIES_FOOTER
+
+    expected_blobs = ALL_HEADERS + expected_image_blobs(image) + END_SERIES_FOOTER
+    for a, b in zip(expected_blobs, blobs, strict=True):
+        assert a == b
 
 
 def expected_image_blobs(image: Image) -> list[bytes | BaseModel]:

@@ -16,3 +16,8 @@ def test_eiger_stream_config_constructor():
 
 def test_eiger_stream_config_getitem(stream_config):
     assert "enabled" == stream_config["mode"]["value"]
+    stream_config["mode"] = "disabled"
+    assert "disabled" == stream_config["mode"]["value"]
+
+    with pytest.raises(ValueError):
+        stream_config["doesnt_exist"]
