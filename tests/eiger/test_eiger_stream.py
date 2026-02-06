@@ -33,7 +33,7 @@ MINIMAL_HEADER = [
 ]
 
 EIGER_SETTINGS_HEADER = EigerSettings().filtered(
-    ["flatfield", "pixelmask" "countrate_correction_table"]
+    ["flatfield", "pixelmask", "countrate_correction_table"]
 )
 X_SIZE = EIGER_SETTINGS_HEADER["x_pixels_in_detector"]
 Y_SIZE = EIGER_SETTINGS_HEADER["y_pixels_in_detector"]

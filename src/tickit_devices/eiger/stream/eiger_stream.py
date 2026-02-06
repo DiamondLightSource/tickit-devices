@@ -60,7 +60,7 @@ class EigerStream:
 
         if header_detail != "none":
             config_header = settings.filtered(
-                ["flatfield", "pixelmask" "countrate_correction_table"]
+                ["flatfield", "pixelmask", "countrate_correction_table"]
             )
             self._buffer(config_header)
 
