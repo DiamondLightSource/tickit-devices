@@ -8,12 +8,20 @@ def stream_config_keys() -> list[str]:
     return ["format", "header_appendix", "header_detail", "image_appendix", "mode"]
 
 
+LEGACY_STREAM = "legacy"
+CBOR_STREAM = "cbor"
+
+
 @dataclass
 class StreamConfig:
     """Eiger stream configuration taken from the API spec."""
 
     mode: str = field(
         default="enabled", metadata=rw_str(allowed_values=["enabled", "disabled"])
+    )
+    format: str = field(
+        default=LEGACY_STREAM,
+        metadata=rw_str(allowed_values=[LEGACY_STREAM, CBOR_STREAM]),
     )
     header_detail: str = field(
         default="basic", metadata=rw_str(allowed_values=["none", "basic", "all"])

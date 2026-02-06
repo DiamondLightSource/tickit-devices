@@ -16,7 +16,8 @@ dependencies = [
     "typing_extensions",
     "softioc",
     "pydantic>1",
-    "apischema"
+    "apischema",
+    "cbor2",
 ]
 dynamic = ["version"]
 license.file = "LICENSE"
@@ -68,6 +69,7 @@ version_file = "src/tickit_devices/_version.py"
 
 [tool.mypy]
 ignore_missing_imports = true # Ignore missing stubs in imported modules
+exclude = ["src/tickit_devices/eiger/stream/stream2.py"]
 
 [tool.pytest.ini_options]
 # Run pytest with all our checkers, and don't spam us with massive tracebacks on error
@@ -84,6 +86,7 @@ testpaths = "docs src tests"
 
 [tool.coverage.run]
 data_file = "/tmp/tickit_devices.coverage"
+omit = ["src/tickit_devices/eiger/stream/stream2.py"]
 
 [tool.coverage.paths]
 # Tests are run from installed location, map back to the src directory

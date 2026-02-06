@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from collections.abc import Mapping
 from queue import Queue
 
 from tickit.core.device import Device, DeviceUpdate
@@ -13,6 +14,13 @@ from tickit_devices.eiger.filewriter.filewriter_status import FileWriterStatus
 from tickit_devices.eiger.monitor.monitor_config import MonitorConfig
 from tickit_devices.eiger.monitor.monitor_status import MonitorStatus
 from tickit_devices.eiger.stream.eiger_stream import EigerStream
+from tickit_devices.eiger.stream.eiger_stream_2 import EigerStream2
+from tickit_devices.eiger.stream.stream_config import (
+    CBOR_STREAM,
+    LEGACY_STREAM,
+    StreamConfig,
+)
+from tickit_devices.eiger.stream.stream_status import StreamStatus
 
 from .eiger_status import EigerStatus, State
 
@@ -35,7 +43,8 @@ class EigerDevice(Device):
 
     settings: EigerSettings
     status: EigerStatus
-    stream: EigerStream
+    stream: EigerStream | EigerStream2
+    streams: Mapping[str, EigerStream | EigerStream2]
 
     _num_frames_left: int
     _data_queue: Queue
@@ -49,7 +58,7 @@ class EigerDevice(Device):
         self,
         settings: EigerSettings | None = None,
         status: EigerStatus | None = None,
-        stream: EigerStream | None = None,
+        stream: EigerStream | EigerStream2 | None = None,
     ) -> None:
         """Construct a new eiger.
 
@@ -61,7 +70,13 @@ class EigerDevice(Device):
         self.settings = settings or EigerSettings()
         self.status = status or EigerStatus()
 
-        self.stream = stream or EigerStream(callback_period=SimTime(int(1e9)))
+        self.stream_status: StreamStatus = StreamStatus()
+        self.stream_config: StreamConfig = StreamConfig()
+        self.streams = {
+            LEGACY_STREAM: stream or EigerStream(callback_period=SimTime(int(1e9))),
+            CBOR_STREAM: stream or EigerStream2(callback_period=SimTime(int(1e9))),
+        }
+        self.stream = self.streams[CBOR_STREAM]
 
         self.filewriter_status: FileWriterStatus = FileWriterStatus()
         self.filewriter_config: FileWriterConfig = FileWriterConfig()
@@ -102,8 +117,11 @@ class EigerDevice(Device):
 
         Required for triggering.
         """
+        self.stream = self.streams[self.stream_config.format]
         self._series_id += 1
-        self.stream.begin_series(self.settings, self._series_id)
+        self.stream.begin_series(
+            self.settings, self._series_id, self.stream_config.header_detail
+        )
         self._num_frames_left = self.settings.nimages
         self._num_triggers_left = self.settings.ntrigger
         self._set_state(State.READY)
@@ -224,3 +242,73 @@ class EigerDevice(Device):
 
     def _is_in_state(self, state: State) -> bool:
         return self.get_state() is state
+
+
+def get_changed_parameters(key: str) -> list[str]:
+    """Get the list of parameters that may have changed as a result of putting
+    to the parameter provided.
+
+    Args:
+        key: string key of the changed parameter within the detector subsystem
+
+    Returns:
+        list[str]: a list of keys which may have been changed after a PUT request
+    """
+    match key:
+        case "auto_summation":
+            return ["auto_summation", "frame_count_time"]
+        case "count_time" | "frame_time":
+            return [
+                "bit_depth_image",
+                "bit_depth_readout",
+                "count_time",
+                "countrate_correction_count_cutoff",
+                "frame_count_time",
+                "frame_time",
+            ]
+        case "flatfield":
+            return ["flatfield", "threshold/1/flatfield"]
+        case "incident_energy" | "photon_energy":
+            return [
+                "element",
+                "flatfield",
+                "incident_energy",
+                "photon_energy",
+                "threshold/1/energy",
+                "threshold/1/flatfield",
+                "threshold/2/energy",
+                "threshold/2/flatfield",
+                "threshold_energy",
+                "wavelength",
+            ]
+        case "pixel_mask":
+            return ["pixel_mask", "threshold/1/pixel_mask"]
+        case "threshold/1/flatfield":
+            return ["flatfield", "threshold/1/flatfield"]
+        case "roi_mode":
+            return ["count_time", "frame_time", "roi_mode"]
+        case "threshold_energy" | "threshold/1/energy":
+            return [
+                "flatfield",
+                "threshold/1/energy",
+                "threshold/1/flatfield",
+                "threshold/2/flatfield",
+                "threshold_energy",
+            ]
+        case "threshold/2/energy":
+            return [
+                "flatfield",
+                "threshold/1/flatfield",
+                "threshold/2/energy",
+                "threshold/2/flatfield",
+            ]
+        case "threshold/1/mode":
+            return ["threshold/1/mode", "threshold/difference/mode"]
+        case "threshold/2/mode":
+            return ["threshold/2/mode", "threshold/difference/mode"]
+        case "threshold/1/pixel_mask":
+            return ["pixel_mask", "threshold/1/pixel_mask"]
+        case "threshold/difference/mode":
+            return ["difference_mode"]  # replicating API inconsistency
+        case _:
+            return [key]

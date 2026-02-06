@@ -33,7 +33,7 @@ MINIMAL_HEADER = [
 ]
 
 EIGER_SETTINGS_HEADER = EigerSettings().filtered(
-    ["flatfield", "pixelmask" "countrate_correction_table"]
+    ["flatfield", "pixelmask", "countrate_correction_table"]
 )
 X_SIZE = EIGER_SETTINGS_HEADER["x_pixels_in_detector"]
 Y_SIZE = EIGER_SETTINGS_HEADER["y_pixels_in_detector"]
@@ -90,8 +90,7 @@ def test_begin_series_produces_correct_headers(
     expected_headers: list[BaseModel | bytes | Mapping[str, Any]],
 ) -> None:
     settings = EigerSettings()
-    stream.config.header_detail = header_detail
-    stream.begin_series(settings, TEST_SERIES_ID)
+    stream.begin_series(settings, TEST_SERIES_ID, header_detail)
     blobs = list(stream.consume_data())
 
     for a, b in zip(expected_headers, blobs, strict=True):
@@ -119,8 +118,7 @@ def test_end_series_produces_correct_headers(
 
 def test_data_buffered(stream: EigerStream) -> None:
     settings = EigerSettings()
-    stream.config.header_detail = "all"
-    stream.begin_series(settings, TEST_SERIES_ID)
+    stream.begin_series(settings, TEST_SERIES_ID, "all")
     image = Image.create_dummy_image(0, (X_SIZE, Y_SIZE))
     stream.insert_image(image, TEST_SERIES_ID)
     stream.end_series(TEST_SERIES_ID)
