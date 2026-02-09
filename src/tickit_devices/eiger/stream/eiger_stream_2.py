@@ -109,6 +109,8 @@ class EigerStream2:
             start = {k: v for k, v in self._start.items() if k not in START_ALL_FIELDS}
 
         # Update message with current state
+        # TODO: Check what fields should be updated from current state
+        # https://github.com/DiamondLightSource/tickit-devices/issues/122
         start["number_of_images"] = settings.nimages * settings.ntrigger
         for stream_field, setting in STREAM_SETTINGS_MAP.items():
             if stream_field not in start:
