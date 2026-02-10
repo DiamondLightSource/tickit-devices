@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Run in a container &#8212; tickit-devices 0.4.1.dev1+gf8e19ad88 documentation</title>
+    <title>tickit_devices &#8212; tickit-devices 0.4.1.dev1+gf8e19ad88 documentation</title>
   
   
   
@@ -47,7 +47,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=30646c52"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'how-to/run-container';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_api/tickit_devices';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://DiamondLightSource.github.io/tickit-devices/switcher.json';
@@ -58,8 +58,8 @@
     <link rel="icon" href="../_static/dls-logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Explanations" href="../explanations.html" />
-    <link rel="prev" title="Contribute to the project" href="contribute.html" />
+    <link rel="next" title="Index" href="../genindex.html" />
+    <link rel="prev" title="Reference" href="../reference.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
@@ -153,7 +153,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../how-to.html">
     How-to Guides
   </a>
@@ -167,7 +167,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../reference.html">
     Reference
   </a>
@@ -301,7 +301,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../how-to.html">
     How-to Guides
   </a>
@@ -315,7 +315,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../reference.html">
     Reference
   </a>
@@ -397,8 +397,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute to the project</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Run in a container</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/DiamondLightSource/tickit-devices/releases">Release Notes</a></li>
 </ul>
 </div>
 </nav></div>
@@ -440,9 +441,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../how-to.html" class="nav-link">How-to Guides</a></li>
+    <li class="breadcrumb-item"><a href="../reference.html" class="nav-link">Reference</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Run in a container</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">tickit_devices</span></code></span></li>
   </ul>
 </nav>
 </div>
@@ -459,18 +460,15 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="run-in-a-container">
-<h1>Run in a container<a class="headerlink" href="#run-in-a-container" title="Link to this heading">#</a></h1>
-<p>Pre-built containers with tickit-devices and its dependencies already
-installed are available on <a class="reference external" href="https://ghcr.io/DiamondLightSource/tickit-devices">Github Container Registry</a>.</p>
-<section id="starting-the-container">
-<h2>Starting the container<a class="headerlink" href="#starting-the-container" title="Link to this heading">#</a></h2>
-<p>To pull the container from github container registry and run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run ghcr.io/diamondlightsource/tickit-devices:latest --version
-</pre></div>
-</div>
-<p>To get a released version, use a numbered release instead of <code class="docutils literal notranslate"><span class="pre">latest</span></code>.</p>
-</section>
+  <section id="module-tickit_devices">
+<span id="tickit-devices"></span><h1><code class="docutils literal notranslate"><span class="pre">tickit_devices</span></code><a class="headerlink" href="#module-tickit_devices" title="Link to this heading">#</a></h1>
+<p>Top level API.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="tickit_devices.__version__">
+<span class="sig-prename descclassname"><span class="pre">tickit_devices.</span></span><span class="sig-name descname"><span class="pre">__version__</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#tickit_devices.__version__" title="Link to this definition">#</a></dt>
+<dd><p>Version number as calculated by <a class="github reference external" href="https://github.com/pypa/setuptools_scm">pypa/setuptools_scm</a></p>
+</dd></dl>
+
 </section>
 
 
@@ -484,20 +482,20 @@ installed are available on <a class="reference external" href="https://ghcr.io/D
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="contribute.html"
+       href="../reference.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Contribute to the project</p>
+        <p class="prev-next-title">Reference</p>
       </div>
     </a>
     <a class="right-next"
-       href="../explanations.html"
+       href="../genindex.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Explanations</p>
+        <p class="prev-next-title">Index</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -520,7 +518,7 @@ installed are available on <a class="reference external" href="https://ghcr.io/D
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-the-container">Starting the container</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit_devices.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -528,7 +526,7 @@ installed are available on <a class="reference external" href="https://ghcr.io/D
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/DiamondLightSource/tickit-devices/edit/main/docs/how-to/run-container.md">
+    <a href="https://github.com/DiamondLightSource/tickit-devices/edit/main/docs/_api/tickit_devices.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -544,7 +542,7 @@ installed are available on <a class="reference external" href="https://ghcr.io/D
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/how-to/run-container.md.txt"
+      <li><a href="../_sources/_api/tickit_devices.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
