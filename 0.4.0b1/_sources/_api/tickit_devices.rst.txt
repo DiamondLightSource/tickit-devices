@@ -1,0 +1,13 @@
+﻿``tickit_devices``
+==================
+
+.. automodule:: tickit_devices
+    :members:
+
+    
+    
+    
+
+    
+    
+    
