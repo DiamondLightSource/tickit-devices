@@ -96,7 +96,7 @@ def config_keys() -> list[str]:
     ]
 
 
-class KA_Energy(Enum):
+class KAEnergy(Enum):
     """Possible element K-alpha energies for samples."""
 
     Li = 54.3
@@ -208,7 +208,7 @@ class EigerSettings:
     )
     eiger_fw_version: str = field(default="1.8.0", metadata=ro_str())
     element: str = field(
-        default="Co", metadata=rw_str(allowed_values=[*(e.name for e in KA_Energy)])
+        default="Co", metadata=rw_str(allowed_values=[*(e.name for e in KAEnergy)])
     )
     extg_mode: str = field(
         default="double", metadata=rw_str(allowed_values=["single", "double"])
@@ -293,7 +293,7 @@ class EigerSettings:
 
     def _check_dependencies(self, key, value):
         if key == "element":
-            self.photon_energy = getattr(KA_Energy, value).value
+            self.photon_energy = getattr(KAEnergy, value).value
             self.wavelength = (1240 / self.photon_energy) / 10  # to convert to Angstrom
             self._calc_threshold_energy()
 

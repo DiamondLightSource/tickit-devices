@@ -1,7 +1,7 @@
 [![CI](https://github.com/DiamondLightSource/tickit-devices/actions/workflows/ci.yml/badge.svg)](https://github.com/DiamondLightSource/tickit-devices/actions/workflows/ci.yml)
 [![Coverage](https://codecov.io/gh/DiamondLightSource/tickit-devices/branch/main/graph/badge.svg)](https://codecov.io/gh/DiamondLightSource/tickit-devices)
 [![PyPI](https://img.shields.io/pypi/v/tickit-devices.svg)](https://pypi.org/project/tickit-devices)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 # tickit-devices
 

@@ -37,13 +37,13 @@ def test_synchrotron_topup_update_new_countdown(
         SimTime(0), inputs={"current": 299.95}
     )
 
-    COUNTDOWN = (299.95 - 270) / 0.05
+    countdown = (299.95 - 270) / 0.05
 
     # countdown seconds need to be rounded since the scheduler introduces slight changes
     # many decimal places in
-    assert round(device_update.outputs["countdown"], -7) == round(COUNTDOWN, -7)
+    assert round(device_update.outputs["countdown"], -7) == round(countdown, -7)
     assert round(device_update.outputs["end_countdown"], -7) == round(
-        COUNTDOWN + 15, -7
+        countdown + 15, -7
     )
 
 
@@ -53,12 +53,12 @@ def test_synchrotron_topup_update_new_countdown_topup_fill():
         SimTime(0), inputs={"current": 291}
     )
 
-    COUNTDOWN = (300 - 291) / (291 - 290)
+    countdown = (300 - 291) / (291 - 290)
 
     # countdown seconds need to be rounded since the scheduler introduces slight changes
     # many decimal places in
     assert device_update.outputs["countdown"] == 0
-    assert device_update.outputs["end_countdown"] == COUNTDOWN
+    assert device_update.outputs["end_countdown"] == countdown
 
 
 def test_synchrotron_topup_call_at(synchrotron_topup: SynchrotronTopUpDevice):

@@ -40,7 +40,7 @@ class Zebra(ComponentConfig):
     params: dict[str, int] = Field(default_factory=dict)
 
     @validator("params")
-    def add_defaults(cls, v: dict[str, int]) -> dict[str, int]:
+    def add_defaults(cls, v: dict[str, int]) -> dict[str, int]:  # noqa: N805
         return {**_default(), **v}
 
     def __call__(self) -> SystemComponent:

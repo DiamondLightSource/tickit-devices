@@ -5,6 +5,6 @@ metadata:
   title: tickit-devices
   description: Devices for tickit, an event-based device simulation framework
 spec:
-  type: documentation
+  type: library
   lifecycle: experimental
   owner: group:default/sscc
