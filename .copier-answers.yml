@@ -1,12 +1,15 @@
 # Changes here will be overwritten by Copier
-_commit: 2.2.0
+_commit: 5.0.2
 _src_path: gh:DiamondLightSource/python-copier-template
 author_email: abigail.emery@diamond.ac.uk
 author_name: Abigail Emery
+component_lifecycle: experimental
 component_owner: group:default/sscc
+component_type: library
 description: Devices for tickit, an event-based device simulation framework
 distribution_name: tickit-devices
 docker: true
+docker_debug: false
 docs_type: sphinx
 git_platform: github.com
 github_org: DiamondLightSource

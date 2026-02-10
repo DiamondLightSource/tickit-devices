@@ -1,6 +1,6 @@
 import pytest
 
-from tickit_devices.eiger.eiger_settings import EigerSettings, KA_Energy
+from tickit_devices.eiger.eiger_settings import EigerSettings, KAEnergy
 
 # # # # # EigerStatus Tests # # # # #
 
@@ -31,7 +31,7 @@ def test_eiger_settings_set_element(eiger_settings):
     eiger_settings["element"] = "Li"
 
     assert "Li" == eiger_settings.element
-    assert KA_Energy["Li"].value == eiger_settings.photon_energy
+    assert KAEnergy["Li"].value == eiger_settings.photon_energy
     assert (1240 / eiger_settings.photon_energy) / 10 == eiger_settings.wavelength
     assert 0.5 * eiger_settings.photon_energy == eiger_settings.threshold_energy
 

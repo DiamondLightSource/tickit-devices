@@ -33,20 +33,20 @@ def test_synchrotron_current_lose_current_update(
 
 
 def test_synchrotron_current_topup_fill_update():
-    INITIAL_CURRENT = 239
+    initial_current = 239
     fill_incremenet = (300 - 270) / 15
-    expected_output = INITIAL_CURRENT + fill_incremenet
+    expected_output = initial_current + fill_incremenet
     device_update: DeviceUpdate = SynchrotronCurrentDevice(
-        initial_current=INITIAL_CURRENT
+        initial_current=initial_current
     ).update(SimTime(0), inputs={})
     assert device_update.outputs["current"] == expected_output
 
 
 def test_synchrotron_current_topup_fill_stops():
-    INITIAL_CURRENT = 268
+    initial_current = 268
     fill_incremenet = (300 - 270) / 15
-    expected_output = INITIAL_CURRENT + fill_incremenet
-    device = SynchrotronCurrentDevice(initial_current=INITIAL_CURRENT)
+    expected_output = initial_current + fill_incremenet
+    device = SynchrotronCurrentDevice(initial_current=initial_current)
     device_update: DeviceUpdate = device.update(SimTime(0), inputs={})
     assert device_update.outputs["current"] == expected_output
 
