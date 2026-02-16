@@ -49,17 +49,23 @@ GONIO_AXES = ["chi", "kappa", "omega", "phi", "two_theta"]
 def _load_messages():
     start = image = end = None
     with open(DATA_PATH / "start.cbor", "rb") as f:
-        start = cbor2.load(f, tag_hook=stream2_tag_decoder)
+        start = cbor2.load(f)
+
+    # with open(DATA_PATH / "start2.cbor", "wb") as f:
+    #     cbor2.dump(start, f)
+
+    # with open(DATA_PATH / "start2.cbor", "rb") as f:
+    #     start2 = cbor2.load(f)
 
     # Populate missing large datasets
-    sensor_shape = (start["image_size_y"], start["image_size_x"])
-    # we need a base64 encoded array of 4 bit integers, numpy can't provide uint4s
-    # we can construct it manually for the trivial zero case
-    start["countrate_correction_lookup_table"] = base64.b64encode(65536 // 2 * b"\x00")
-    start["flatfield"]["threshold_1"] = base64.b64encode(
-        np.prod(sensor_shape) // 2 * b"\x00"  # 2 pixels per byte
-    )
-    start["pixel_mask"]["threshold_1"] = start["flatfield"]["threshold_1"]  # copy value
+    # sensor_shape = (start["image_size_y"], start["image_size_x"])
+    # # we need a base64 encoded array of 4 bit integers, numpy can't provide uint4s
+    # # we can construct it manually for the trivial zero case
+    # start["countrate_correction_lookup_table"] = base64.b64encode(65536 // 2 * b"\x00")
+    # start["flatfield"]["threshold_1"] = base64.b64encode(
+    #     np.prod(sensor_shape) // 2 * b"\x00"  # 2 pixels per byte
+    # )
+    # start["pixel_mask"]["threshold_1"] = start["flatfield"]["threshold_1"]  # copy value
 
     with open(DATA_PATH / "image.cbor", "rb") as f:
         image = cbor2.load(f)
